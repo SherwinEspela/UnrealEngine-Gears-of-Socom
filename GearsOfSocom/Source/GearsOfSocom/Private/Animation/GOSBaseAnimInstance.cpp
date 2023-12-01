@@ -4,6 +4,7 @@
 #include "Animation/GOSBaseAnimInstance.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -13,5 +14,7 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		 FRotator AimRotation = GOSCharacter->GetBaseAimRotation();
 		 FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(GOSCharacter->GetVelocity());
 		 MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
+
+		 bIsAccelerating = GOSCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f;
 	 }
 }
