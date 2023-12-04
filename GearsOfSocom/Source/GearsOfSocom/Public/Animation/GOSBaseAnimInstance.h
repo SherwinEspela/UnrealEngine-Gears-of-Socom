@@ -6,6 +6,9 @@
 #include "Animation/AnimInstance.h"
 #include "GOSBaseAnimInstance.generated.h"
 
+class AGOSBaseCharacter;
+class UCharacterMovementComponent;
+
 /**
  * 
  */
@@ -14,8 +17,28 @@ class GEARSOFSOCOM_API UGOSBaseAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
+	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	AGOSBaseCharacter* GOSCharacter;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	float GroundSpeed;
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	UCharacterMovementComponent* MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bIsCharacterWalking;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bIsCharacterJogging;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bIsCharacterSprinting;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float MovementOffsetYaw;

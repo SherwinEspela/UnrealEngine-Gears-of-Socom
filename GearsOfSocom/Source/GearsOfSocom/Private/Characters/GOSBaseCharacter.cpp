@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Constants/Constants.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -27,8 +28,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+	GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+	GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
@@ -64,6 +65,7 @@ void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::Look);
+		EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::ToggleWalkOrJog);
 	}
 }
 
@@ -91,4 +93,24 @@ void AGOSBaseCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AGOSBaseCharacter::ToggleWalkOrJog()
+{
+	if (MovementType == EMovementType::EMT_Jog)
+	{
+		MovementType = EMovementType::EMT_Walk;
+		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+		GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED;
+	}
+	else {
+		MovementType = EMovementType::EMT_Jog;
+		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+	}
+}
+
+EMovementType AGOSBaseCharacter::GetMovementType() const
+{
+	return MovementType;
 }
