@@ -5,6 +5,7 @@
 #include "Characters/GOSBaseCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Constants/Constants.h"
 
 void UGOSBaseAnimInstance::NativeInitializeAnimation()
 {
@@ -31,7 +32,6 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		 {
 			 bIsAccelerating = MovementComponent->GetCurrentAcceleration().Size() > 0.f;
 			 GroundSpeed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
-			 bIsCharacterWalking = GroundSpeed > 3.f && GroundSpeed < MovementComponent->MaxWalkSpeed;
 		 }
 	 }
 }

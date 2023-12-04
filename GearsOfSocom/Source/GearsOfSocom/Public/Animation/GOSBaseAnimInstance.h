@@ -27,11 +27,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
 	float GroundSpeed;
 
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	UCharacterMovementComponent* MovementComponent;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsCharacterWalking;
 
-	UPROPERTY(BlueprintReadOnly, Category = Movement)
-	UCharacterMovementComponent* MovementComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bIsCharacterJogging;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bIsCharacterSprinting;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))

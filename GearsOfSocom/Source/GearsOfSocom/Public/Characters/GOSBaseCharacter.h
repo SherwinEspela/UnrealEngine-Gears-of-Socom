@@ -50,4 +50,8 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
+protected:
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float JogSpeedMultiplier = 1.2f;
+
 };
