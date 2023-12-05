@@ -12,6 +12,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class UAnimMontage;
+class UGOSBaseAnimInstance;
 struct FInputActionValue;
 
 UCLASS()
@@ -60,6 +61,7 @@ public:
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -98,4 +100,6 @@ protected:
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
 	float CurrentCameraFOV;
+
+	UGOSBaseAnimInstance* GOSAnimInstance;
 };

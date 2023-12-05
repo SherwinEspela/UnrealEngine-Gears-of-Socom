@@ -13,6 +13,7 @@
 #include "Constants/Constants.h"
 #include "Animation/AnimMontage.h"
 #include "Animation/AnimInstance.h"
+#include "Animation/GOSBaseAnimInstance.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -59,6 +60,7 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 
 	CameraDefaultFOV = FollowCamera->FieldOfView;
+	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
@@ -137,11 +139,13 @@ void AGOSBaseCharacter::FireWeapon()
 void AGOSBaseCharacter::SetZoomWeaponView()
 {
 	bIsAiming = true;
+	if(GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSBaseCharacter::RevertToDefaultCameraView()
 {
 	bIsAiming = false;
+	if(GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSBaseCharacter::ToggleCameraFOVInterp(float DeltaSeconds)

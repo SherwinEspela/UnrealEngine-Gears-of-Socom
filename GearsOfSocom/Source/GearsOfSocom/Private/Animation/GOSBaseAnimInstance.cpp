@@ -16,6 +16,8 @@ void UGOSBaseAnimInstance::NativeInitializeAnimation()
 	{
 		MovementComponent = GOSCharacter->GetCharacterMovement();
 	}
+
+	bIsAiming = false;
 }
 
 void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)

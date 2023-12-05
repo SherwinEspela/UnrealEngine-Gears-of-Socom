@@ -20,6 +20,9 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
+public:
+	FORCEINLINE void SetAiming(bool IsAiming) { bIsAiming = IsAiming; }
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	AGOSBaseCharacter* GOSCharacter;
@@ -38,6 +41,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsCharacterSprinting;
+
+	UPROPERTY(BlueprintReadOnly, Category = Weapon)
+	bool bIsAiming = false;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
