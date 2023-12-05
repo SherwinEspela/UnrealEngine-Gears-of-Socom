@@ -16,7 +16,7 @@
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -57,6 +57,14 @@ void AGOSBaseCharacter::BeginPlay()
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
+
+	CameraDefaultFOV = FollowCamera->FieldOfView;
+}
+
+void AGOSBaseCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	ToggleCameraFOVInterp(DeltaSeconds);
 }
 
 void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -70,6 +78,8 @@ void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::Look);
 		EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::ToggleWalkOrJog);
 		EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::FireWeapon);
+		EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSBaseCharacter::SetZoomWeaponView);
+		EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSBaseCharacter::RevertToDefaultCameraView);
 	}
 }
 
@@ -122,6 +132,27 @@ void AGOSBaseCharacter::FireWeapon()
 		AnimInstance->Montage_Play(MontageFireWeapon);
 		AnimInstance->Montage_JumpToSection("FireFast");
 	}
+}
+
+void AGOSBaseCharacter::SetZoomWeaponView()
+{
+	bIsAiming = true;
+}
+
+void AGOSBaseCharacter::RevertToDefaultCameraView()
+{
+	bIsAiming = false;
+}
+
+void AGOSBaseCharacter::ToggleCameraFOVInterp(float DeltaSeconds)
+{
+	CurrentCameraFOV = FMath::FInterpTo(
+		CurrentCameraFOV, 
+		bIsAiming ? CameraZoomWeaponValue : CameraDefaultFOV, 
+		DeltaSeconds, 
+		CameraZoomWeaponSpeed
+	);
+	FollowCamera->SetFieldOfView(CurrentCameraFOV);
 }
 
 EMovementType AGOSBaseCharacter::GetMovementType() const

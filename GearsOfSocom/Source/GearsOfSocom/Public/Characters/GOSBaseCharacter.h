@@ -28,6 +28,8 @@ class GEARSOFSOCOM_API AGOSBaseCharacter : public ACharacter
 public:
 	AGOSBaseCharacter();
 
+	virtual void Tick(float DeltaSeconds) override;
+
 public:
 	// Input Actions
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -48,6 +50,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* FireWeaponAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ZoomWeaponAction;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
@@ -65,10 +70,25 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void ToggleWalkOrJog();
 	void FireWeapon();
+	void SetZoomWeaponView();
+	void RevertToDefaultCameraView();
+	void ToggleCameraFOVInterp(float DeltaSeconds);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Movement)
 	float JogSpeedMultiplier = 1.2f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float CameraZoomWeaponValue = 30.f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float CameraDefaultFOV;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float CameraZoomWeaponSpeed = 20.f;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	bool bIsAiming = false;
 
 protected:
 	// Animation Montages
@@ -77,4 +97,5 @@ protected:
 
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
+	float CurrentCameraFOV;
 };
