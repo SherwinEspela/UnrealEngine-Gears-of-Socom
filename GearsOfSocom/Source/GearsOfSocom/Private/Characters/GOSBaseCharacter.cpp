@@ -30,7 +30,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 	GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+	GetCharacterMovement()->GroundFriction = 2.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 85.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
