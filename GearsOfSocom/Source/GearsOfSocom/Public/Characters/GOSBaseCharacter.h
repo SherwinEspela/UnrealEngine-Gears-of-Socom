@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UAnimMontage;
 struct FInputActionValue;
 
 UCLASS()
@@ -44,6 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ToggleWalkOrJogAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* FireWeaponAction;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
@@ -60,10 +64,16 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void ToggleWalkOrJog();
+	void FireWeapon();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Movement)
 	float JogSpeedMultiplier = 1.2f;
+
+protected:
+	// Animation Montages
+	UPROPERTY(EditDefaultsOnly, Category = Weapon)
+	UAnimMontage* MontageFireWeapon;
 
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;

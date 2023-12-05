@@ -11,6 +11,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Constants/Constants.h"
+#include "Animation/AnimMontage.h"
+#include "Animation/AnimInstance.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -67,6 +69,7 @@ void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::Look);
 		EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::ToggleWalkOrJog);
+		EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Triggered, this, &AGOSBaseCharacter::FireWeapon);
 	}
 }
 
@@ -108,6 +111,16 @@ void AGOSBaseCharacter::ToggleWalkOrJog()
 		MovementType = EMovementType::EMT_Jog;
 		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+	}
+}
+
+void AGOSBaseCharacter::FireWeapon()
+{
+	if (MontageFireWeapon)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		AnimInstance->Montage_Play(MontageFireWeapon);
+		AnimInstance->Montage_JumpToSection("FireFast");
 	}
 }
 
