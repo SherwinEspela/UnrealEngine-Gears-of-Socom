@@ -35,5 +35,8 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			 bIsAccelerating = MovementComponent->GetCurrentAcceleration().Size() > 0.f;
 			 GroundSpeed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
 		 }
+
+		 AimPitch = GOSCharacter->GetBaseAimRotation().Pitch;
+		 AimYaw = GOSCharacter->GetBaseAimRotation().Yaw;
 	 }
 }
