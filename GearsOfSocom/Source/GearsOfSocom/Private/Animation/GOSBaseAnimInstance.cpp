@@ -38,5 +38,32 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		 AimPitch = GOSCharacter->GetBaseAimRotation().Pitch;
 		 AimYaw = GOSCharacter->GetBaseAimRotation().Yaw;
+
+		 TurnInPlace();
 	 }
+}
+
+void UGOSBaseAnimInstance::TurnInPlace()
+{
+	if (GOSCharacter == nullptr) return;
+	if (GroundSpeed > 0) return;
+
+	CharacterYawLastFrame = CharacterYaw;
+	CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
+	const float YawDelta = CharacterYaw - CharacterYawLastFrame;
+	RootYawOffset -= YawDelta;
+
+	GEngine->AddOnScreenDebugMessage(
+		1,
+		-1.f,
+		FColor::Blue,
+		FString::Printf(TEXT("CharacterYaw: %f"), CharacterYaw)
+	);
+
+	GEngine->AddOnScreenDebugMessage(
+		2,
+		-1.f,
+		FColor::Red,
+		FString::Printf(TEXT("RootYawOffset: %f"), RootYawOffset)
+	);
 }

@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = Weapon)
 	bool bIsAiming = false;
 
+protected:
+	void TurnInPlace();
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float MovementOffsetYaw;
@@ -57,4 +60,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsAccelerating = false;
+
+	float CharacterYaw;
+	float CharacterYawLastFrame;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn In Place", meta = (AllowPrivateAccess = "true"))
+	float RootYawOffset;
 };
