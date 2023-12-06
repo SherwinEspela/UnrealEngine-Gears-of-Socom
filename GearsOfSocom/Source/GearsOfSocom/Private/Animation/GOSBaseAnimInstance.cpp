@@ -38,5 +38,38 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		 AimPitch = GOSCharacter->GetBaseAimRotation().Pitch;
 		 AimYaw = GOSCharacter->GetBaseAimRotation().Yaw;
+
+		 TurnInPlace();
 	 }
+}
+
+void UGOSBaseAnimInstance::TurnInPlace()
+{
+	if (GOSCharacter == nullptr) return;
+	if (GroundSpeed > 0)
+	{
+		RootYawOffset = 0.f;
+		CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
+		CharacterYawLastFrame = CharacterYaw;
+		RotationCurveLastFrame = 0.f;
+		RotationCurve = 0.f;
+	}
+	else {
+		CharacterYawLastFrame = CharacterYaw;
+		CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
+		const float YawDelta = CharacterYaw - CharacterYawLastFrame;
+		RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - YawDelta);
+
+		const float Turning = GetCurveValue(TEXT("Turning"));
+		if (Turning > 0)
+		{
+			RotationCurveLastFrame = RotationCurve;
+			RotationCurve = GetCurveValue(TEXT("Rotation"));
+			const float DeltaRotation = RotationCurve - RotationCurveLastFrame;
+
+			const bool IsTurningLeft = RootYawOffset > 0.f;
+			IsTurningLeft ? RootYawOffset -= DeltaRotation : RootYawOffset += DeltaRotation;
+			RootYawOffset = FMath::Clamp(RootYawOffset, -90.f, 90.f);
+		}
+	}
 }
