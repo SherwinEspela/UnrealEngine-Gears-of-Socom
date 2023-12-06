@@ -81,7 +81,7 @@ protected:
 	float JogSpeedMultiplier = 1.2f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraZoomWeaponValue = 30.f;
+	float CameraZoomWeaponValue = 40.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float CameraDefaultFOV;
