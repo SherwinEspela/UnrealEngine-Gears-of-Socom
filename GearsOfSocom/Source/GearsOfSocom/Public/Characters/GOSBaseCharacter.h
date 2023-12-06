@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 class UAnimMontage;
 class UGOSBaseAnimInstance;
+class USoundBase;
 struct FInputActionValue;
 
 UCLASS()
@@ -91,6 +92,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	bool bIsAiming = false;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = SFX)
+	USoundBase* SoundShotgun;
 
 protected:
 	// Animation Montages

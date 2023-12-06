@@ -14,6 +14,8 @@
 #include "Animation/AnimMontage.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Sound/SoundBase.h"
+#include "Kismet/GameplayStatics.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -128,6 +130,8 @@ void AGOSBaseCharacter::ToggleWalkOrJog()
 
 void AGOSBaseCharacter::FireWeapon()
 {
+	if (SoundShotgun) UGameplayStatics::PlaySound2D(this, SoundShotgun);
+
 	if (MontageFireWeapon)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
