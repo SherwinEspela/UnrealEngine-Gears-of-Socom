@@ -48,6 +48,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSBaseCharacter::BeginPlay()
@@ -63,7 +65,6 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 
 	CameraDefaultFOV = FollowCamera->FieldOfView;
-	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
@@ -132,6 +133,10 @@ void AGOSBaseCharacter::ToggleWalkOrJog()
 void AGOSBaseCharacter::FireWeapon()
 {
 	if (SoundShotgun) UGameplayStatics::PlaySound2D(this, SoundShotgun);
+	if (FXMuzzleFlash)
+	{
+		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
+	}
 
 	if (MontageFireWeapon)
 	{
@@ -149,7 +154,11 @@ void AGOSBaseCharacter::FireWeapon()
 	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1);
 	if (bHitSuccess)
 	{
-		DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 15.f, FColor::Red, true);
+		if (FXImpact)
+		{
+			FVector ShotDirection = -PVPRotation.Vector();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
+		}
 	}
 }
 

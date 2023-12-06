@@ -107,6 +107,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float MaxShootingRange = 2000.f;
 
+protected:
+	// Effects
+	UPROPERTY(EditAnywhere, Category = Effects)
+	UParticleSystem* FXMuzzleFlash;
+
+	UPROPERTY(EditAnywhere, Category = Effects)
+	UParticleSystem* FXImpact;
+
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
 	float CurrentCameraFOV;
