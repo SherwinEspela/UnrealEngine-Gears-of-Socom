@@ -16,6 +16,7 @@
 #include "Animation/GOSBaseAnimInstance.h"
 #include "Sound/SoundBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -137,6 +138,18 @@ void AGOSBaseCharacter::FireWeapon()
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		AnimInstance->Montage_Play(MontageFireWeapon);
 		AnimInstance->Montage_JumpToSection("FireFast");
+	}
+
+	FVector PVPLocation;
+	FRotator PVPRotation;
+	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+
+	FHitResult Hit;
+	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1);
+	if (bHitSuccess)
+	{
+		DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 15.f, FColor::Red, true);
 	}
 }
 

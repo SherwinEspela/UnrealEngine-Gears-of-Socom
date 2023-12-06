@@ -102,6 +102,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	UAnimMontage* MontageFireWeapon;
 
+protected:
+	// Shooting Mechanics
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float MaxShootingRange = 2000.f;
+
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
 	float CurrentCameraFOV;
