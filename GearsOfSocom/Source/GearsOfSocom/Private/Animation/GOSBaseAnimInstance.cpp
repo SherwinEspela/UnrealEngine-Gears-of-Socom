@@ -46,24 +46,30 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 void UGOSBaseAnimInstance::TurnInPlace()
 {
 	if (GOSCharacter == nullptr) return;
-	if (GroundSpeed > 0) return;
+	if (GroundSpeed > 0)
+	{
+		RootYawOffset = 0.f;
+		CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
+		CharacterYawLastFrame = CharacterYaw;
+		RotationCurveLastFrame = 0.f;
+		RotationCurve = 0.f;
+	}
+	else {
+		CharacterYawLastFrame = CharacterYaw;
+		CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
+		const float YawDelta = CharacterYaw - CharacterYawLastFrame;
+		RootYawOffset = UKismetMathLibrary::NormalizeAxis(RootYawOffset - YawDelta);
 
-	CharacterYawLastFrame = CharacterYaw;
-	CharacterYaw = GOSCharacter->GetActorRotation().Yaw;
-	const float YawDelta = CharacterYaw - CharacterYawLastFrame;
-	RootYawOffset -= YawDelta;
+		const float Turning = GetCurveValue(TEXT("Turning"));
+		if (Turning > 0)
+		{
+			RotationCurveLastFrame = RotationCurve;
+			RotationCurve = GetCurveValue(TEXT("Rotation"));
+			const float DeltaRotation = RotationCurve - RotationCurveLastFrame;
 
-	GEngine->AddOnScreenDebugMessage(
-		1,
-		-1.f,
-		FColor::Blue,
-		FString::Printf(TEXT("CharacterYaw: %f"), CharacterYaw)
-	);
-
-	GEngine->AddOnScreenDebugMessage(
-		2,
-		-1.f,
-		FColor::Red,
-		FString::Printf(TEXT("RootYawOffset: %f"), RootYawOffset)
-	);
+			const bool IsTurningLeft = RootYawOffset > 0.f;
+			IsTurningLeft ? RootYawOffset -= DeltaRotation : RootYawOffset += DeltaRotation;
+			RootYawOffset = FMath::Clamp(RootYawOffset, -90.f, 90.f);
+		}
+	}
 }
