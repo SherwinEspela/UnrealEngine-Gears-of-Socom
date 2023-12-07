@@ -14,6 +14,9 @@
 #include "Animation/AnimMontage.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Sound/SoundBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -45,6 +48,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSBaseCharacter::BeginPlay()
@@ -60,7 +65,6 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 
 	CameraDefaultFOV = FollowCamera->FieldOfView;
-	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
@@ -128,11 +132,34 @@ void AGOSBaseCharacter::ToggleWalkOrJog()
 
 void AGOSBaseCharacter::FireWeapon()
 {
+	if (SoundShotgun) UGameplayStatics::PlaySound2D(this, SoundShotgun);
+	if (FXMuzzleFlash)
+	{
+		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
+	}
+
 	if (MontageFireWeapon)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		AnimInstance->Montage_Play(MontageFireWeapon);
 		AnimInstance->Montage_JumpToSection("FireFast");
+	}
+
+	FVector PVPLocation;
+	FRotator PVPRotation;
+	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+
+	FHitResult Hit;
+	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1);
+	if (bHitSuccess)
+	{
+		if (FXImpact)
+		{
+			FVector ShotDirection = -PVPRotation.Vector();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
+			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
+		}
 	}
 }
 

@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 class UAnimMontage;
 class UGOSBaseAnimInstance;
+class USoundBase;
 struct FInputActionValue;
 
 UCLASS()
@@ -93,9 +94,26 @@ protected:
 	bool bIsAiming = false;
 
 protected:
+	UPROPERTY(EditAnywhere, Category = SFX)
+	USoundBase* SoundShotgun;
+
+protected:
 	// Animation Montages
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	UAnimMontage* MontageFireWeapon;
+
+protected:
+	// Shooting Mechanics
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float MaxShootingRange = 2000.f;
+
+protected:
+	// Effects
+	UPROPERTY(EditAnywhere, Category = Effects)
+	UParticleSystem* FXMuzzleFlash;
+
+	UPROPERTY(EditAnywhere, Category = Effects)
+	UParticleSystem* FXImpact;
 
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
