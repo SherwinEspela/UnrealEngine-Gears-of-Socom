@@ -158,6 +158,7 @@ void AGOSBaseCharacter::FireWeapon()
 		{
 			FVector ShotDirection = -PVPRotation.Vector();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
+			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
 		}
 	}
 }
