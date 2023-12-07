@@ -21,12 +21,6 @@ class GEARSOFSOCOM_API AGOSBaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FollowCamera;
-
 public:
 	AGOSBaseCharacter();
 
@@ -59,11 +53,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
 
-public:
-	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -73,25 +62,6 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void ToggleWalkOrJog();
 	void FireWeapon();
-	void SetZoomWeaponView();
-	void RevertToDefaultCameraView();
-	void ToggleCameraFOVInterp(float DeltaSeconds);
-
-protected:
-	UPROPERTY(EditAnywhere, Category = Movement)
-	float JogSpeedMultiplier = 1.2f;
-
-	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraZoomWeaponValue = 40.f;
-
-	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraDefaultFOV;
-
-	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraZoomWeaponSpeed = 20.f;
-
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-	bool bIsAiming = false;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = SFX)
@@ -101,6 +71,9 @@ protected:
 	// Animation Montages
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	UAnimMontage* MontageFireWeapon;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float JogSpeedMultiplier = 1.2f;
 
 protected:
 	// Shooting Mechanics
@@ -115,9 +88,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Effects)
 	UParticleSystem* FXImpact;
 
+protected:
+	UGOSBaseAnimInstance* GOSAnimInstance;
+
 private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
-	float CurrentCameraFOV;
 
-	UGOSBaseAnimInstance* GOSAnimInstance;
 };
