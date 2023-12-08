@@ -7,10 +7,8 @@
 #include "Constants/Constants.h"
 #include "GOSBaseCharacter.generated.h"
 
-class USpringArmComponent;
-class UCameraComponent;
-class UInputMappingContext;
-class UInputAction;
+//class UInputMappingContext;
+//class UInputAction;
 class UAnimMontage;
 class UGOSBaseAnimInstance;
 class USoundBase;
@@ -27,29 +25,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 public:
-	// Input Actions
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputMappingContext* InputMappingContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* JumpAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* ToggleWalkOrJogAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* FireWeaponAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* ZoomWeaponAction;
-
-public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
 
@@ -58,10 +33,8 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void ToggleWalkOrJog();
-	void FireWeapon();
+	virtual void FireWeapon();
+	//void ToggleWalkOrJog();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = SFX)
@@ -90,8 +63,6 @@ protected:
 
 protected:
 	UGOSBaseAnimInstance* GOSAnimInstance;
-
-private:
 	EMovementType MovementType = EMovementType::EMT_Jog;
 
 };

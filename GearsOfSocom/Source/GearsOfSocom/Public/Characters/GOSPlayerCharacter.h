@@ -6,6 +6,9 @@
 #include "Characters/GOSBaseCharacter.h"
 #include "GOSPlayerCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 /**
  * 
  */
@@ -24,6 +27,13 @@ public:
 	AGOSPlayerCharacter();
 
 	virtual void Tick(float DeltaSeconds) override;
+
+public:
+	// Player Actions and Movement
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	virtual void FireWeapon() override;
+	void ToggleWalkOrJog();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

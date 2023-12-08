@@ -45,13 +45,13 @@ void AGOSBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(InputMappingContext, 0);
-		}
-	}
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//{
+	//	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	//	{
+	//		Subsystem->AddMappingContext(InputMappingContext, 0);
+	//	}
+	//}
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
@@ -75,78 +75,50 @@ void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	//}
 }
 
-void AGOSBaseCharacter::Move(const FInputActionValue& Value)
-{
-	FVector2D MovementVector = Value.Get<FVector2D>();
+//void AGOSBaseCharacter::Move(const FInputActionValue& Value)
+//{
+//	FVector2D MovementVector = Value.Get<FVector2D>();
+//
+//	if (Controller != nullptr)
+//	{
+//		const FRotator Rotation = Controller->GetControlRotation();
+//		const FRotator YawRotation(0, Rotation.Yaw, 0);
+//		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+//		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+//		AddMovementInput(ForwardDirection, MovementVector.Y);
+//		AddMovementInput(RightDirection, MovementVector.X);
+//	}
+//}
 
-	if (Controller != nullptr)
-	{
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
-	}
-}
+//void AGOSBaseCharacter::Look(const FInputActionValue& Value)
+//{
+//	FVector2D LookAxisVector = Value.Get<FVector2D>();
+//
+//	if (Controller != nullptr)
+//	{
+//		AddControllerYawInput(LookAxisVector.X);
+//		AddControllerPitchInput(LookAxisVector.Y);
+//	}
+//}
 
-void AGOSBaseCharacter::Look(const FInputActionValue& Value)
-{
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
-}
-
-void AGOSBaseCharacter::ToggleWalkOrJog()
-{
-	if (MovementType == EMovementType::EMT_Jog)
-	{
-		MovementType = EMovementType::EMT_Walk;
-		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
-		GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED;
-	}
-	else {
-		MovementType = EMovementType::EMT_Jog;
-		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-	}
-}
+//void AGOSBaseCharacter::ToggleWalkOrJog()
+//{
+//	if (MovementType == EMovementType::EMT_Jog)
+//	{
+//		MovementType = EMovementType::EMT_Walk;
+//		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+//		GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED;
+//	}
+//	else {
+//		MovementType = EMovementType::EMT_Jog;
+//		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+//		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+//	}
+//}
 
 void AGOSBaseCharacter::FireWeapon()
 {
-	if (SoundShotgun) UGameplayStatics::PlaySound2D(this, SoundShotgun);
-	if (FXMuzzleFlash)
-	{
-		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
-	}
 
-	if (MontageFireWeapon)
-	{
-		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-		AnimInstance->Montage_Play(MontageFireWeapon);
-		AnimInstance->Montage_JumpToSection("FireFast");
-	}
-
-	FVector PVPLocation;
-	FRotator PVPRotation;
-	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
-	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
-
-	FHitResult Hit;
-	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1);
-	if (bHitSuccess)
-	{
-		if (FXImpact)
-		{
-			FVector ShotDirection = -PVPRotation.Vector();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
-			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
-		}
-	}
 }
 
 EMovementType AGOSBaseCharacter::GetMovementType() const
