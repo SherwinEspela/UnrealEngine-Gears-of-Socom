@@ -4,14 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GOSBaseCharacter.h"
-#include "Characters/AI/GOSBotCharacter.h"
-#include "GOSBaseEnemyCharacter.generated.h"
+#include "GOSBotCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
+class GEARSOFSOCOM_API AGOSBotCharacter : public AGOSBaseCharacter
 {
 	GENERATED_BODY()
 	
