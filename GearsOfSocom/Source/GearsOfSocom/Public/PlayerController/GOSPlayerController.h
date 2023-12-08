@@ -46,6 +46,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ZoomWeaponAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ReloadGameAction;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -53,4 +56,5 @@ protected:
 	void ToggleWalkOrJog();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
+	void ReloadGame();
 };

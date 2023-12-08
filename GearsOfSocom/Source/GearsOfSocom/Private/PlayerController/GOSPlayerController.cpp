@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGOSPlayerController::BeginPlay()
 {
@@ -28,6 +29,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleWalkOrJog);
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSPlayerController::SetZoomWeaponView);
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RevertToDefaultCameraView);
+	EnhancedInputComponent->BindAction(ReloadGameAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ReloadGame);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -58,4 +60,9 @@ void AGOSPlayerController::SetZoomWeaponView()
 void AGOSPlayerController::RevertToDefaultCameraView()
 {
 	PlayerCharacter->RevertToDefaultCameraView();
+}
+
+void AGOSPlayerController::ReloadGame()
+{
+	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 }
