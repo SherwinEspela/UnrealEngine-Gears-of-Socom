@@ -7,8 +7,6 @@
 #include "Constants/Constants.h"
 #include "GOSBaseCharacter.generated.h"
 
-//class UInputMappingContext;
-//class UInputAction;
 class UAnimMontage;
 class UGOSBaseAnimInstance;
 class USoundBase;
@@ -34,7 +32,6 @@ protected:
 
 protected:
 	virtual void FireWeapon();
-	//void ToggleWalkOrJog();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = SFX)

@@ -34,6 +34,8 @@ public:
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
 	void ToggleWalkOrJog();
+	void SetZoomWeaponView();
+	void RevertToDefaultCameraView();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -57,8 +59,6 @@ protected:
 	bool bIsAiming = false;
 
 protected:
-	void SetZoomWeaponView();
-	void RevertToDefaultCameraView();
 	void ToggleCameraFOVInterp(float DeltaSeconds);
 
 private:

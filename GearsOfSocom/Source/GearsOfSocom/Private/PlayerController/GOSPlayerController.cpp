@@ -26,12 +26,8 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::Look);
 	EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::FireWeapon);
 	EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleWalkOrJog);
-
-	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AGOSPlayerController::Jump);
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-	
-	//	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSBaseCharacter::SetZoomWeaponView);
-	//	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSBaseCharacter::RevertToDefaultCameraView);
+	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSPlayerController::SetZoomWeaponView);
+	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RevertToDefaultCameraView);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -52,4 +48,14 @@ void AGOSPlayerController::FireWeapon()
 void AGOSPlayerController::ToggleWalkOrJog()
 {
 	PlayerCharacter->ToggleWalkOrJog();
+}
+
+void AGOSPlayerController::SetZoomWeaponView()
+{
+	PlayerCharacter->SetZoomWeaponView();
+}
+
+void AGOSPlayerController::RevertToDefaultCameraView()
+{
+	PlayerCharacter->RevertToDefaultCameraView();
 }

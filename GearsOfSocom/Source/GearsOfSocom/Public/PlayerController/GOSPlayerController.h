@@ -51,4 +51,6 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void FireWeapon();
 	void ToggleWalkOrJog();
+	void SetZoomWeaponView();
+	void RevertToDefaultCameraView();
 };
