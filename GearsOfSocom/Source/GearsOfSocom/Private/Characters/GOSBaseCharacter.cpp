@@ -44,11 +44,24 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 void AGOSBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Health = MaxHealth;
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+}
+
+float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageApplied = FMath::Min(Health, DamageApplied);
+	Health -= DamageApplied;
+
+	UE_LOG(LogTemp, Warning, TEXT("Health === %f"), Health);
+
+	return DamageApplied;
 }
 
 void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

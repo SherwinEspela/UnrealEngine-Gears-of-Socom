@@ -8,6 +8,8 @@
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
+#include "Engine/DamageEvents.h"
 
 AGOSPlayerCharacter::AGOSPlayerCharacter()
 {
@@ -112,6 +114,13 @@ void AGOSPlayerCharacter::FireWeapon()
 			FVector ShotDirection = -PVPRotation.Vector();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
 			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
+			
+			AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
+			if (Enemy)
+			{
+				FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+				Enemy->TakeDamage(Damage, DamageEvent, GetController(), this);
+			}
 		}
 	}
 }

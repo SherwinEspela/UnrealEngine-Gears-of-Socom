@@ -22,6 +22,14 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual float TakeDamage
+	(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
@@ -62,4 +70,10 @@ protected:
 	UGOSBaseAnimInstance* GOSAnimInstance;
 	EMovementType MovementType = EMovementType::EMT_Jog;
 
+private:
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere)
+	float Health;
 };

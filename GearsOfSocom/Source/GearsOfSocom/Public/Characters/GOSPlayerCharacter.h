@@ -64,4 +64,6 @@ protected:
 private:
 	float CurrentCameraFOV;
 
+	float Damage = 10.f;
+
 };
