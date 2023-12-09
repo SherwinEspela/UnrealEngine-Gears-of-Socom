@@ -3,15 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
 #include "Animation/GOSBaseAnimInstance.h"
-#include "GOSBotAnimInstance.generated.h"
+#include "GOSPlayerAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API UGOSBotAnimInstance : public UGOSBaseAnimInstance
+class GEARSOFSOCOM_API UGOSPlayerAnimInstance : public UGOSBaseAnimInstance
 {
 	GENERATED_BODY()
 	

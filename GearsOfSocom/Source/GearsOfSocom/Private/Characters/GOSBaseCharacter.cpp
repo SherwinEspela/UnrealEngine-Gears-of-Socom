@@ -46,6 +46,11 @@ void AGOSBaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Health = MaxHealth;
+
+	if (GOSAnimInstance == nullptr)
+	{
+		GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
+	}
 }
 
 void AGOSBaseCharacter::Tick(float DeltaSeconds)
@@ -59,7 +64,13 @@ float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	DamageApplied = FMath::Min(Health, DamageApplied);
 	Health -= DamageApplied;
 
-	UE_LOG(LogTemp, Warning, TEXT("Health === %f"), Health);
+	if (Health <= 0.f && GOSAnimInstance)
+	{
+		GOSAnimInstance->SetAsDead();
+	}
+	else {
+		GOSAnimInstance->PlayHitReact();
+	}
 
 	return DamageApplied;
 }
