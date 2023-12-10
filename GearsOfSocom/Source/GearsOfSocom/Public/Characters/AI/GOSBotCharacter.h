@@ -13,5 +13,8 @@ UCLASS()
 class GEARSOFSOCOM_API AGOSBotCharacter : public AGOSBaseCharacter
 {
 	GENERATED_BODY()
+
+public:
+	virtual void FireWeapon() override;
 	
 };

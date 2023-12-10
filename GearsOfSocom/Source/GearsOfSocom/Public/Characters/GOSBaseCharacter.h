@@ -31,15 +31,15 @@ public:
 	) override;
 
 public:
+	virtual void FireWeapon();
+
+public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-protected:
-	virtual void FireWeapon();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = SFX)
