@@ -8,6 +8,7 @@
 
 class AGOSBaseCharacter;
 class UCharacterMovementComponent;
+class UAnimMontage;
 
 /**
  * 
@@ -21,7 +22,11 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 public:
+	void PlayHitReact();
+
+public:
 	FORCEINLINE void SetAiming(bool IsAiming) { bIsAiming = IsAiming; }
+	FORCEINLINE void SetAsDead() { bIsDead = true; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
@@ -44,6 +49,14 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = Weapon)
 	bool bIsAiming = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = State)
+	bool bIsDead = false;
+
+protected:
+	// Montages
+	UPROPERTY(EditDefaultsOnly, Category = Montage)
+	UAnimMontage* MontageHitReact;
 
 protected:
 	void TurnInPlace();
