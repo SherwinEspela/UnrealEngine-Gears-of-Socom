@@ -61,13 +61,18 @@ void AGOSBaseCharacter::Tick(float DeltaSeconds)
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (bIsDead) return 0.f;
+
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageApplied = FMath::Min(Health, DamageApplied);
 	Health -= DamageApplied;
 
 	if (Health <= 0.f && GOSAnimInstance)
 	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GOSAnimInstance->SetAsDead();
+		bIsDead = true;
 	}
 	else {
 		GOSAnimInstance->PlayHitReact();
@@ -105,26 +110,29 @@ void AGOSBaseCharacter::WeaponHitByLineTrace()
 
 	FHitResult Hit;
 	FCollisionQueryParams CollisionQueryParams;
-	CollisionQueryParams.AddIgnoredActor(GetOwner());
+	CollisionQueryParams.AddIgnoredActor(this);
 	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
 		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
 	);
 
 	if (bHitSuccess)
 	{
-		if (FXImpact)
-		{
-			FVector ShotDirection = -PVPRotation.Vector();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
-			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
+		FVector ShotDirection = -PVPRotation.Vector();
+		AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
 
-			AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
-			if (HitActor)
-			{
-				FPointDamageEvent DamageEvent(PrimaryWeaponDamage, Hit, ShotDirection, nullptr);
-				HitActor->TakeDamage(PrimaryWeaponDamage, DamageEvent, GetController(), this);
-			}
+		if (HitActor)
+		{
+			FPointDamageEvent DamageEvent(PrimaryWeaponDamage, Hit, ShotDirection, nullptr);
+			HitActor->TakeDamage(PrimaryWeaponDamage, DamageEvent, GetController(), this);
 		}
+
+		if (FXImpact)
+		{		
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
+		}
+
+		// TODO: remove when no longer needed
+		//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
 	}
 }
 

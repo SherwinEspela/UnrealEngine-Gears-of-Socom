@@ -71,10 +71,14 @@ protected:
 	UGOSBaseAnimInstance* GOSAnimInstance;
 	EMovementType MovementType = EMovementType::EMT_Jog;
 
-private:
+protected:
+	// Character States
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHealth = 100.f;
 
 	UPROPERTY(VisibleAnywhere)
 	float Health;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsDead = false;
 };
