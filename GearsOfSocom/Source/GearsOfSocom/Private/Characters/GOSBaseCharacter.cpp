@@ -15,6 +15,7 @@
 #include "Sound/SoundBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
+#include "Engine/DamageEvents.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -82,6 +83,49 @@ void AGOSBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void AGOSBaseCharacter::FireWeapon()
 {
+	if (FXMuzzleFlash)
+	{
+		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
+	}
+
+	if (GOSAnimInstance && MontageFireWeapon)
+	{
+		GOSAnimInstance->Montage_Play(MontageFireWeapon);
+	}
+
+	WeaponHitByLineTrace();
+}
+
+void AGOSBaseCharacter::WeaponHitByLineTrace()
+{
+	FVector PVPLocation;
+	FRotator PVPRotation;
+	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+
+	FHitResult Hit;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(GetOwner());
+	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
+		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
+	);
+
+	if (bHitSuccess)
+	{
+		if (FXImpact)
+		{
+			FVector ShotDirection = -PVPRotation.Vector();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
+			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
+
+			AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
+			if (HitActor)
+			{
+				FPointDamageEvent DamageEvent(PrimaryWeaponDamage, Hit, ShotDirection, nullptr);
+				HitActor->TakeDamage(PrimaryWeaponDamage, DamageEvent, GetController(), this);
+			}
+		}
+	}
 }
 
 EMovementType AGOSBaseCharacter::GetMovementType() const

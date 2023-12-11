@@ -6,8 +6,5 @@
 
 void AGOSBotCharacter::FireWeapon()
 {
-	if (GOSAnimInstance && MontageFireWeapon)
-	{
-		GOSAnimInstance->Montage_Play(MontageFireWeapon);
-	}
+	Super::FireWeapon();
 }

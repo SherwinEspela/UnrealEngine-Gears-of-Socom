@@ -8,7 +8,8 @@
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
+//#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
+#include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
 
 AGOSPlayerCharacter::AGOSPlayerCharacter()
@@ -87,41 +88,9 @@ void AGOSPlayerCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	if (SoundShotgun) UGameplayStatics::PlaySound2D(this, SoundShotgun);
-	if (FXMuzzleFlash)
+	if (GOSAnimInstance)
 	{
-		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
-	}
-
-	if (MontageFireWeapon)
-	{
-		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-		AnimInstance->Montage_Play(MontageFireWeapon);
-		AnimInstance->Montage_JumpToSection("FireFast");
-	}
-
-	FVector PVPLocation;
-	FRotator PVPRotation;
-	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
-	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
-
-	FHitResult Hit;
-	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1);
-	if (bHitSuccess)
-	{
-		if (FXImpact)
-		{
-			FVector ShotDirection = -PVPRotation.Vector();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FXImpact, Hit.Location, ShotDirection.Rotation());
-			//DrawDebugSphere(GetWorld(), Hit.Location, 15.f, 20.f, FColor::Red, true);
-			
-			AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
-			if (Enemy)
-			{
-				FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-				Enemy->TakeDamage(Damage, DamageEvent, GetController(), this);
-			}
-		}
+		GOSAnimInstance->Montage_JumpToSection("Default");
 	}
 }
 

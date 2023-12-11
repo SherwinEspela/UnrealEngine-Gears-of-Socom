@@ -42,10 +42,6 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = SFX)
-	USoundBase* SoundShotgun;
-
-protected:
 	// Animation Montages
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 	UAnimMontage* MontageFireWeapon;
@@ -57,6 +53,11 @@ protected:
 	// Shooting Mechanics
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float MaxShootingRange = 2000.f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float PrimaryWeaponDamage = 30.f;
+
+	virtual void WeaponHitByLineTrace();
 
 protected:
 	// Effects
