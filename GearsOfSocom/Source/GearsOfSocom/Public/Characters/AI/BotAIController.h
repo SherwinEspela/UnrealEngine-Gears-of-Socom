@@ -19,6 +19,9 @@ class GEARSOFSOCOM_API ABotAIController : public AAIController
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+public:
+	virtual void SetPatrolPoint(FVector NewPatrolPoint);
+
 protected:
 	void BeginPlay() override;
 

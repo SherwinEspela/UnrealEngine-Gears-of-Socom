@@ -7,6 +7,8 @@
 #include "Characters/AI/GOSBotCharacter.h"
 #include "GOSBaseEnemyCharacter.generated.h"
 
+class ABotAIController;
+
 /**
  * 
  */
@@ -15,4 +17,14 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = AI, meta = (MakeEditWidget = "true"))
+	FVector PatrolPoint;
+
+private:
+	ABotAIController* BotAIController;
+
 };
