@@ -17,14 +17,26 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 {
 	GENERATED_BODY()
 	
+public:
+	void SelectNextPatrolPoint();
+
 protected:
 	virtual void BeginPlay() override;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = AI, meta = (MakeEditWidget = "true"))
-	FVector PatrolPoint;
+	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
+	FVector PatrolPoint1;
+
+	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
+	FVector PatrolPoint2;
+
+	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
+	FVector PatrolPoint3;
+
+	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
+	TArray<FVector> PatrolPoints;
 
 private:
 	ABotAIController* BotAIController;
-
+	int CurrentPatrolPointIndex = 0;
 };

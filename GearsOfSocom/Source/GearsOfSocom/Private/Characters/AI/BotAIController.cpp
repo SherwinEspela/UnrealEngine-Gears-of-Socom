@@ -27,7 +27,7 @@ void ABotAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (PlayerPawn)
+	/*if (PlayerPawn)
 	{
 		AGOSBaseCharacter* BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
 		if (BotCharacter)
@@ -39,7 +39,7 @@ void ABotAIController::Tick(float DeltaSeconds)
 				);
 			}
 		}
-	}
+	}*/
 }
 
 void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
