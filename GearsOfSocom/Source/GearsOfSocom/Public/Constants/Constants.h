@@ -17,6 +17,13 @@ enum class EMovementType : uint8
 	EMT_Sprint	UMETA(DisplayName = "Sprint")
 };
 
+UENUM(BlueprintType)
+enum class EBotMovementStates : uint8
+{
+	EBMS_Patrolling		UMETA(DisplayName = "Patrolling"),
+	EBMS_Attacking		UMETA(DisplayName = "Attacking")
+};
+
 /**
  * 
  */

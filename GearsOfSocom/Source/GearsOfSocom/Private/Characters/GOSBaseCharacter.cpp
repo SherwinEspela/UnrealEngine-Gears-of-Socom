@@ -103,6 +103,8 @@ void AGOSBaseCharacter::FireWeapon()
 
 void AGOSBaseCharacter::WeaponHitByLineTrace()
 {
+	if (GetController() == nullptr) return;
+
 	FVector PVPLocation;
 	FRotator PVPRotation;
 	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
