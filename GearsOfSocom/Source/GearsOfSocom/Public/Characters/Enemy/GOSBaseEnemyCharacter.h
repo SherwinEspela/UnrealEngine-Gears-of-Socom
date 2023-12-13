@@ -7,8 +7,6 @@
 #include "Characters/AI/GOSBotCharacter.h"
 #include "GOSBaseEnemyCharacter.generated.h"
 
-class ABotAIController;
-
 /**
  * 
  */
@@ -22,12 +20,12 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void HandlePawnSeen(APawn* SeenPawn) override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
 	TArray<AActor*> PatrolPoints;
 
 private:
-	ABotAIController* BotAIController;
 	int CurrentPatrolPointIndex = 0;
 };

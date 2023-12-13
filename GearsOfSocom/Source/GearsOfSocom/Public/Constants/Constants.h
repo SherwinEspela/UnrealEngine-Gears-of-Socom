@@ -9,6 +9,11 @@
 #define WALK_SPEED 140.f
 #define SPRINT_SPEED 389.f
 
+// Actor Tags
+#define ACTOR_TAG_PLAYER TEXT("Player")
+#define ACTOR_TAG_ENEMY TEXT("Enemy")
+#define ACTOR_TAG_PLAYER_ALLY TEXT("PlayerAlly")
+
 UENUM(BlueprintType)
 enum class EMovementType : uint8
 {

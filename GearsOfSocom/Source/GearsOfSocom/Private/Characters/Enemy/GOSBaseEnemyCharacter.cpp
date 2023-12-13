@@ -3,19 +3,29 @@
 
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Characters/AI/BotAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-
-#define BB_KEY_PATROL_POINT1 TEXT("PatrolPoint1")
-#define BB_KEY_PATROL_POINT2 TEXT("PatrolPoint2")
-#define BB_KEY_PATROL_POINT3 TEXT("PatrolPoint3")
+#include "Characters/AI/BotAIController.h"
+#include "Perception/PawnSensingComponent.h"
 
 void AGOSBaseEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	BotAIController = Cast<ABotAIController>(GetController());
 	SelectNextPatrolPoint();
+
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
+	}
+}
+
+void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
+{
+	Super::HandlePawnSeen(SeenPawn);
+
+	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_PLAYER)))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!!!"));
+	}
 }
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()

@@ -7,6 +7,7 @@
 #include "Characters/GOSBaseCharacter.h"
 #include "Animation/GOSBotAnimInstance.h"
 
+#define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
 #define BB_KEY_START_LOCATION TEXT("StartLocation")
 
@@ -14,13 +15,14 @@ void ABotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+
 	if (BehaviorTree)
 	{
 		RunBehaviorTree(BehaviorTree);
 		GetBlackboardComponent()->SetValueAsVector(BB_KEY_START_LOCATION, GetPawn()->GetActorLocation());
+		GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, PlayerPawn);
 	}
-
-	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 }
 
 void ABotAIController::Tick(float DeltaSeconds)
