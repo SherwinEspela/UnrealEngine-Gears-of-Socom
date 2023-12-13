@@ -7,7 +7,7 @@
 #include "Characters/GOSBaseCharacter.h"
 #include "Animation/GOSBotAnimInstance.h"
 
-#define BB_KEY_PATROL_POINT TEXT("PatrolPoint")
+#define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
 #define BB_KEY_START_LOCATION TEXT("StartLocation")
 
 void ABotAIController::BeginPlay()

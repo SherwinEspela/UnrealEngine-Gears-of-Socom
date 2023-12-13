@@ -25,16 +25,7 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
-	FVector PatrolPoint1;
-
-	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
-	FVector PatrolPoint2;
-
-	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
-	FVector PatrolPoint3;
-
-	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
-	TArray<FVector> PatrolPoints;
+	TArray<AActor*> PatrolPoints;
 
 private:
 	ABotAIController* BotAIController;
