@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GOSBaseCharacter.h"
+#include "Constants/Constants.h"
 #include "GOSBotCharacter.generated.h"
 
 class UPawnSensingComponent;
@@ -22,6 +23,9 @@ public:
 
 	virtual void FireWeapon() override;
 
+public:
+	FORCEINLINE void SetBotBehavior(EBotBehaviorTypes NewBehavior) { CurrentBotBehavior = NewBehavior; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,4 +38,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Bot)
 	ABotAIController* BotAIController;
+
+	UPROPERTY(VisibleAnywhere, Category = Bot)
+	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
 };

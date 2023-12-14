@@ -6,22 +6,21 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Animation/GOSBotAnimInstance.h"
-
-#define BB_KEY_TARGET TEXT("Target")
-#define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
-#define BB_KEY_START_LOCATION TEXT("StartLocation")
+#include "Constants/Constants.h"
 
 void ABotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
+	if (BotCharacter) BotAnimInstance = Cast<UGOSBotAnimInstance>(BotCharacter->GetMesh()->GetAnimInstance());
 
 	if (BehaviorTree)
 	{
 		RunBehaviorTree(BehaviorTree);
 		GetBlackboardComponent()->SetValueAsVector(BB_KEY_START_LOCATION, GetPawn()->GetActorLocation());
-		GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, PlayerPawn);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 	}
 }
 
@@ -29,22 +28,22 @@ void ABotAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	/*if (PlayerPawn)
-	{
-		AGOSBaseCharacter* BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
-		if (BotCharacter)
-		{
-			UGOSBotAnimInstance* BotAnimInstance = Cast<UGOSBotAnimInstance>(BotCharacter->GetMesh()->GetAnimInstance());
-			if (BotAnimInstance) {
-				BotAnimInstance->SetMovementType(
-					LineOfSightTo(PlayerPawn) ? EBotMovementStates::EBMS_Attacking : EBotMovementStates::EBMS_Patrolling
-				);
-			}
-		}
-	}*/
 }
 
 void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 {
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_PATROL_POINT, NewPatrolPoint);
+}
+
+void ABotAIController::SetTarget(AActor* NewTarget)
+{
+	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTarget);
+}
+
+void ABotAIController::SetTargetPawn(APawn* NewTargetPawn)
+{
+	TargetPawn = NewTargetPawn;
+	GetBlackboardComponent()->SetValueAsVector(BB_KEY_TARGET_LOCATION, NewTargetPawn->GetActorLocation());
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
+	if (BotAnimInstance) BotAnimInstance->SetMovementType(EBotMovementStates::EBMS_Attacking);
 }

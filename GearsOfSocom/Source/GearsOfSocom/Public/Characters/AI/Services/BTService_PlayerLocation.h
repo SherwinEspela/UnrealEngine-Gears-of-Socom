@@ -6,6 +6,10 @@
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
 #include "BTService_PlayerLocation.generated.h"
 
+class AGOSBotCharacter;
+class AGOSBaseEnemyCharacter;
+class ABotAIController;
+
 /**
  * 
  */
@@ -19,4 +23,7 @@ public:
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 	
+private:
+	AGOSBaseEnemyCharacter* BotCharacter;
+	ABotAIController* BotAIController;
 };

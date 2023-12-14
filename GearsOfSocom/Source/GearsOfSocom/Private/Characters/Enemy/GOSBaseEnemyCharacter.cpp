@@ -21,10 +21,12 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	Super::HandlePawnSeen(SeenPawn);
-
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Chasing) return;
+	
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_PLAYER)))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!!!"));
+		if (BotAIController) BotAIController->SetTargetPawn(SeenPawn);
+		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
 	}
 }
 

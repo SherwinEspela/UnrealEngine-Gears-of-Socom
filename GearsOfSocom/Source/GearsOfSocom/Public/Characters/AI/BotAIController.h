@@ -7,6 +7,8 @@
 #include "BotAIController.generated.h"
 
 class UBehaviorTree;
+class AGOSBaseCharacter;
+class UGOSBotAnimInstance;
 
 /**
  * 
@@ -21,6 +23,11 @@ public:
 
 public:
 	virtual void SetPatrolPoint(FVector NewPatrolPoint);
+	virtual void SetTarget(AActor* NewTarget);
+	virtual void SetTargetPawn(APawn* NewTargetPawn);
+
+public:
+	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
 
 protected:
 	void BeginPlay() override;
@@ -31,4 +38,7 @@ protected:
 
 private:
 	APawn* PlayerPawn;
+	APawn* TargetPawn;
+	AGOSBaseCharacter* BotCharacter;
+	UGOSBotAnimInstance* BotAnimInstance;
 };
