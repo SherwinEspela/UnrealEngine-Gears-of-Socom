@@ -21,6 +21,7 @@
 #define BB_KEY_TARGET_LOCATION TEXT("TargetLocation")
 #define BB_KEY_LAST_TARGET_LOCATION TEXT("LastKnownTargetLocation")
 #define BB_KEY_LOST_TARGET_SIGHT TEXT("LostTargetSight")
+#define BB_KEY_TARGET_WENT_FAR TEXT("IsTargetGettingFar")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8

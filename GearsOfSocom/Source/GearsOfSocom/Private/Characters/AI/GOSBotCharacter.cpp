@@ -11,7 +11,7 @@ AGOSBotCharacter::AGOSBotCharacter()
 {
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("Pawn Sensing"));
 	PawnSensingComponent->SightRadius = 3000.f;
-	PawnSensingComponent->SetPeripheralVisionAngle(45.f);
+	PawnSensingComponent->SetPeripheralVisionAngle(70.f);
 }
 
 void AGOSBotCharacter::BeginPlay()
