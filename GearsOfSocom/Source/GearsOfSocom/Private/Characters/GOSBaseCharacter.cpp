@@ -61,6 +61,7 @@ void AGOSBaseCharacter::Tick(float DeltaSeconds)
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (ActorHasTag(FName(ACTOR_TAG_PLAYER))) return 0.f;
 	if (bIsDead) return 0.f;
 
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -121,7 +122,6 @@ void AGOSBaseCharacter::WeaponHitByLineTrace()
 	{
 		FVector ShotDirection = -PVPRotation.Vector();
 		AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
-
 		if (HitActor)
 		{
 			FPointDamageEvent DamageEvent(PrimaryWeaponDamage, Hit, ShotDirection, nullptr);

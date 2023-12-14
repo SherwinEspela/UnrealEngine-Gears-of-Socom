@@ -45,8 +45,11 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UGOSBaseAnimInstance::PlayHitReact()
 {
-	Montage_Play(MontageHitReact);
-	Montage_JumpToSection("Front");
+	if (MontageHitReact)
+	{
+		Montage_Play(MontageHitReact);
+		Montage_JumpToSection("Front");
+	}
 }
 
 void UGOSBaseAnimInstance::TurnInPlace()
