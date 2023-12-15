@@ -38,7 +38,7 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 			if (BotAIController->LineOfSightTo(TargetPawn))
 			{
 				float Distance = FVector::Distance(TargetPawn->GetActorLocation(), BotAIController->GetPawn()->GetActorLocation());
-				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_WENT_FAR, Distance >= 300.f);
+				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_WENT_FAR, Distance >= 600.f);
 			}
 			else {
 				OwnerComp.GetBlackboardComponent()->SetValueAsVector(
