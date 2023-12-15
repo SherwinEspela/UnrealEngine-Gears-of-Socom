@@ -33,6 +33,9 @@ protected:
 	UFUNCTION()
 	virtual void HandlePawnSeen(APawn* SeenPawn);
 
+	UFUNCTION()
+	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume);
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI Awareness")
 	UPawnSensingComponent* PawnSensingComponent;

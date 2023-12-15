@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/DamageEvents.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -40,6 +41,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
+
+	NoiseEmitter = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("Noise Emitter"));
 }
 
 void AGOSBaseCharacter::BeginPlay()

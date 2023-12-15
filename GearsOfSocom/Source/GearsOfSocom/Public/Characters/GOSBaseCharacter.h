@@ -10,6 +10,7 @@
 class UAnimMontage;
 class UGOSBaseAnimInstance;
 class USoundBase;
+class UPawnNoiseEmitterComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -70,6 +71,9 @@ protected:
 protected:
 	UGOSBaseAnimInstance* GOSAnimInstance;
 	EMovementType MovementType = EMovementType::EMT_Jog;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
+	UPawnNoiseEmitterComponent* NoiseEmitter;
 
 protected:
 	// Character States
