@@ -17,9 +17,9 @@ class GEARSOFSOCOM_API UGOSBotAnimInstance : public UGOSBaseAnimInstance
 	GENERATED_BODY()
 	
 public:
-	FORCEINLINE void SetMovementType(EBotMovementStates NewMovementState) { MovementState = NewMovementState; }
+	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
-	EBotMovementStates MovementState = EBotMovementStates::EBMS_Patrolling;
+	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
 };

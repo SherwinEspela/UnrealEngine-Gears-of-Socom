@@ -17,12 +17,9 @@ void UBTService_ShootWhileMoving::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	UE_LOG(LogTemp, Warning, TEXT("Shoot while moving..."));
-
 	if (Bot == nullptr) Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Shoot while moving..."));
 		Bot->FireWeapon();
 	}
 }

@@ -45,5 +45,5 @@ void ABotAIController::SetTargetPawn(APawn* NewTargetPawn)
 	TargetPawn = NewTargetPawn;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_TARGET_LOCATION, NewTargetPawn->GetActorLocation());
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
-	if (BotAnimInstance) BotAnimInstance->SetMovementType(EBotMovementStates::EBMS_Attacking);
+	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 }

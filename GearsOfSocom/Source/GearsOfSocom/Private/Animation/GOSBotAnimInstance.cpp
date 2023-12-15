@@ -3,3 +3,7 @@
 
 #include "Animation/GOSBotAnimInstance.h"
 
+void UGOSBotAnimInstance::SetBotBehavior(EBotBehaviorTypes NewBehavior)
+{
+	CurrentBotBehavior = NewBehavior;
+}

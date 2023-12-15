@@ -9,6 +9,7 @@
 
 class UPawnSensingComponent;
 class ABotAIController;
+class UGOSBotAnimInstance;
 
 /**
  * 
@@ -24,7 +25,7 @@ public:
 	virtual void FireWeapon() override;
 
 public:
-	FORCEINLINE void SetBotBehavior(EBotBehaviorTypes NewBehavior) { CurrentBotBehavior = NewBehavior; }
+	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
 
 protected:
 	virtual void BeginPlay() override;
@@ -41,4 +42,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Bot)
 	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
+
+private:
+	UGOSBotAnimInstance* BotAnimInstance;
 };
