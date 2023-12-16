@@ -52,3 +52,8 @@ void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 {
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
 }
+
+void ABotAIController::SetTargetSeen()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
+}

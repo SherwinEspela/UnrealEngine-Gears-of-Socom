@@ -25,7 +25,8 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 	
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_PLAYER)))
 	{
-		if (BotAIController) BotAIController->SetTargetPawn(SeenPawn);
+		//if (BotAIController) BotAIController->SetTargetPawn(SeenPawn);
+		if (BotAIController) BotAIController->SetTargetSeen();
 		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
 	}
 }
