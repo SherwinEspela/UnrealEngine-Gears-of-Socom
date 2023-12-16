@@ -22,6 +22,7 @@
 #define BB_KEY_LAST_TARGET_LOCATION TEXT("LastKnownTargetLocation")
 #define BB_KEY_LOST_TARGET_SIGHT TEXT("LostTargetSight")
 #define BB_KEY_TARGET_WENT_FAR TEXT("IsTargetGettingFar")
+#define BB_KEY_NOISE_LOCATION TEXT("NoiseLocation")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8
@@ -43,7 +44,8 @@ enum class EBotBehaviorTypes : uint8
 {
 	EBBT_Patrolling		UMETA(DisplayName = "Patrolling"),
 	EBBT_Chasing		UMETA(DisplayName = "Chasing"),
-	EBBT_Attacking		UMETA(DisplayName = "Attacking")
+	EBBT_Attacking		UMETA(DisplayName = "Attacking"),
+	EBBT_Investigating	UMETA(DisplayName = "Investigating")
 };
 
 /**

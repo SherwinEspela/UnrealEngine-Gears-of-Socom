@@ -102,6 +102,11 @@ void AGOSBaseCharacter::FireWeapon()
 		GOSAnimInstance->Montage_Play(MontageFireWeapon);
 	}
 
+	if (NoiseEmitter)
+	{
+		MakeNoise();
+	}
+
 	WeaponHitByLineTrace();
 }
 

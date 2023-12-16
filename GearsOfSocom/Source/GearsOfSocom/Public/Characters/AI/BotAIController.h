@@ -25,6 +25,7 @@ public:
 	virtual void SetPatrolPoint(FVector NewPatrolPoint);
 	virtual void SetTarget(AActor* NewTarget);
 	virtual void SetTargetPawn(APawn* NewTargetPawn);
+	virtual void SetNoiseSourceLocation(FVector NewNoiseLocation);
 
 public:
 	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }

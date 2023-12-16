@@ -47,3 +47,8 @@ void ABotAIController::SetTargetPawn(APawn* NewTargetPawn)
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 }
+
+void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
+{
+	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
+}
