@@ -43,8 +43,7 @@ void ABotAIController::SetTarget(AActor* NewTarget)
 void ABotAIController::SetTargetPawn(APawn* NewTargetPawn)
 {
 	TargetPawn = NewTargetPawn;
-	GetBlackboardComponent()->SetValueAsVector(BB_KEY_TARGET_LOCATION, NewTargetPawn->GetActorLocation());
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
+	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTargetPawn);
 	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 }
 
@@ -56,4 +55,14 @@ void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 void ABotAIController::SetTargetSeen()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
+}
+
+void ABotAIController::SetTargetHeard(bool Heard)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, Heard);
+}
+
+void ABotAIController::SetCovering(bool IsCovering)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }

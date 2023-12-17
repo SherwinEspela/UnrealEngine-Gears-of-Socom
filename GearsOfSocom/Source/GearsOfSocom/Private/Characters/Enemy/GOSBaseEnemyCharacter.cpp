@@ -25,7 +25,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 	
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_PLAYER)))
 	{
-		//if (BotAIController) BotAIController->SetTargetPawn(SeenPawn);
+		if (BotAIController) BotAIController->SetTargetPawn(SeenPawn);
 		if (BotAIController) BotAIController->SetTargetSeen();
 		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
 	}
@@ -43,4 +43,15 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 			CurrentPatrolPointIndex = 0;
 		}
 	}
+}
+
+float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (Health > 0.f && BotAIController)
+	{
+		BotAIController->SetCovering(true);
+	}
+
+	return DamageApplied;
 }

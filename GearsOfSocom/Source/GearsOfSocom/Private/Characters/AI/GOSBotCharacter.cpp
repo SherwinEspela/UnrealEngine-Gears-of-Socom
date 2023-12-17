@@ -35,7 +35,11 @@ void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Locati
 {
 	if (TargetPawn->ActorHasTag(ACTOR_TAG_PLAYER))
 	{
-		if (BotAIController) BotAIController->SetNoiseSourceLocation(Location);
+		if (BotAIController)
+		{
+			BotAIController->SetNoiseSourceLocation(Location);
+			BotAIController->SetTargetHeard(true);
+		}
 		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Investigating;
 	}
 }

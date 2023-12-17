@@ -27,6 +27,8 @@ public:
 	virtual void SetTargetPawn(APawn* NewTargetPawn);
 	virtual void SetNoiseSourceLocation(FVector NewNoiseLocation);
 	virtual void SetTargetSeen();
+	virtual void SetTargetHeard(bool Heard);
+	virtual void SetCovering(bool IsCovering);
 
 public:
 	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
