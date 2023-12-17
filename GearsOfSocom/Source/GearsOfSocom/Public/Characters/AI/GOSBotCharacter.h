@@ -23,6 +23,7 @@ public:
 	AGOSBotCharacter();
 
 	virtual void FireWeapon() override;
+	virtual void MakeDecision();
 
 public:
 	void SetBotBehavior(EBotBehaviorTypes NewBehavior);

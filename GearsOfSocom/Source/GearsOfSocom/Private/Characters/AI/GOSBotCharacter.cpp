@@ -49,6 +49,28 @@ void AGOSBotCharacter::FireWeapon()
 	Super::FireWeapon();
 }
 
+void AGOSBotCharacter::MakeDecision()
+{
+	if (BotAIController)
+	{
+		BotAIController->SetCovering(false);
+		BotAIController->SetEvading(false);
+
+		int Decision = FMath::RandRange(1, 2);
+		switch (Decision)
+		{
+		case 1:
+			BotAIController->SetCovering(true);
+			break;
+		case 2:
+			BotAIController->SetEvading(true);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)
 {
 	CurrentBotBehavior = NewBehavior;

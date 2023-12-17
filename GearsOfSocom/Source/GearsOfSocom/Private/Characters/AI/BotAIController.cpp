@@ -64,5 +64,12 @@ void ABotAIController::SetTargetHeard(bool Heard)
 
 void ABotAIController::SetCovering(bool IsCovering)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetCovering..."));
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
+}
+
+void ABotAIController::SetEvading(bool IsEvading)
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetEvading..."));
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }

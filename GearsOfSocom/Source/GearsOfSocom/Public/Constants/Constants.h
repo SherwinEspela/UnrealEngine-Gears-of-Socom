@@ -26,6 +26,7 @@
 #define BB_KEY_TARGET_SEEN TEXT("TargetSeen")
 #define BB_KEY_TARGET_HEARD TEXT("TargetHeard")
 #define BB_KEY_COVERING TEXT("IsCovering")
+#define BB_KEY_EVADING TEXT("IsEvading")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8

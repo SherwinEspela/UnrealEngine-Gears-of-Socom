@@ -29,6 +29,7 @@ public:
 	virtual void SetTargetSeen();
 	virtual void SetTargetHeard(bool Heard);
 	virtual void SetCovering(bool IsCovering);
+	virtual void SetEvading(bool IsEvading);
 
 public:
 	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
