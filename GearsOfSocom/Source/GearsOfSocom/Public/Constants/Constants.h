@@ -49,7 +49,9 @@ enum class EBotBehaviorTypes : uint8
 	EBBT_Patrolling		UMETA(DisplayName = "Patrolling"),
 	EBBT_Chasing		UMETA(DisplayName = "Chasing"),
 	EBBT_Attacking		UMETA(DisplayName = "Attacking"),
-	EBBT_Investigating	UMETA(DisplayName = "Investigating")
+	EBBT_Investigating	UMETA(DisplayName = "Investigating"),
+	EBBT_Covering		UMETA(DisplayName = "Covering"),
+	EBBT_Evading		UMETA(DisplayName = "Evading")
 };
 
 /**
