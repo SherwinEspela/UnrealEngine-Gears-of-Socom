@@ -68,7 +68,7 @@ float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	if (bIsDead) return 0.f;
 
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	DamageApplied = FMath::Min(Health, DamageApplied);
+	/*DamageApplied = FMath::Min(Health, DamageApplied);
 	Health -= DamageApplied;
 
 	if (Health <= 0.f && GOSAnimInstance)
@@ -80,7 +80,7 @@ float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	}
 	else {
 		GOSAnimInstance->PlayHitReact();
-	}
+	}*/
 
 	return DamageApplied;
 }

@@ -37,8 +37,8 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 
 			if (BotAIController->LineOfSightTo(TargetPawn))
 			{
-				float Distance = FVector::Distance(TargetPawn->GetActorLocation(), BotAIController->GetPawn()->GetActorLocation());
-				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_WENT_FAR, Distance >= 600.f);
+				//float Distance = FVector::Distance(TargetPawn->GetActorLocation(), BotAIController->GetPawn()->GetActorLocation());
+				//OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_WENT_FAR, Distance >= 600.f);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 			}
 			else {
@@ -47,6 +47,7 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 					TargetPawn->GetActorLocation()
 				);
 
+				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, true);
 				if (BotCharacter) BotCharacter->SetBotBehavior(EBotBehaviorTypes::EBBT_Patrolling);
 			}

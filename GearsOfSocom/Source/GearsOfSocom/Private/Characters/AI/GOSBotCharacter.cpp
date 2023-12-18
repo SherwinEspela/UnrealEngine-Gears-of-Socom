@@ -53,21 +53,24 @@ void AGOSBotCharacter::MakeDecision()
 {
 	if (BotAIController)
 	{
-		BotAIController->SetCovering(false);
-		BotAIController->SetEvading(false);
+		/*BotAIController->SetCovering(false);
+		BotAIController->SetEvading(false);*/
+		BotAIController->SetEvading(true);
 
-		int Decision = FMath::RandRange(1, 2);
+		/*int Decision = FMath::RandRange(1, 2);
 		switch (Decision)
 		{
 		case 1:
+			UE_LOG(LogTemp, Warning, TEXT("SetCovering..."));
 			BotAIController->SetCovering(true);
 			break;
 		case 2:
+			UE_LOG(LogTemp, Warning, TEXT("SetEvading..."));
 			BotAIController->SetEvading(true);
 			break;
 		default:
 			break;
-		}
+		}*/
 	}
 }
 
