@@ -7,6 +7,8 @@
 #include "BotAIController.generated.h"
 
 class UBehaviorTree;
+class AGOSBaseCharacter;
+class UGOSBotAnimInstance;
 
 /**
  * 
@@ -19,10 +21,29 @@ class GEARSOFSOCOM_API ABotAIController : public AAIController
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+public:
+	virtual void SetPatrolPoint(FVector NewPatrolPoint);
+	virtual void SetTarget(AActor* NewTarget);
+	virtual void SetTargetPawn(APawn* NewTargetPawn);
+	virtual void SetNoiseSourceLocation(FVector NewNoiseLocation);
+	virtual void SetTargetSeen();
+	virtual void SetTargetHeard(bool Heard);
+	virtual void SetCovering(bool IsCovering);
+	virtual void SetEvading(bool IsEvading);
+
+public:
+	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
+
 protected:
 	void BeginPlay() override;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
+
+private:
+	APawn* PlayerPawn;
+	APawn* TargetPawn;
+	AGOSBaseCharacter* BotCharacter;
+	UGOSBotAnimInstance* BotAnimInstance;
 };

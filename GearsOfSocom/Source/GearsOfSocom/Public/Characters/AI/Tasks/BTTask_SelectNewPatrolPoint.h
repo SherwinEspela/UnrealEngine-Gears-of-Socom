@@ -4,22 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_Shoot.generated.h"
-
-//class AGOSBotCharacter;
-//class AGOSBaseEnemyCharacter;
+#include "BTTask_SelectNewPatrolPoint.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API UBTTask_Shoot : public UBTTaskNode
+class GEARSOFSOCOM_API UBTTask_SelectNewPatrolPoint : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_Shoot();
+	UBTTask_SelectNewPatrolPoint();
 
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	
 };

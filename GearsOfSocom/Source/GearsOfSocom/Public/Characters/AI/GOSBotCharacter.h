@@ -4,7 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GOSBaseCharacter.h"
+#include "Constants/Constants.h"
 #include "GOSBotCharacter.generated.h"
+
+class UPawnSensingComponent;
+class ABotAIController;
+class UGOSBotAnimInstance;
 
 /**
  * 
@@ -15,6 +20,33 @@ class GEARSOFSOCOM_API AGOSBotCharacter : public AGOSBaseCharacter
 	GENERATED_BODY()
 
 public:
+	AGOSBotCharacter();
+
 	virtual void FireWeapon() override;
-	
+	virtual void MakeDecision();
+
+public:
+	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
+
+protected:
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	virtual void HandlePawnSeen(APawn* SeenPawn);
+
+	UFUNCTION()
+	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume);
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "AI Awareness")
+	UPawnSensingComponent* PawnSensingComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = Bot)
+	ABotAIController* BotAIController;
+
+	UPROPERTY(VisibleAnywhere, Category = Bot)
+	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
+
+private:
+	UGOSBotAnimInstance* BotAnimInstance;
 };

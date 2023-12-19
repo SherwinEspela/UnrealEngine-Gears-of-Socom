@@ -8,9 +8,9 @@
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
-//#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
+#include "Constants/Constants.h"
 
 AGOSPlayerCharacter::AGOSPlayerCharacter()
 {
@@ -28,6 +28,7 @@ void AGOSPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	CameraDefaultFOV = FollowCamera->FieldOfView;
+	Tags.Add(FName(ACTOR_TAG_PLAYER));
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)

@@ -4,6 +4,7 @@
 #include "Characters/AI/Tasks/BTTask_Shoot.h"
 #include "AIController.h"
 #include "Characters/AI/GOSBotCharacter.h"
+#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 
 UBTTask_Shoot::UBTTask_Shoot()
 {

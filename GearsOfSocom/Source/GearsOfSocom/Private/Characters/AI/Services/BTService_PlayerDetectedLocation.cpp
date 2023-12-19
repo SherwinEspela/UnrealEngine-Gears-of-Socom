@@ -5,6 +5,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/AI/BotAIController.h"
+#include "GameFramework/Pawn.h"
 
 UBTService_PlayerDetectedLocation::UBTService_PlayerDetectedLocation()
 {

@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/DamageEvents.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 
 AGOSBaseCharacter::AGOSBaseCharacter()
 {
@@ -40,6 +41,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	GOSAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
+
+	NoiseEmitter = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("Noise Emitter"));
 }
 
 void AGOSBaseCharacter::BeginPlay()
@@ -61,10 +64,11 @@ void AGOSBaseCharacter::Tick(float DeltaSeconds)
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (ActorHasTag(FName(ACTOR_TAG_PLAYER))) return 0.f;
 	if (bIsDead) return 0.f;
 
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	DamageApplied = FMath::Min(Health, DamageApplied);
+	/*DamageApplied = FMath::Min(Health, DamageApplied);
 	Health -= DamageApplied;
 
 	if (Health <= 0.f && GOSAnimInstance)
@@ -76,7 +80,7 @@ float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	}
 	else {
 		GOSAnimInstance->PlayHitReact();
-	}
+	}*/
 
 	return DamageApplied;
 }
@@ -98,11 +102,18 @@ void AGOSBaseCharacter::FireWeapon()
 		GOSAnimInstance->Montage_Play(MontageFireWeapon);
 	}
 
+	if (NoiseEmitter)
+	{
+		MakeNoise();
+	}
+
 	WeaponHitByLineTrace();
 }
 
 void AGOSBaseCharacter::WeaponHitByLineTrace()
 {
+	if (GetController() == nullptr) return;
+
 	FVector PVPLocation;
 	FRotator PVPRotation;
 	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
@@ -119,7 +130,6 @@ void AGOSBaseCharacter::WeaponHitByLineTrace()
 	{
 		FVector ShotDirection = -PVPRotation.Vector();
 		AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
-
 		if (HitActor)
 		{
 			FPointDamageEvent DamageEvent(PrimaryWeaponDamage, Hit, ShotDirection, nullptr);
