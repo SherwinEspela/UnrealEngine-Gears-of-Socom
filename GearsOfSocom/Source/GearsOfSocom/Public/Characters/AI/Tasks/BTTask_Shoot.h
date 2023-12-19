@@ -6,7 +6,8 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_Shoot.generated.h"
 
-class AGOSBotCharacter;
+//class AGOSBotCharacter;
+//class AGOSBaseEnemyCharacter;
 
 /**
  * 
@@ -21,7 +22,4 @@ public:
 
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-	
-private:
-	AGOSBotCharacter* Bot;
 };

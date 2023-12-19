@@ -54,9 +54,13 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
-		//BotAIController->SetCovering(true);
 		MakeDecision();
 	}
 
 	return DamageApplied;
+}
+
+void AGOSBaseEnemyCharacter::FireWeapon()
+{
+	Super::FireWeapon();
 }

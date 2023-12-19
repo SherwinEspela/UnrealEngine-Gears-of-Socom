@@ -4,6 +4,7 @@
 #include "Characters/AI/Tasks/BTTask_Shoot.h"
 #include "AIController.h"
 #include "Characters/AI/GOSBotCharacter.h"
+#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 
 UBTTask_Shoot::UBTTask_Shoot()
 {
@@ -15,8 +16,7 @@ EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	if (OwnerComp.GetAIOwner() == nullptr) return EBTNodeResult::Failed;
-	if (Bot == nullptr) Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-
+	AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
 		Bot->FireWeapon();

@@ -26,6 +26,8 @@ public:
 		AActor* DamageCauser
 	) override;
 
+	virtual void FireWeapon() override;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;

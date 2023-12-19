@@ -12,7 +12,7 @@ AGOSBotCharacter::AGOSBotCharacter()
 {
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("Pawn Sensing"));
 	PawnSensingComponent->SightRadius = 3000.f;
-	PawnSensingComponent->SetPeripheralVisionAngle(70.f);
+	PawnSensingComponent->SetPeripheralVisionAngle(80.f);
 }
 
 void AGOSBotCharacter::BeginPlay()
@@ -60,12 +60,10 @@ void AGOSBotCharacter::MakeDecision()
 		switch (Decision)
 		{
 		case 1:
-			UE_LOG(LogTemp, Warning, TEXT("SetCovering..."));
 			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
 			BotAIController->SetCovering(true);
 			break;
 		case 2:
-			UE_LOG(LogTemp, Warning, TEXT("SetEvading..."));
 			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
 			BotAIController->SetEvading(true);
 			break;

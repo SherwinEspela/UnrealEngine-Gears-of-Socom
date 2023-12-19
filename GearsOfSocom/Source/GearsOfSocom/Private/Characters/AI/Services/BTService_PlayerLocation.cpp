@@ -19,11 +19,7 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	if (BotAIController == nullptr)
-	{
-		BotAIController = Cast<ABotAIController>(OwnerComp.GetAIOwner());
-		if (BotCharacter == nullptr) BotCharacter = Cast<AGOSBaseEnemyCharacter>(BotAIController->GetPawn());
-	}
+	ABotAIController* BotAIController = Cast<ABotAIController>(OwnerComp.GetAIOwner());
 
 	if (BotAIController)
 	{
@@ -37,8 +33,6 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 
 			if (BotAIController->LineOfSightTo(TargetPawn))
 			{
-				//float Distance = FVector::Distance(TargetPawn->GetActorLocation(), BotAIController->GetPawn()->GetActorLocation());
-				//OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_WENT_FAR, Distance >= 600.f);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 			}
 			else {
@@ -49,6 +43,8 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, true);
+
+				AGOSBaseEnemyCharacter* BotCharacter = Cast<AGOSBaseEnemyCharacter>(BotAIController->GetPawn());
 				if (BotCharacter) BotCharacter->SetBotBehavior(EBotBehaviorTypes::EBBT_Patrolling);
 			}
 		}
