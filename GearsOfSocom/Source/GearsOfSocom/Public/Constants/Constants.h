@@ -15,6 +15,9 @@
 #define ACTOR_TAG_PLAYER_ALLY TEXT("PlayerAlly")
 
 // Blackboard Keys
+#define BB_KEY_PLAYER TEXT("Player")
+#define BB_KEY_FOLLOWING_PLAYER TEXT("IsFollowingPlayer")
+
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
 #define BB_KEY_START_LOCATION TEXT("StartLocation")

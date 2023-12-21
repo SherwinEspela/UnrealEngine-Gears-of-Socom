@@ -35,13 +35,13 @@ public:
 	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
 
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
 
-private:
+protected:
 	APawn* PlayerPawn;
 	APawn* TargetPawn;
 	AGOSBaseCharacter* BotCharacter;
