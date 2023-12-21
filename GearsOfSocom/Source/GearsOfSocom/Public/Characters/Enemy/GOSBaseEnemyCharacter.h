@@ -15,4 +15,27 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 {
 	GENERATED_BODY()
 	
+public:
+	void SelectNextPatrolPoint();
+
+	virtual float TakeDamage
+	(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
+	virtual void FireWeapon() override;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void HandlePawnSeen(APawn* SeenPawn) override;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
+	TArray<AActor*> PatrolPoints;
+
+private:
+	int CurrentPatrolPointIndex = 0;
 };
