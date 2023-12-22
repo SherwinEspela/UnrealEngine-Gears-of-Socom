@@ -119,3 +119,26 @@ void AGOSPlayerCharacter::CommandAllyToFollow()
 		Ally1->FollowPlayer();
 	}
 }
+
+void AGOSPlayerCharacter::CommandMoveToTargetPosition()
+{
+	if (GetController() == nullptr) return;
+
+	FVector PVPLocation;
+	FRotator PVPRotation;
+	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+
+	FHitResult Hit;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(this);
+	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
+		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
+	);
+
+	if (bHitSuccess && Ally1)
+	{
+		//DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
+		Ally1->MoveToTargetPosition(Hit.Location);
+	}
+}

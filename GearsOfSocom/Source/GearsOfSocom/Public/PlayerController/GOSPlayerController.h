@@ -52,6 +52,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* CommandAllyToFollowAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* CommandMoveToTargetPositionAction;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -61,4 +64,5 @@ protected:
 	void RevertToDefaultCameraView();
 	void ReloadGame();
 	void CommandAllyToFollow();
+	void CommandMoveToTargetPosition();
 };

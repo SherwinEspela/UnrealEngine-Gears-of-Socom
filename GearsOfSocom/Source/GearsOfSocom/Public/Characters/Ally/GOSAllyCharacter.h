@@ -18,6 +18,7 @@ class GEARSOFSOCOM_API AGOSAllyCharacter : public AGOSBotCharacter
 
 public:
 	virtual void FollowPlayer();
+	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 
 protected:
 	virtual void BeginPlay() override;

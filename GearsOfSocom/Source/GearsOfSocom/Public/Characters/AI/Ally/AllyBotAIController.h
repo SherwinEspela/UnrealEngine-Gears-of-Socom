@@ -16,6 +16,7 @@ class GEARSOFSOCOM_API AAllyBotAIController : public ABotAIController
 
 public:
 	virtual void FollowPlayer();
+	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 
 protected:
 	virtual void BeginPlay() override;

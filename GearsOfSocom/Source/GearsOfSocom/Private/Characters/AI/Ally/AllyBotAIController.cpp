@@ -14,5 +14,13 @@ void AAllyBotAIController::BeginPlay()
 
 void AAllyBotAIController::FollowPlayer()
 {
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, true);
+}
+
+void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, true);
+	GetBlackboardComponent()->SetValueAsVector(BB_KEY_TARGET_POSITION, NewTargetPosition);
 }

@@ -31,3 +31,11 @@ void AGOSAllyCharacter::FollowPlayer()
 		AllyAIController->FollowPlayer();
 	}
 }
+
+void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
+{
+	if (AllyAIController)
+	{
+		AllyAIController->MoveToTargetPosition(NewTargetPosition);
+	}
+}
