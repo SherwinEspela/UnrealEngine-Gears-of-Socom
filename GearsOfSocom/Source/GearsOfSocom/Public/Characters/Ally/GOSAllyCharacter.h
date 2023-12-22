@@ -6,6 +6,8 @@
 #include "Characters/AI/GOSBotCharacter.h"
 #include "GOSAllyCharacter.generated.h"
 
+class AAllyBotAIController;
+
 /**
  * 
  */
@@ -14,7 +16,13 @@ class GEARSOFSOCOM_API AGOSAllyCharacter : public AGOSBotCharacter
 {
 	GENERATED_BODY()
 
+public:
+	virtual void FollowPlayer();
+
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	AAllyBotAIController* AllyAIController;
 	
 };

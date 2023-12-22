@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class AGOSAllyCharacter;
 
 /**
  * 
@@ -36,11 +37,13 @@ public:
 	void ToggleWalkOrJog();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
+	void CommandAllyToFollow();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
+	FORCEINLINE void SetAlly1(TObjectPtr<AGOSAllyCharacter> NewAlly) { Ally1 = NewAlly; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -57,6 +60,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	bool bIsAiming = false;
+
+protected:
+	// Ally Bots / AI
+	TObjectPtr<AGOSAllyCharacter> Ally1;
 
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);

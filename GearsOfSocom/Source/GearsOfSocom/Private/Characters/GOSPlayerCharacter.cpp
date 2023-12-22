@@ -5,12 +5,14 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Characters/Ally/GOSAllyCharacter.h"
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
 #include "Constants/Constants.h"
+
 
 AGOSPlayerCharacter::AGOSPlayerCharacter()
 {
@@ -107,5 +109,13 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 		MovementType = EMovementType::EMT_Jog;
 		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+	}
+}
+
+void AGOSPlayerCharacter::CommandAllyToFollow()
+{
+	if (Ally1)
+	{
+		Ally1->FollowPlayer();
 	}
 }

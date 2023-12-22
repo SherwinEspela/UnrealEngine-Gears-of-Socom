@@ -30,6 +30,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSPlayerController::SetZoomWeaponView);
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RevertToDefaultCameraView);
 	EnhancedInputComponent->BindAction(ReloadGameAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ReloadGame);
+	EnhancedInputComponent->BindAction(CommandAllyToFollowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAllyToFollow);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -65,4 +66,9 @@ void AGOSPlayerController::RevertToDefaultCameraView()
 void AGOSPlayerController::ReloadGame()
 {
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+}
+
+void AGOSPlayerController::CommandAllyToFollow()
+{
+	PlayerCharacter->CommandAllyToFollow();
 }
