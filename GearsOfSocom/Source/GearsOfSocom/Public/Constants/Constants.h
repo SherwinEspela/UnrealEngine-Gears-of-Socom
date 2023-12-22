@@ -17,6 +17,7 @@
 // Blackboard Keys
 #define BB_KEY_PLAYER TEXT("Player")
 #define BB_KEY_FOLLOWING_PLAYER TEXT("IsFollowingPlayer")
+#define BB_KEY_DISTANCE_TO_PLAYER TEXT("DistanceToPlayer")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
