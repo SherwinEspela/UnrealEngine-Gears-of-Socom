@@ -31,7 +31,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RevertToDefaultCameraView);
 	EnhancedInputComponent->BindAction(ReloadGameAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ReloadGame);
 	EnhancedInputComponent->BindAction(CommandAllyToFollowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAllyToFollow);
-	EnhancedInputComponent->BindAction(CommandMoveToTargetPositionAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandMoveToTargetPosition);
+	EnhancedInputComponent->BindAction(CommandAttackOrMoveToTargetAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAttackOrMoveToTargetPosition);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -74,7 +74,7 @@ void AGOSPlayerController::CommandAllyToFollow()
 	PlayerCharacter->CommandAllyToFollow();
 }
 
-void AGOSPlayerController::CommandMoveToTargetPosition()
+void AGOSPlayerController::CommandAttackOrMoveToTargetPosition()
 {
-	PlayerCharacter->CommandMoveToTargetPosition();
+	PlayerCharacter->CommandAttackOrMoveToTargetPosition();
 }

@@ -7,6 +7,7 @@
 #include "GOSAllyCharacter.generated.h"
 
 class AAllyBotAIController;
+class AGOSBaseEnemyCharacter;
 
 /**
  * 
@@ -19,6 +20,7 @@ class GEARSOFSOCOM_API AGOSAllyCharacter : public AGOSBotCharacter
 public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
+	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
 
 protected:
 	virtual void BeginPlay() override;

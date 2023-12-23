@@ -20,6 +20,7 @@
 #define BB_KEY_DISTANCE_TO_PLAYER TEXT("DistanceToPlayer")
 #define BB_KEY_TARGET_POSITION TEXT("TargetPosition")
 #define BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION TEXT("ShouldMoveToTargetPosition")
+#define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")

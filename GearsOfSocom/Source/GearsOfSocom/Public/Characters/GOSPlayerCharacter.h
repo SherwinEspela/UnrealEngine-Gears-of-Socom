@@ -38,7 +38,7 @@ public:
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void CommandAllyToFollow();
-	void CommandMoveToTargetPosition();
+	void CommandAttackOrMoveToTargetPosition();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

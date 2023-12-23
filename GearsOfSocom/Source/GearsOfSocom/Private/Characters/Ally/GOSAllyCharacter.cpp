@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Characters/GOSPlayerCharacter.h"
 #include "Characters/AI/Ally/AllyBotAIController.h"
+#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
@@ -37,5 +38,13 @@ void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
 	if (AllyAIController)
 	{
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
+	}
+}
+
+void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
+{
+	if (AllyAIController)
+	{
+		AllyAIController->AttackTargetEnemy(Enemy);
 	}
 }
