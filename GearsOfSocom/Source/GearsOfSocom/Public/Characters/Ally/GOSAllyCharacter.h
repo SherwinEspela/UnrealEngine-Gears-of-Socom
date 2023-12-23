@@ -21,6 +21,7 @@ public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
+	virtual void FireWeapon() override;
 
 protected:
 	virtual void BeginPlay() override;

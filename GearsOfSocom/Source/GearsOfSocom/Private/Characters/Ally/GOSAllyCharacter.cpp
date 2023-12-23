@@ -6,6 +6,7 @@
 #include "Characters/GOSPlayerCharacter.h"
 #include "Characters/AI/Ally/AllyBotAIController.h"
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
+#include "Animation/GOSBaseAnimInstance.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
@@ -46,5 +47,15 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	if (AllyAIController)
 	{
 		AllyAIController->AttackTargetEnemy(Enemy);
+	}
+}
+
+void AGOSAllyCharacter::FireWeapon()
+{
+	Super::FireWeapon();
+
+	if (GOSAnimInstance && MontageFireWeapon)
+	{
+		GOSAnimInstance->Montage_JumpToSection("Default");
 	}
 }

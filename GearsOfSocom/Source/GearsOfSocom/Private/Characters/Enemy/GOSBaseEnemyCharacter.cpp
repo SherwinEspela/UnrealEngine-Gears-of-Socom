@@ -10,11 +10,17 @@
 void AGOSBaseEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	SelectNextPatrolPoint();
-
-	if (PawnSensingComponent)
+	
+	if (!bIsDebugging)
 	{
-		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
+		SelectNextPatrolPoint();
+
+		if (PawnSensingComponent)
+		{
+			PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
+		}
+
+		if (BotAIController) BotAIController->InitializeAI();
 	}
 }
 

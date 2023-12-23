@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
 	TArray<AActor*> PatrolPoints;
 
+	UPROPERTY(EditAnywhere, Category = Debugging)
+	bool bIsDebugging = false;
+
 private:
 	int CurrentPatrolPointIndex = 0;
 };

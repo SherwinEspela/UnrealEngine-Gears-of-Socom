@@ -10,6 +10,7 @@ void AAllyBotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	InitializeAI();
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
 }
 
