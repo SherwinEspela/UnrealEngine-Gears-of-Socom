@@ -4,9 +4,11 @@
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/GOSPlayerCharacter.h"
+#include "Characters/AI/BotAIController.h"
 #include "Characters/AI/Ally/AllyBotAIController.h"
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Perception/PawnSensingComponent.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
@@ -24,6 +26,22 @@ void AGOSAllyCharacter::BeginPlay()
 			Player->SetAlly1(this);
 		}
 	}
+
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSAllyCharacter::HandlePawnSeen);
+	}
+}
+
+void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
+{
+	Super::HandlePawnSeen(SeenPawn);
+
+	if (AllyAIController && !bIsTargetSeen)
+	{
+		AllyAIController->SetTargetSeen();
+		bIsTargetSeen = true;
+	}
 }
 
 void AGOSAllyCharacter::FollowPlayer()
@@ -32,6 +50,8 @@ void AGOSAllyCharacter::FollowPlayer()
 	{
 		AllyAIController->FollowPlayer();
 	}
+
+	bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
@@ -48,6 +68,8 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	{
 		AllyAIController->AttackTargetEnemy(Enemy);
 	}
+
+	bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::FireWeapon()

@@ -14,8 +14,23 @@ void AAllyBotAIController::BeginPlay()
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
 }
 
+void AAllyBotAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	if (TargetEnemy && LineOfSightTo(TargetEnemy))
+	{
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
+	}
+	else {
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
+	}
+}
+
 void AAllyBotAIController::FollowPlayer()
 {
+	TargetEnemy = nullptr;
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
@@ -24,6 +39,7 @@ void AAllyBotAIController::FollowPlayer()
 
 void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 {
+	TargetEnemy = nullptr;
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, true);
@@ -32,8 +48,14 @@ void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 
 void AAllyBotAIController::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 {
+	TargetEnemy = Enemy;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET_ENEMY, Enemy);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
+}
+
+void AAllyBotAIController::SetTargetSeen()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 }

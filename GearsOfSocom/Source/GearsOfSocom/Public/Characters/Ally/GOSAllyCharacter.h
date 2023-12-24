@@ -26,7 +26,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void HandlePawnSeen(APawn* SeenPawn);
+
 private:
 	AAllyBotAIController* AllyAIController;
-	
+
+	bool bIsTargetSeen = false;
 };

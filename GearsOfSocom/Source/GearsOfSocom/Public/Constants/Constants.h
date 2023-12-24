@@ -21,6 +21,7 @@
 #define BB_KEY_TARGET_POSITION TEXT("TargetPosition")
 #define BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION TEXT("ShouldMoveToTargetPosition")
 #define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
+#define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
