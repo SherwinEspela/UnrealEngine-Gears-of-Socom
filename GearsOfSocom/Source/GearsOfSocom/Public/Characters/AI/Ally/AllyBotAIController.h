@@ -6,8 +6,6 @@
 #include "Characters/AI/BotAIController.h"
 #include "AllyBotAIController.generated.h"
 
-class AGOSBaseEnemyCharacter;
-
 /**
  * 
  */
@@ -22,8 +20,9 @@ public:
 public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
-	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
+	virtual void AttackTargetEnemy(AActor* Enemy);
 	virtual void ClearValues();
+	virtual void SetTargetEnemy(AActor* Enemy);
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();
@@ -32,6 +31,5 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
-	AGOSBaseEnemyCharacter* TargetEnemy;
-	
+	AActor* TargetEnemy;
 };

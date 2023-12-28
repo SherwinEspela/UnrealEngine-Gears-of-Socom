@@ -39,10 +39,10 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	Super::HandlePawnSeen(SeenPawn);
 
-	if (AllyAIController)
+	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
 		AllyAIController->SetTargetSeen();
-		//bIsTargetSeen = true;
+		AllyAIController->SetTargetEnemy(SeenPawn);
 	}
 }
 
@@ -52,8 +52,6 @@ void AGOSAllyCharacter::FollowPlayer()
 	{
 		AllyAIController->FollowPlayer();
 	}
-
-	//bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
@@ -70,8 +68,6 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	{
 		AllyAIController->AttackTargetEnemy(Enemy);
 	}
-
-	//bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::FireWeapon()
@@ -99,7 +95,9 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	if (AllyAIController)
 	{
-		int Decision = FMath::RandRange(1, 100);
+		int Decision = FMath::RandRange(1, 4);
+		AllyAIController->SetTargetEnemy(DamageCauser);
+
 		switch (Decision)
 		{
 		case 1:
@@ -111,7 +109,8 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 			AllyAIController->SetEvading(true);
 			break;
 		default:
-			AllyAIController->AttackTargetEnemy(Cast<AGOSBaseEnemyCharacter>(DamageCauser));
+			SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+			AllyAIController->AttackTargetEnemy(DamageCauser);
 			break;
 		}
 	}
