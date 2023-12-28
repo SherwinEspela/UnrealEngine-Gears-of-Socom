@@ -37,6 +37,8 @@ protected:
 	UFUNCTION()
 	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume);
 
+	virtual void DamageReaction(AActor* DamageCauser);
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI Awareness")
 	UPawnSensingComponent* PawnSensingComponent;
@@ -46,6 +48,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Bot)
 	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
+
+protected:
+	AActor* TargetActor;
 
 private:
 	UGOSBotAnimInstance* BotAnimInstance;

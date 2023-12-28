@@ -35,7 +35,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 	{
 		if (BotAIController)
 		{
-			BotAIController->SetTargetPawn(SeenPawn);
+			BotAIController->SetTarget(SeenPawn);
 			BotAIController->SetTargetSeen();
 		}
 
@@ -62,7 +62,7 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
-		MakeDecision();
+		DamageReaction(DamageCauser);
 	}
 
 	return DamageApplied;
@@ -75,23 +75,48 @@ void AGOSBaseEnemyCharacter::FireWeapon()
 
 void AGOSBaseEnemyCharacter::MakeDecision()
 {
-	Super::MakeDecision();
+	//Super::MakeDecision();
 
-	if (BotAIController)
+	//if (BotAIController)
+	//{
+	//	int Decision = FMath::RandRange(1, 100);
+	//	switch (Decision)
+	//	{
+	//	case 1:
+	//		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+	//		BotAIController->SetCovering(true);
+	//		break;
+	//	case 2:
+	//		SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
+	//		BotAIController->SetEvading(true);
+	//		break;
+	//	default:
+
+	//		break;
+	//	}
+	//}
+}
+
+void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
+{
+	Super::DamageReaction(DamageCauser);
+
+	if (BotAIController == nullptr) return;
+
+	int Decision = FMath::RandRange(1, 3);
+	switch (Decision)
 	{
-		int Decision = FMath::RandRange(1, 2);
-		switch (Decision)
-		{
-		case 1:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-			BotAIController->SetCovering(true);
-			break;
-		case 2:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-			BotAIController->SetEvading(true);
-			break;
-		default:
-			break;
-		}
+	case 1:
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+		BotAIController->SetCovering(true);
+		break;
+	case 2:
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
+		BotAIController->SetEvading(true);
+		break;
+	default:
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		BotAIController->SetTargetSeen();
+		break;
 	}
 }

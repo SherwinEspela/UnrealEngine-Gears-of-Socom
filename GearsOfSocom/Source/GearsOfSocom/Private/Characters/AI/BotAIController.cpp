@@ -39,15 +39,8 @@ void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 void ABotAIController::SetTarget(AActor* NewTarget)
 {
 	if (!bIsInitialized) return;
+	TargetActor = NewTarget;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTarget);
-}
-
-void ABotAIController::SetTargetPawn(APawn* NewTargetPawn)
-{
-	if (!bIsInitialized) return;
-	TargetPawn = NewTargetPawn;
-	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTargetPawn);
-	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 }
 
 void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)

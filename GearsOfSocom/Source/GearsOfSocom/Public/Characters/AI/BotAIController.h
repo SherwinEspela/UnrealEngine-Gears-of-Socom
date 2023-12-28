@@ -25,7 +25,6 @@ public:
 	virtual void InitializeAI();
 	virtual void SetPatrolPoint(FVector NewPatrolPoint);
 	virtual void SetTarget(AActor* NewTarget);
-	virtual void SetTargetPawn(APawn* NewTargetPawn);
 	virtual void SetNoiseSourceLocation(FVector NewNoiseLocation);
 	virtual void SetTargetSeen();
 	virtual void SetTargetHeard(bool Heard);
@@ -33,7 +32,7 @@ public:
 	virtual void SetEvading(bool IsEvading);
 
 public:
-	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
+	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,7 +43,7 @@ protected:
 
 protected:
 	APawn* PlayerPawn;
-	APawn* TargetPawn;
+	AActor* TargetActor;
 	AGOSBaseCharacter* BotCharacter;
 	UGOSBotAnimInstance* BotAnimInstance;
 	bool bIsInitialized = false;

@@ -42,7 +42,7 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
 		AllyAIController->SetTargetSeen();
-		AllyAIController->SetTargetEnemy(SeenPawn);
+		AllyAIController->SetTarget(SeenPawn);
 	}
 }
 
@@ -93,11 +93,12 @@ float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 
 void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
+	Super::DamageReaction(DamageCauser);
+
 	if (AllyAIController)
 	{
 		int Decision = FMath::RandRange(1, 4);
-		AllyAIController->SetTargetEnemy(DamageCauser);
-
+		
 		switch (Decision)
 		{
 		case 1:
@@ -110,7 +111,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 			break;
 		default:
 			SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-			AllyAIController->AttackTargetEnemy(DamageCauser);
+			AllyAIController->AttackTargetEnemy(TargetActor);
 			break;
 		}
 	}
