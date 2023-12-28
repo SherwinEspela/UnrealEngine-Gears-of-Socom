@@ -32,6 +32,7 @@ void AGOSPlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	CameraDefaultFOV = FollowCamera->FieldOfView;
 	Tags.Add(FName(ACTOR_TAG_PLAYER));
+	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)

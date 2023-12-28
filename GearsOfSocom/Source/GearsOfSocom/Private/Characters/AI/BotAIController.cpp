@@ -75,11 +75,13 @@ void ABotAIController::SetTargetHeard(bool Heard)
 void ABotAIController::SetCovering(bool IsCovering)
 {
 	if (!bIsInitialized) return;
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
 	if (!bIsInitialized) return;
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }

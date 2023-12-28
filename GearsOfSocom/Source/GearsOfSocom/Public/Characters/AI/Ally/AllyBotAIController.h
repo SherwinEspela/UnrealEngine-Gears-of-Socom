@@ -23,6 +23,7 @@ public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
+	virtual void ClearValues();
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();

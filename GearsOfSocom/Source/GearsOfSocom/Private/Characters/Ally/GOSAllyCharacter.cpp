@@ -31,16 +31,18 @@ void AGOSAllyCharacter::BeginPlay()
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSAllyCharacter::HandlePawnSeen);
 	}
+
+	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 }
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	Super::HandlePawnSeen(SeenPawn);
 
-	if (AllyAIController && !bIsTargetSeen)
+	if (AllyAIController)
 	{
 		AllyAIController->SetTargetSeen();
-		bIsTargetSeen = true;
+		//bIsTargetSeen = true;
 	}
 }
 
@@ -51,7 +53,7 @@ void AGOSAllyCharacter::FollowPlayer()
 		AllyAIController->FollowPlayer();
 	}
 
-	bIsTargetSeen = false;
+	//bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
@@ -69,7 +71,7 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 		AllyAIController->AttackTargetEnemy(Enemy);
 	}
 
-	bIsTargetSeen = false;
+	//bIsTargetSeen = false;
 }
 
 void AGOSAllyCharacter::FireWeapon()
@@ -79,5 +81,38 @@ void AGOSAllyCharacter::FireWeapon()
 	if (GOSAnimInstance && MontageFireWeapon)
 	{
 		GOSAnimInstance->Montage_JumpToSection("Default");
+	}
+}
+
+float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (Health > 0.f && BotAIController)
+	{
+		DamageReaction(DamageCauser);
+	}
+
+	return DamageApplied;
+}
+
+void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
+{
+	if (AllyAIController)
+	{
+		int Decision = FMath::RandRange(1, 100);
+		switch (Decision)
+		{
+		case 1:
+			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+			AllyAIController->SetCovering(true);
+			break;
+		case 2:
+			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
+			AllyAIController->SetEvading(true);
+			break;
+		default:
+			AllyAIController->AttackTargetEnemy(Cast<AGOSBaseEnemyCharacter>(DamageCauser));
+			break;
+		}
 	}
 }

@@ -23,13 +23,24 @@ public:
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
 	virtual void FireWeapon() override;
 
+	virtual float TakeDamage
+	(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
+	/*virtual void MakeDecision() override;*/
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void HandlePawnSeen(APawn* SeenPawn);
+	virtual void DamageReaction(AActor* DamageCauser);
 
 private:
 	AAllyBotAIController* AllyAIController;
 
-	bool bIsTargetSeen = false;
+	//bool bIsTargetSeen = false;
 };

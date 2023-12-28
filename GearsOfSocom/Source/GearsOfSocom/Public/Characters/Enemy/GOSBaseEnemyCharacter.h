@@ -27,6 +27,7 @@ public:
 	) override;
 
 	virtual void FireWeapon() override;
+	virtual void MakeDecision() override;
 
 protected:
 	virtual void BeginPlay() override;

@@ -51,26 +51,25 @@ void AGOSBotCharacter::FireWeapon()
 
 void AGOSBotCharacter::MakeDecision()
 {
-	if (BotAIController)
+	/*if (BotAIController)
 	{
-		BotAIController->SetCovering(false);
-		BotAIController->SetEvading(false);
-
-		int Decision = FMath::RandRange(1, 2);
+		int Decision = FMath::RandRange(1, 5);
 		switch (Decision)
 		{
 		case 1:
+			UE_LOG(LogTemp, Warning, TEXT("is covering..."));
 			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
 			BotAIController->SetCovering(true);
 			break;
 		case 2:
+			UE_LOG(LogTemp, Warning, TEXT("is evading..."));
 			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
 			BotAIController->SetEvading(true);
 			break;
 		default:
 			break;
 		}
-	}
+	}*/
 }
 
 void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)

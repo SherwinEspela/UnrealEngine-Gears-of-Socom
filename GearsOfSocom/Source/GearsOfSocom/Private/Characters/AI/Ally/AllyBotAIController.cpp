@@ -48,9 +48,13 @@ void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 
 void AAllyBotAIController::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 {
+	if (Enemy == nullptr) return;
+
 	TargetEnemy = Enemy;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET_ENEMY, Enemy);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 }
@@ -58,4 +62,13 @@ void AAllyBotAIController::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 void AAllyBotAIController::SetTargetSeen()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
+}
+
+void AAllyBotAIController::ClearValues()
+{
+	TargetEnemy = nullptr;
+	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
+	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 }
