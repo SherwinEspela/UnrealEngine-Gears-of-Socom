@@ -46,16 +46,25 @@ void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Locati
 
 void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
 {
-	if (TargetActor)
+	if (TargetActor == nullptr)
 	{
-		bool CanAgro = FMath::RandBool();
-		if (CanAgro)
+		TargetActor = DamageCauser;
+		BotAIController->SetTarget(DamageCauser);
+	}
+	else {
+		if (TargetActor != DamageCauser)
 		{
-			BotAIController->SetTarget(DamageCauser);
+			bool CanAgro = FMath::RandBool();
+			if (CanAgro)
+			{
+				TargetActor = DamageCauser;
+				BotAIController->SetTarget(DamageCauser);
+			}
+		}
+		else {
+			BotAIController->SetTarget(TargetActor);
 		}
 	}
-
-	TargetActor = DamageCauser;
 }
 
 void AGOSBotCharacter::FireWeapon()
