@@ -33,14 +33,18 @@ public:
 
 	/*virtual void MakeDecision() override;*/
 
+	virtual void Tick(float DeltaSeconds) override;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void HandlePawnSeen(APawn* SeenPawn);
 	virtual void DamageReaction(AActor* DamageCauser);
 
+protected:
+	AActor* TargetActor;
+
 private:
 	AAllyBotAIController* AllyAIController;
 
-	//bool bIsTargetSeen = false;
 };

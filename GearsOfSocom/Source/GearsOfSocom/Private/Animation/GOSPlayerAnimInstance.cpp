@@ -2,4 +2,10 @@
 
 
 #include "Animation/GOSPlayerAnimInstance.h"
+#include "Characters/GOSBaseCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
+void UGOSPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+}

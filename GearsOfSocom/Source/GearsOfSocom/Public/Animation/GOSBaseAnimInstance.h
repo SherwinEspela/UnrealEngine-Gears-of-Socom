@@ -58,13 +58,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Montage)
 	UAnimMontage* MontageHitReact;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
+	float MovementOffsetYaw;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
+	FRotator MovementRotation;
+
 protected:
 	void TurnInPlace();
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	float MovementOffsetYaw;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float AimPitch;
 

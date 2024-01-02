@@ -3,17 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/GOSBaseAnimInstance.h"
-#include "GOSPlayerAnimInstance.generated.h"
+#include "Animation/GOSBotAnimInstance.h"
+#include "AllyAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API UGOSPlayerAnimInstance : public UGOSBaseAnimInstance
+class GEARSOFSOCOM_API UAllyAnimInstance : public UGOSBotAnimInstance
 {
 	GENERATED_BODY()
 	
 public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
 };
