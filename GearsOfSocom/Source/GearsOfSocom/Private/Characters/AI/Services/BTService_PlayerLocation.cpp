@@ -23,22 +23,22 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 
 	if (BotAIController)
 	{
-		APawn* TargetPawn = BotAIController->GetTargetPawn();
-		if (TargetPawn)
+		AActor* TargetActor = BotAIController->GetTargetActor();
+		if (TargetActor)
 		{
 			OwnerComp.GetBlackboardComponent()->SetValueAsVector(
 				BB_KEY_TARGET_LOCATION, 
-				TargetPawn->GetActorLocation()
+				TargetActor->GetActorLocation()
 			);
 
-			if (BotAIController->LineOfSightTo(TargetPawn))
+			if (BotAIController->LineOfSightTo(TargetActor))
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 			}
 			else {
 				OwnerComp.GetBlackboardComponent()->SetValueAsVector(
 					BB_KEY_LAST_TARGET_LOCATION,
-					TargetPawn->GetActorLocation()
+					TargetActor->GetActorLocation()
 				);
 
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);

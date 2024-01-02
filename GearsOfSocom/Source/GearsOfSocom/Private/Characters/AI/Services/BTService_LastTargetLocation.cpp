@@ -22,10 +22,10 @@ void UBTService_InvestigateLocation::TickNode(UBehaviorTreeComponent& OwnerComp,
 
 	if (BotAIController)
 	{
-		APawn* TargetPawn = BotAIController->GetTargetPawn();
-		if (TargetPawn)
+		AActor* Target = BotAIController->GetTargetActor();
+		if (Target)
 		{
-			if (BotAIController->LineOfSightTo(TargetPawn))
+			if (BotAIController->LineOfSightTo(Target))
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);

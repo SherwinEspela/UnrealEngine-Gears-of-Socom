@@ -44,6 +44,29 @@ void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Locati
 	}
 }
 
+void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
+{
+	if (TargetActor == nullptr)
+	{
+		TargetActor = DamageCauser;
+		BotAIController->SetTarget(DamageCauser);
+	}
+	else {
+		if (TargetActor != DamageCauser)
+		{
+			bool CanAgro = FMath::RandBool();
+			if (CanAgro)
+			{
+				TargetActor = DamageCauser;
+				BotAIController->SetTarget(DamageCauser);
+			}
+		}
+		else {
+			BotAIController->SetTarget(TargetActor);
+		}
+	}
+}
+
 void AGOSBotCharacter::FireWeapon()
 {
 	Super::FireWeapon();
@@ -51,26 +74,6 @@ void AGOSBotCharacter::FireWeapon()
 
 void AGOSBotCharacter::MakeDecision()
 {
-	if (BotAIController)
-	{
-		BotAIController->SetCovering(false);
-		BotAIController->SetEvading(false);
-
-		int Decision = FMath::RandRange(1, 2);
-		switch (Decision)
-		{
-		case 1:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-			BotAIController->SetCovering(true);
-			break;
-		case 2:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-			BotAIController->SetEvading(true);
-			break;
-		default:
-			break;
-		}
-	}
 }
 
 void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)

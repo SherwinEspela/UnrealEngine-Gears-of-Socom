@@ -5,12 +5,15 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Characters/Ally/GOSAllyCharacter.h"
+#include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
 #include "Constants/Constants.h"
+
 
 AGOSPlayerCharacter::AGOSPlayerCharacter()
 {
@@ -29,6 +32,7 @@ void AGOSPlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	CameraDefaultFOV = FollowCamera->FieldOfView;
 	Tags.Add(FName(ACTOR_TAG_PLAYER));
+	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -109,3 +113,69 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 	}
 }
+
+void AGOSPlayerCharacter::CommandAllyToFollow()
+{
+	if (Ally1)
+	{
+		Ally1->FollowPlayer();
+	}
+}
+
+void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
+{
+	if (GetController() == nullptr) return;
+
+	FVector PVPLocation;
+	FRotator PVPRotation;
+	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+
+	FHitResult Hit;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(this);
+	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
+		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
+	);
+
+	if (bHitSuccess && Ally1)
+	{
+		DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
+
+		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
+		if (Enemy)
+		{
+			Ally1->AttackTargetEnemy(Enemy);
+		}
+		else {
+			Ally1->MoveToTargetPosition(Hit.Location);
+		}
+	}
+}
+
+//void AGOSPlayerCharacter::CommandAttackTarget()
+//{
+//	if (GetController() == nullptr) return;
+//
+//	FVector PVPLocation;
+//	FRotator PVPRotation;
+//	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
+//	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
+//
+//	FHitResult Hit;
+//	FCollisionQueryParams CollisionQueryParams;
+//	CollisionQueryParams.AddIgnoredActor(this);
+//	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
+//		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
+//	);
+//
+//	if (bHitSuccess && Ally1)
+//	{
+//		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
+//		if (Enemy)
+//		{
+//			DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
+//			Ally1->AttackTargetEnemy(Enemy);
+//		}
+//	}
+//}

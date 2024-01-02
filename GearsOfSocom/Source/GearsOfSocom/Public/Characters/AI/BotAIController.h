@@ -18,13 +18,13 @@ class GEARSOFSOCOM_API ABotAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-public:
-	virtual void Tick(float DeltaSeconds) override;
+//public:
+//	virtual void Tick(float DeltaSeconds) override;
 
 public:
+	virtual void InitializeAI();
 	virtual void SetPatrolPoint(FVector NewPatrolPoint);
 	virtual void SetTarget(AActor* NewTarget);
-	virtual void SetTargetPawn(APawn* NewTargetPawn);
 	virtual void SetNoiseSourceLocation(FVector NewNoiseLocation);
 	virtual void SetTargetSeen();
 	virtual void SetTargetHeard(bool Heard);
@@ -32,18 +32,19 @@ public:
 	virtual void SetEvading(bool IsEvading);
 
 public:
-	FORCEINLINE APawn* GetTargetPawn() const { return TargetPawn; }
+	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
 
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
 
-private:
+protected:
 	APawn* PlayerPawn;
-	APawn* TargetPawn;
+	AActor* TargetActor;
 	AGOSBaseCharacter* BotCharacter;
 	UGOSBotAnimInstance* BotAnimInstance;
+	bool bIsInitialized = false;
 };

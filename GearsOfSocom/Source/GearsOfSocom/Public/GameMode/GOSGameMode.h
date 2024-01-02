@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "GOSGameMode.generated.h"
 
+class AGOSAllyCharacter;
+
 /**
  * 
  */

@@ -27,14 +27,19 @@ public:
 	) override;
 
 	virtual void FireWeapon() override;
+	virtual void MakeDecision() override;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
+	virtual void DamageReaction(AActor* DamageCauser);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))
 	TArray<AActor*> PatrolPoints;
+
+	UPROPERTY(EditAnywhere, Category = Debugging)
+	bool bIsDebugging = false;
 
 private:
 	int CurrentPatrolPointIndex = 0;

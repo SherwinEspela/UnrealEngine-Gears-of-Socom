@@ -12,9 +12,18 @@
 // Actor Tags
 #define ACTOR_TAG_PLAYER TEXT("Player")
 #define ACTOR_TAG_ENEMY TEXT("Enemy")
-#define ACTOR_TAG_PLAYER_ALLY TEXT("PlayerAlly")
+#define ACTOR_TAG_NAVYSEALS TEXT("NavySeals")
 
 // Blackboard Keys
+#define BB_KEY_PLAYER TEXT("Player")
+#define BB_KEY_FOLLOWING_PLAYER TEXT("IsFollowingPlayer")
+#define BB_KEY_DISTANCE_TO_PLAYER TEXT("DistanceToPlayer")
+#define BB_KEY_DISTANCE_TO_ENEMY TEXT("DistanceToEnemy")
+#define BB_KEY_TARGET_POSITION TEXT("TargetPosition")
+#define BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION TEXT("ShouldMoveToTargetPosition")
+#define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
+#define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
+
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
 #define BB_KEY_START_LOCATION TEXT("StartLocation")
