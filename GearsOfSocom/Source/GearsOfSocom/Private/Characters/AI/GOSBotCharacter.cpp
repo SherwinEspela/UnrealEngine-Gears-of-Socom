@@ -82,6 +82,13 @@ void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
 void AGOSBotCharacter::FireWeapon()
 {
 	Super::FireWeapon();
+
+	FVector LineTraceStart = GetActorLocation();
+	FRotator RotationStart = GetActorRotation();
+	FVector LineTraceEnd = LineTraceStart + RotationStart.Vector() * MaxShootingRange;
+	FVector ShotDirection = -RotationStart.Vector();
+
+	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }
 
 void AGOSBotCharacter::MakeDecision()

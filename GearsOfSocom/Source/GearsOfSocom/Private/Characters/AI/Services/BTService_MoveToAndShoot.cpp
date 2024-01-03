@@ -3,11 +3,14 @@
 
 #include "Characters/AI/Services/BTService_MoveToAndShoot.h"
 #include "Characters/AI/GOSBotCharacter.h"
+#include "Characters/Ally/GOSAllyCharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "Constants/Constants.h"
 
 UBTService_MoveToAndShoot::UBTService_MoveToAndShoot()
 {
-	NodeName = TEXT("MoveToAndShoot");
+	NodeName = TEXT("Move and Shoot");
 
 	Interval = 1.5f;
 	RandomDeviation = 0.2f;
@@ -17,9 +20,17 @@ void UBTService_MoveToAndShoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	if (Bot == nullptr) Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	if (Bot)
+	const bool IsTargetSeen = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_TARGET_SEEN);
+	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
+	if (!IsTargetSeen && !HasTargetSight) return;
+
+	if (bIsNavySeals)
 	{
-		Bot->FireWeapon();
+		if (Bot == nullptr) Bot = Cast<AGOSAllyCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	}
+	else {
+		if (Bot == nullptr) Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	}
+
+	if (Bot) Bot->FireWeapon();
 }

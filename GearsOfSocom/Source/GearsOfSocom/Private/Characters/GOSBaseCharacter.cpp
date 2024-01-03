@@ -57,10 +57,10 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 }
 
-void AGOSBaseCharacter::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-}
+//void AGOSBaseCharacter::Tick(float DeltaSeconds)
+//{
+//	Super::Tick(DeltaSeconds);
+//}
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -106,29 +106,19 @@ void AGOSBaseCharacter::FireWeapon()
 	{
 		MakeNoise();
 	}
-
-	WeaponHitByLineTrace();
 }
 
-void AGOSBaseCharacter::WeaponHitByLineTrace()
+void AGOSBaseCharacter::WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection)
 {
-	if (GetController() == nullptr) return;
-
-	FVector PVPLocation;
-	FRotator PVPRotation;
-	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
-	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
-
 	FHitResult Hit;
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(this);
 	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
-		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
+		Hit, LineTraceStart, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
 	);
 
 	if (bHitSuccess)
 	{
-		FVector ShotDirection = -PVPRotation.Vector();
 		AGOSBaseCharacter* HitActor = Cast<AGOSBaseCharacter>(Hit.GetActor());
 		if (HitActor)
 		{

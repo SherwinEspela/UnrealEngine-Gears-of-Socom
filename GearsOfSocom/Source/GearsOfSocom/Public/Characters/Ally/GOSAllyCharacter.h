@@ -33,8 +33,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
 	virtual void HandlePawnSeen(APawn* SeenPawn);
+
+protected:
 	virtual void DamageReaction(AActor* DamageCauser);
 
 private:

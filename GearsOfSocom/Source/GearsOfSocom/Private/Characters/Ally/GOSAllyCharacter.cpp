@@ -9,8 +9,8 @@
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Animation/GOSBaseAnimInstance.h"
 #include "Perception/PawnSensingComponent.h"
-//#include "Kismet/KismetMathLibrary.h"
 #include "Components/ArrowComponent.h"
+#include "Engine/DamageEvents.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
