@@ -97,6 +97,16 @@ void AGOSPlayerCharacter::FireWeapon()
 	{
 		GOSAnimInstance->Montage_JumpToSection("Default");
 	}
+
+	if (GetController()) {
+		FVector LineTraceStart;
+		FRotator PVPRotation;
+		GetController()->GetPlayerViewPoint(LineTraceStart, PVPRotation);
+		FVector LineTraceEnd = LineTraceStart + PVPRotation.Vector() * MaxShootingRange;
+		FVector ShotDirection = -PVPRotation.Vector();
+
+		WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
+	}
 }
 
 void AGOSPlayerCharacter::ToggleWalkOrJog()

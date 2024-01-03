@@ -21,7 +21,7 @@ class GEARSOFSOCOM_API AGOSBaseCharacter : public ACharacter
 public:
 	AGOSBaseCharacter();
 
-	virtual void Tick(float DeltaSeconds) override;
+	//virtual void Tick(float DeltaSeconds) override;
 
 	virtual float TakeDamage
 	(
@@ -58,7 +58,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float PrimaryWeaponDamage = 30.f;
 
-	virtual void WeaponHitByLineTrace();
+	void WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection);
 
 protected:
 	// Effects

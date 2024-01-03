@@ -9,11 +9,15 @@
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Animation/GOSBaseAnimInstance.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Components/ArrowComponent.h"
+#include "Engine/DamageEvents.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PrimaryActorTick.bCanEverTick = true;
 
 	AllyAIController = Cast<AAllyBotAIController>(GetController());
 
@@ -41,6 +45,7 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
+		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTarget(SeenPawn);
 	}
@@ -66,6 +71,7 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 {
 	if (AllyAIController)
 	{
+		TargetActor = Enemy;
 		AllyAIController->AttackTargetEnemy(Enemy);
 	}
 }

@@ -27,7 +27,7 @@ void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	 if (GOSCharacter)
 	 {
 		 FRotator AimRotation = GOSCharacter->GetBaseAimRotation();
-		 FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(GOSCharacter->GetVelocity());
+		 MovementRotation = UKismetMathLibrary::MakeRotFromX(GOSCharacter->GetVelocity());
 		 MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
 
 		 if (MovementComponent)

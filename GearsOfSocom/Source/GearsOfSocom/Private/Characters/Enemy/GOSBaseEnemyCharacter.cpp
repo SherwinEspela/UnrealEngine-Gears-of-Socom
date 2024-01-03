@@ -35,6 +35,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 	{
 		if (BotAIController)
 		{
+			TargetActor = SeenPawn;
 			BotAIController->SetTarget(SeenPawn);
 			BotAIController->SetTargetSeen();
 		}
@@ -71,30 +72,6 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 void AGOSBaseEnemyCharacter::FireWeapon()
 {
 	Super::FireWeapon();
-}
-
-void AGOSBaseEnemyCharacter::MakeDecision()
-{
-	//Super::MakeDecision();
-
-	//if (BotAIController)
-	//{
-	//	int Decision = FMath::RandRange(1, 100);
-	//	switch (Decision)
-	//	{
-	//	case 1:
-	//		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-	//		BotAIController->SetCovering(true);
-	//		break;
-	//	case 2:
-	//		SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-	//		BotAIController->SetEvading(true);
-	//		break;
-	//	default:
-
-	//		break;
-	//	}
-	//}
 }
 
 void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)

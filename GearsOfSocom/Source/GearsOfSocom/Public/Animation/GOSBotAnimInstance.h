@@ -17,7 +17,8 @@ class GEARSOFSOCOM_API UGOSBotAnimInstance : public UGOSBaseAnimInstance
 	GENERATED_BODY()
 	
 public:
-	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	void SetBotBehavior(EBotBehaviorTypes NewBehavior);	
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
