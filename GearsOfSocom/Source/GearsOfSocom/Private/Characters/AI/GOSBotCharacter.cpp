@@ -6,6 +6,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "Characters/AI/BotAIController.h"
 #include "Animation/GOSBotAnimInstance.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Constants/Constants.h"
 
 AGOSBotCharacter::AGOSBotCharacter()
@@ -13,6 +14,17 @@ AGOSBotCharacter::AGOSBotCharacter()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("Pawn Sensing"));
 	PawnSensingComponent->SightRadius = 3000.f;
 	PawnSensingComponent->SetPeripheralVisionAngle(80.f);
+}
+
+void AGOSBotCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (TargetActor)
+	{
+		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetActor->GetActorLocation());
+		SetActorRotation(FRotator(0.f, LookAtRotation.Yaw, 0.f));
+	}
 }
 
 void AGOSBotCharacter::BeginPlay()

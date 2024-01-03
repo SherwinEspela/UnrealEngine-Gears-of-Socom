@@ -9,7 +9,7 @@
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Animation/GOSBaseAnimInstance.h"
 #include "Perception/PawnSensingComponent.h"
-#include "Kismet/KismetMathLibrary.h"
+//#include "Kismet/KismetMathLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "Constants/Constants.h"
 
@@ -39,24 +39,13 @@ void AGOSAllyCharacter::BeginPlay()
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 }
 
-void AGOSAllyCharacter::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	if (TargetActor)
-	{
-		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetActor->GetActorLocation());
-		SetActorRotation(FRotator(0.f, LookAtRotation.Yaw, 0.f));
-	}
-}
-
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	Super::HandlePawnSeen(SeenPawn);
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
-		TargetActor = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
+		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTarget(SeenPawn);
 	}

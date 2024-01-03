@@ -22,6 +22,8 @@ class GEARSOFSOCOM_API AGOSBotCharacter : public AGOSBaseCharacter
 public:
 	AGOSBotCharacter();
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	virtual void FireWeapon() override;
 	virtual void MakeDecision();
 
