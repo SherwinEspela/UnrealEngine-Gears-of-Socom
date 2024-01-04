@@ -28,6 +28,10 @@ public:
 
 	virtual void FireWeapon() override;
 
+public:
+	FORCEINLINE bool GetIsNotSeen() const { return bIsNotSeen; }
+	FORCEINLINE void SetSeen() { bIsNotSeen = false; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
@@ -42,4 +46,5 @@ protected:
 
 private:
 	int CurrentPatrolPointIndex = 0;
+	bool bIsNotSeen = true;
 };

@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class AGOSAllyCharacter;
+class USoundBase;
 
 /**
  * 
@@ -67,7 +68,23 @@ protected:
 	TObjectPtr<AGOSAllyCharacter> Ally1;
 
 protected:
+	// Voice Commands
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandFollow;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandAttack;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandMoveToPosition;
+
+protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+
+private:
+	void PlayAllyFollowResponseSound();
+	void PlayAllyAttackEnemyResponseSound();
+	void PlayAllyMoveToTargetResponseSound();
 
 private:
 	float CurrentCameraFOV;

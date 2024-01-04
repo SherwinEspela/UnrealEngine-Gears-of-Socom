@@ -11,6 +11,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Sound/SoundBase.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
@@ -48,6 +49,13 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTarget(SeenPawn);
+
+		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
+		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		{
+			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
+			Enemy->SetSeen();
+		}
 	}
 }
 
@@ -120,5 +128,43 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 			AllyAIController->AttackTargetEnemy(TargetActor);
 			break;
 		}
+	}
+}
+
+void AGOSAllyCharacter::PlayFollowResponseSound()
+{
+	if (SoundResponseFollow && SoundResponseConfirm)
+	{
+		int RandomValue = FMath::RandRange(0, 10);
+		if (RandomValue > 4)
+		{
+			UGameplayStatics::PlaySound2D(this, SoundResponseFollow);
+		}
+		else {
+			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		}
+	}
+}
+
+void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
+{
+	if (SoundResponseAttackEnemy && SoundResponseConfirm)
+	{
+		int RandomValue = FMath::RandRange(0, 10);
+		if (RandomValue > 4)
+		{
+			UGameplayStatics::PlaySound2D(this, SoundResponseAttackEnemy);
+		}
+		else {
+			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		}
+	}
+}
+
+void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
+{
+	if (SoundResponseConfirm)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
 	}
 }

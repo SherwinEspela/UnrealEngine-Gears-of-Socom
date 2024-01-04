@@ -46,8 +46,6 @@ void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 
 void AAllyBotAIController::AttackTargetEnemy(AActor* Enemy)
 {
-	if (Enemy == nullptr) return;
-
 	TargetEnemy = Enemy;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, Enemy);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);

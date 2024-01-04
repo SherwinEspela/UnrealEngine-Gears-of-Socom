@@ -31,12 +31,31 @@ public:
 		AActor* DamageCauser
 	) override;
 
+public:
+	// Play Sound functions
+	virtual void PlayFollowResponseSound();
+	virtual void PlayAttackEnemyResponseSound();
+	virtual void PlayMoveToPositionResponseSound();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn);
 
 protected:
 	virtual void DamageReaction(AActor* DamageCauser);
+	
+protected:
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseConfirm;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseFollow;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseAttackEnemy;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseEnemySighted;
 
 private:
 	AAllyBotAIController* AllyAIController;

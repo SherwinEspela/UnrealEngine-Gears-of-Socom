@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
+#include "Sound/SoundBase.h"
 #include "Constants/Constants.h"
 
 
@@ -129,6 +130,14 @@ void AGOSPlayerCharacter::CommandAllyToFollow()
 	if (Ally1)
 	{
 		Ally1->FollowPlayer();
+
+		if (SFXCommandFollow)
+		{
+			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
+
+			FTimerHandle TimerHandle;
+			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 2.f, false);
+		}
 	}
 }
 
@@ -150,42 +159,46 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 
 	if (bHitSuccess && Ally1)
 	{
-		DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
+		//DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
 
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
 		if (Enemy)
 		{
 			Ally1->AttackTargetEnemy(Enemy);
+
+			if (SFXCommandAttack)
+			{
+				UGameplayStatics::PlaySound2D(this, SFXCommandAttack);
+
+				FTimerHandle TimerHandle;
+				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 2.f, false);
+			}
 		}
 		else {
 			Ally1->MoveToTargetPosition(Hit.Location);
+
+			if (SFXCommandMoveToPosition)
+			{
+				UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
+
+				FTimerHandle TimerHandle;
+				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 2.f, false);
+			}
 		}
 	}
 }
 
-//void AGOSPlayerCharacter::CommandAttackTarget()
-//{
-//	if (GetController() == nullptr) return;
-//
-//	FVector PVPLocation;
-//	FRotator PVPRotation;
-//	GetController()->GetPlayerViewPoint(PVPLocation, PVPRotation);
-//	FVector LineTraceEnd = PVPLocation + PVPRotation.Vector() * MaxShootingRange;
-//
-//	FHitResult Hit;
-//	FCollisionQueryParams CollisionQueryParams;
-//	CollisionQueryParams.AddIgnoredActor(this);
-//	const bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(
-//		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
-//	);
-//
-//	if (bHitSuccess && Ally1)
-//	{
-//		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
-//		if (Enemy)
-//		{
-//			DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
-//			Ally1->AttackTargetEnemy(Enemy);
-//		}
-//	}
-//}
+void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
+{
+	if (Ally1) Ally1->PlayFollowResponseSound();
+}
+
+void AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound()
+{
+	if (Ally1) Ally1->PlayAttackEnemyResponseSound();
+}
+
+void AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound()
+{
+	if (Ally1) Ally1->PlayMoveToPositionResponseSound();
+}
