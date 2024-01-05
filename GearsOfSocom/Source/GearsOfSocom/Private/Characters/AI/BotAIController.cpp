@@ -14,6 +14,20 @@ void ABotAIController::BeginPlay()
 	bIsInitialized = false;
 }
 
+void ABotAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (TargetActor && LineOfSightTo(TargetActor))
+	{
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
+	}
+	else {
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
+	}
+}
+
 void ABotAIController::InitializeAI()
 {
 	bIsInitialized = true;
@@ -28,6 +42,7 @@ void ABotAIController::InitializeAI()
 		GetBlackboardComponent()->SetValueAsVector(BB_KEY_START_LOCATION, GetPawn()->GetActorLocation());
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
 	}
 }
 
