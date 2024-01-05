@@ -81,6 +81,8 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 {
 	if (AllyAIController)
 	{
+		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+
 		TargetActor = Enemy;
 		AllyAIController->AttackTargetEnemy(Enemy);
 	}

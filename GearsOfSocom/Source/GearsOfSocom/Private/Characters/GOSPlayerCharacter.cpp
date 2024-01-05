@@ -1,6 +1,5 @@
 // Copyright 2023 Sherwin Espela. All rights reserved.
 
-
 #include "Characters/GOSPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -134,7 +133,6 @@ void AGOSPlayerCharacter::CommandAllyToFollow()
 		if (SFXCommandFollow)
 		{
 			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
-
 			FTimerHandle TimerHandle;
 			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 2.f, false);
 		}
@@ -159,8 +157,6 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 
 	if (bHitSuccess && Ally1)
 	{
-		//DrawDebugSphere(GetWorld(), Hit.Location, 20.f, 20.f, FColor::Red, true);
-
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
 		if (Enemy)
 		{
@@ -169,7 +165,6 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 			if (SFXCommandAttack)
 			{
 				UGameplayStatics::PlaySound2D(this, SFXCommandAttack);
-
 				FTimerHandle TimerHandle;
 				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 2.f, false);
 			}
@@ -180,7 +175,6 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 			if (SFXCommandMoveToPosition)
 			{
 				UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
-
 				FTimerHandle TimerHandle;
 				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 2.f, false);
 			}

@@ -7,6 +7,8 @@
 #include "Characters/AI/GOSBotCharacter.h"
 #include "GOSBaseEnemyCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnemyKilledSignature);
+
 /**
  * 
  */
@@ -27,6 +29,8 @@ public:
 	) override;
 
 	virtual void FireWeapon() override;
+
+	FOnEnemyKilledSignature OnEnemyKilled;
 
 public:
 	FORCEINLINE bool GetIsNotSeen() const { return bIsNotSeen; }

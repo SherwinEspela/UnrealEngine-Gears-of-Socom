@@ -31,6 +31,7 @@ public:
 		AActor* DamageCauser
 	) override;
 
+	UFUNCTION()
 	virtual void HandleEnemyKilled();
 
 public:
