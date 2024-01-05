@@ -27,6 +27,7 @@ void ABotAIController::InitializeAI()
 		RunBehaviorTree(BehaviorTree);
 		GetBlackboardComponent()->SetValueAsVector(BB_KEY_START_LOCATION, GetPawn()->GetActorLocation());
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
 	}
 }
 

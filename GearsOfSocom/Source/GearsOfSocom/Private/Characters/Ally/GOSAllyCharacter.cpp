@@ -11,6 +11,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Sound/SoundBase.h"
 #include "Constants/Constants.h"
 
 void AGOSAllyCharacter::BeginPlay()
@@ -37,6 +38,7 @@ void AGOSAllyCharacter::BeginPlay()
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
+	SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
 }
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -45,16 +47,27 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
+		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
+		if (Enemy->IsDead()) return;
+
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
-		AllyAIController->SetTarget(SeenPawn);
+		AllyAIController->SetTargetEnemy(SeenPawn);
+
+		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		{
+			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
+			Enemy->SetSeen();
+		}
 	}
 }
 
 void AGOSAllyCharacter::FollowPlayer()
 {
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_FollowingPlayer) return;
 	if (AllyAIController)
 	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_FollowingPlayer);
 		AllyAIController->FollowPlayer();
 	}
 }
@@ -63,6 +76,7 @@ void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
 {
 	if (AllyAIController)
 	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
 	}
 }
@@ -72,7 +86,28 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	if (AllyAIController)
 	{
 		TargetActor = Enemy;
+		
+		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(Enemy);
+	}
+}
+
+void AGOSAllyCharacter::FireAtWill()
+{
+	if (AllyAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		AllyAIController->FireAtWill();
+	}
+}
+
+void AGOSAllyCharacter::HoldFire()
+{
+	if (AllyAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
+		AllyAIController->HoldFire();
 	}
 }
 
@@ -97,28 +132,79 @@ float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	return DamageApplied;
 }
 
+void AGOSAllyCharacter::HandleEnemyKilled()
+{
+	if (AllyAIController)
+	{
+		TargetActor = nullptr;
+		AllyAIController->ClearTagetValues();
+	}
+}
+
 void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
 
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (AllyAIController)
 	{
-		int Decision = FMath::RandRange(1, 4);
-		
-		switch (Decision)
+		if (SoundResponseHit) UGameplayStatics::PlaySound2D(this, SoundResponseHit);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		AllyAIController->AttackTargetEnemy(TargetActor);
+		AllyAIController->FireAtWill();
+	}
+}
+
+void AGOSAllyCharacter::PlayFollowResponseSound()
+{
+	if (SoundResponseFollow && SoundResponseConfirm)
+	{
+		int RandomValue = FMath::RandRange(0, 10);
+		if (RandomValue > 4)
 		{
-		case 1:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-			AllyAIController->SetCovering(true);
-			break;
-		case 2:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-			AllyAIController->SetEvading(true);
-			break;
-		default:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-			AllyAIController->AttackTargetEnemy(TargetActor);
-			break;
+			UGameplayStatics::PlaySound2D(this, SoundResponseFollow);
 		}
+		else {
+			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		}
+	}
+}
+
+void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
+{
+	if (SoundResponseAttackEnemy && SoundResponseConfirm)
+	{
+		int RandomValue = FMath::RandRange(0, 10);
+		if (RandomValue > 4)
+		{
+			UGameplayStatics::PlaySound2D(this, SoundResponseAttackEnemy);
+		}
+		else {
+			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		}
+	}
+}
+
+void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
+{
+	if (SoundResponseConfirm)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+	}
+}
+
+void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
+{
+	if (SoundResponseEnemyKilled)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
+	}
+}
+
+void AGOSAllyCharacter::PlayConfirmResponseSound()
+{
+	if (SoundResponseConfirm)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
 	}
 }

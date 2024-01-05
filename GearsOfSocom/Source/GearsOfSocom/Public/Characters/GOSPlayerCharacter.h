@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class AGOSAllyCharacter;
+class USoundBase;
 
 /**
  * 
@@ -39,6 +40,8 @@ public:
 	void RevertToDefaultCameraView();
 	void CommandAllyToFollow();
 	void CommandAttackOrMoveToTargetPosition();
+	void CommandFireAtWill();
+	void CommandHoldFire();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -67,7 +70,30 @@ protected:
 	TObjectPtr<AGOSAllyCharacter> Ally1;
 
 protected:
+	// Voice Commands
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandFollow;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandAttack;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandMoveToPosition;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandFireAtWill;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandHoldFire;
+
+protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+
+private:
+	void PlayAllyFollowResponseSound();
+	void PlayAllyAttackEnemyResponseSound();
+	void PlayAllyMoveToTargetResponseSound();
+	void PlayAllyConfirmResponseSound();
 
 private:
 	float CurrentCameraFOV;

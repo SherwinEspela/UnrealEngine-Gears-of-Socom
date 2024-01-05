@@ -55,6 +55,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* CommandAttackOrMoveToTargetAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* CommandFireAtWillAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* CommandHoldFireAction;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -65,4 +71,6 @@ protected:
 	void ReloadGame();
 	void CommandAllyToFollow();
 	void CommandAttackOrMoveToTargetPosition();
+	void CommandFireAtWill();
+	void CommandHoldFire();
 };

@@ -23,6 +23,7 @@
 #define BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION TEXT("ShouldMoveToTargetPosition")
 #define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
 #define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
+#define BB_KEY_CAN_ENGAGE TEXT("CanEngage")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
@@ -55,12 +56,16 @@ enum class EBotMovementStates : uint8
 UENUM(BlueprintType)
 enum class EBotBehaviorTypes : uint8
 {
-	EBBT_Patrolling		UMETA(DisplayName = "Patrolling"),
-	EBBT_Chasing		UMETA(DisplayName = "Chasing"),
-	EBBT_Attacking		UMETA(DisplayName = "Attacking"),
-	EBBT_Investigating	UMETA(DisplayName = "Investigating"),
-	EBBT_Covering		UMETA(DisplayName = "Covering"),
-	EBBT_Evading		UMETA(DisplayName = "Evading")
+	EBBT_Patrolling			UMETA(DisplayName = "Patrolling"),
+	EBBT_Chasing			UMETA(DisplayName = "Chasing"),
+	EBBT_Attacking			UMETA(DisplayName = "Attacking"),
+	EBBT_Investigating		UMETA(DisplayName = "Investigating"),
+	EBBT_Covering			UMETA(DisplayName = "Covering"),
+	EBBT_Evading			UMETA(DisplayName = "Evading"),
+	EBBT_FollowingPlayer	UMETA(DisplayName = "Following Player"),
+	EBBT_MovingToPosition	UMETA(DisplayName = "Moving To Position"),
+
+	EBBT_Default			UMETA(DisplayName = "Default")
 };
 
 /**

@@ -7,6 +7,8 @@
 #include "Characters/AI/GOSBotCharacter.h"
 #include "GOSBaseEnemyCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnemyKilledSignature);
+
 /**
  * 
  */
@@ -28,6 +30,12 @@ public:
 
 	virtual void FireWeapon() override;
 
+	FOnEnemyKilledSignature OnEnemyKilled;
+
+public:
+	FORCEINLINE bool GetIsNotSeen() const { return bIsNotSeen; }
+	FORCEINLINE void SetSeen() { bIsNotSeen = false; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
@@ -42,4 +50,5 @@ protected:
 
 private:
 	int CurrentPatrolPointIndex = 0;
+	bool bIsNotSeen = true;
 };

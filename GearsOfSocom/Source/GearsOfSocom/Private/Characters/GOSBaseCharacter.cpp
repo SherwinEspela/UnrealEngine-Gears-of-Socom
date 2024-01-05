@@ -57,18 +57,13 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 }
 
-//void AGOSBaseCharacter::Tick(float DeltaSeconds)
-//{
-//	Super::Tick(DeltaSeconds);
-//}
-
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (ActorHasTag(FName(ACTOR_TAG_PLAYER))) return 0.f;
+	if (ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return 0.f;
 	if (bIsDead) return 0.f;
 
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	/*DamageApplied = FMath::Min(Health, DamageApplied);
+	DamageApplied = FMath::Min(Health, DamageApplied);
 	Health -= DamageApplied;
 
 	if (Health <= 0.f && GOSAnimInstance)
@@ -80,7 +75,7 @@ float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	}
 	else {
 		GOSAnimInstance->PlayHitReact();
-	}*/
+	}
 
 	return DamageApplied;
 }

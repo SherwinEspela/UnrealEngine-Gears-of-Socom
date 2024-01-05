@@ -21,8 +21,11 @@ public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AActor* Enemy);
+	virtual void SetTargetEnemy(AActor* Enemy);
 	virtual void ClearValues();
-	//virtual void SetTargetEnemy(AActor* Enemy);
+	virtual void ClearTagetValues();
+	virtual void FireAtWill();
+	virtual void HoldFire();
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();
