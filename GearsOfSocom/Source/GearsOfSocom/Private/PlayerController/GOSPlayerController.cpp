@@ -32,6 +32,8 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ReloadGameAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ReloadGame);
 	EnhancedInputComponent->BindAction(CommandAllyToFollowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAllyToFollow);
 	EnhancedInputComponent->BindAction(CommandAttackOrMoveToTargetAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAttackOrMoveToTargetPosition);
+	EnhancedInputComponent->BindAction(CommandFireAtWillAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandFireAtWill);
+	EnhancedInputComponent->BindAction(CommandHoldFireAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandHoldFire);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -77,4 +79,14 @@ void AGOSPlayerController::CommandAllyToFollow()
 void AGOSPlayerController::CommandAttackOrMoveToTargetPosition()
 {
 	PlayerCharacter->CommandAttackOrMoveToTargetPosition();
+}
+
+void AGOSPlayerController::CommandFireAtWill()
+{
+	PlayerCharacter->CommandFireAtWill();
+}
+
+void AGOSPlayerController::CommandHoldFire()
+{
+	PlayerCharacter->CommandHoldFire();
 }

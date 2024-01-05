@@ -40,6 +40,8 @@ public:
 	void RevertToDefaultCameraView();
 	void CommandAllyToFollow();
 	void CommandAttackOrMoveToTargetPosition();
+	void CommandFireAtWill();
+	void CommandHoldFire();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -78,6 +80,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Voice Command")
 	USoundBase* SFXCommandMoveToPosition;
 
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandFireAtWill;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Command")
+	USoundBase* SFXCommandHoldFire;
+
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
 
@@ -85,6 +93,7 @@ private:
 	void PlayAllyFollowResponseSound();
 	void PlayAllyAttackEnemyResponseSound();
 	void PlayAllyMoveToTargetResponseSound();
+	void PlayAllyConfirmResponseSound();
 
 private:
 	float CurrentCameraFOV;

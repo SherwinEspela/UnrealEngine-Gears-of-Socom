@@ -134,7 +134,7 @@ void AGOSPlayerCharacter::CommandAllyToFollow()
 		{
 			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
 			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 2.f, false);
+			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 1.f, false);
 		}
 	}
 }
@@ -161,13 +161,7 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 		if (Enemy)
 		{
 			Ally1->AttackTargetEnemy(Enemy);
-
-			if (SFXCommandAttack)
-			{
-				UGameplayStatics::PlaySound2D(this, SFXCommandAttack);
-				FTimerHandle TimerHandle;
-				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 2.f, false);
-			}
+			PlayAllyAttackEnemyResponseSound();
 		}
 		else {
 			Ally1->MoveToTargetPosition(Hit.Location);
@@ -176,8 +170,33 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 			{
 				UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
 				FTimerHandle TimerHandle;
-				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 2.f, false);
+				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 1.f, false);
 			}
+		}
+	}
+}
+
+void AGOSPlayerCharacter::CommandFireAtWill()
+{
+	if (Ally1) {
+		Ally1->FireAtWill();
+		if (SFXCommandFireAtWill) {
+			UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
+			FTimerHandle TimerHandle;
+			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
+		}
+	}
+}
+
+void AGOSPlayerCharacter::CommandHoldFire()
+{
+	if (Ally1) {
+		Ally1->HoldFire();
+		if (SFXCommandHoldFire)
+		{
+			UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
+			FTimerHandle TimerHandle;
+			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
 		}
 	}
 }
@@ -195,4 +214,9 @@ void AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound()
 void AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound()
 {
 	if (Ally1) Ally1->PlayMoveToPositionResponseSound();
+}
+
+void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
+{
+	if (Ally1) Ally1->PlayConfirmResponseSound();
 }

@@ -55,6 +55,12 @@ void AAllyBotAIController::AttackTargetEnemy(AActor* Enemy)
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 }
 
+void AAllyBotAIController::SetTargetEnemy(AActor* Enemy)
+{
+	TargetEnemy = Enemy;
+	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, Enemy);
+}
+
 void AAllyBotAIController::SetTargetSeen()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
@@ -75,4 +81,14 @@ void AAllyBotAIController::ClearTagetValues()
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET);
 	GetBlackboardComponent()->ClearValue(BB_KEY_HAS_TARGET_SIGHT);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_SEEN);
+}
+
+void AAllyBotAIController::FireAtWill()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
+}
+
+void AAllyBotAIController::HoldFire()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
 }

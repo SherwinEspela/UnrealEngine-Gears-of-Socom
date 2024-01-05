@@ -38,6 +38,7 @@ void AGOSAllyCharacter::BeginPlay()
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
+	SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
 }
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -51,7 +52,7 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
-		AllyAIController->SetTarget(SeenPawn);
+		AllyAIController->SetTargetEnemy(SeenPawn);
 
 		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
 		{
@@ -63,8 +64,10 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 void AGOSAllyCharacter::FollowPlayer()
 {
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_FollowingPlayer) return;
 	if (AllyAIController)
 	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_FollowingPlayer);
 		AllyAIController->FollowPlayer();
 	}
 }
@@ -73,6 +76,7 @@ void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
 {
 	if (AllyAIController)
 	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
 	}
 }
@@ -81,10 +85,29 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 {
 	if (AllyAIController)
 	{
-		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
-
 		TargetActor = Enemy;
+		
+		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(Enemy);
+	}
+}
+
+void AGOSAllyCharacter::FireAtWill()
+{
+	if (AllyAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		AllyAIController->FireAtWill();
+	}
+}
+
+void AGOSAllyCharacter::HoldFire()
+{
+	if (AllyAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
+		AllyAIController->HoldFire();
 	}
 }
 
@@ -128,6 +151,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 		if (SoundResponseHit) UGameplayStatics::PlaySound2D(this, SoundResponseHit);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(TargetActor);
+		AllyAIController->FireAtWill();
 	}
 }
 
@@ -174,5 +198,13 @@ void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
 	if (SoundResponseEnemyKilled)
 	{
 		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
+	}
+}
+
+void AGOSAllyCharacter::PlayConfirmResponseSound()
+{
+	if (SoundResponseConfirm)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
 	}
 }

@@ -12,7 +12,7 @@ UBTService_MoveToAndShoot::UBTService_MoveToAndShoot()
 {
 	NodeName = TEXT("Move and Shoot");
 
-	Interval = 1.5f;
+	Interval = 0.8f;
 	RandomDeviation = 0.2f;
 }
 
@@ -20,8 +20,11 @@ void UBTService_MoveToAndShoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
+	const bool CanEngage = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_CAN_ENGAGE);
+	if (!CanEngage) return;
+	
 	const AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BB_KEY_TARGET));
-	if (TargetActor == nullptr) return;
+	if (!TargetActor) return;
 
 	const bool IsTargetSeen = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_TARGET_SEEN);
 	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
