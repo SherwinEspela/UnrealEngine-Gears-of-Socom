@@ -64,6 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Voice Response")
 	USoundBase* SoundResponseEnemyKilled;
 
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseHit;
+
 private:
 	AAllyBotAIController* AllyAIController;
 

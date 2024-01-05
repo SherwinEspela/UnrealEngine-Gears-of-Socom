@@ -122,25 +122,12 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
 
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (AllyAIController)
 	{
-		int Decision = FMath::RandRange(1, 4);
-		
-		switch (Decision)
-		{
-		case 1:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-			AllyAIController->SetCovering(true);
-			break;
-		case 2:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-			AllyAIController->SetEvading(true);
-			break;
-		default:
-			SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-			AllyAIController->AttackTargetEnemy(TargetActor);
-			break;
-		}
+		if (SoundResponseHit) UGameplayStatics::PlaySound2D(this, SoundResponseHit);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		AllyAIController->AttackTargetEnemy(TargetActor);
 	}
 }
 
