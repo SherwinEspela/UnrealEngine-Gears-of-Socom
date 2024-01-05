@@ -149,15 +149,20 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (AllyAIController)
 	{
-		if (SoundResponseHit) UGameplayStatics::PlaySound2D(this, SoundResponseHit);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(TargetActor);
 		AllyAIController->FireAtWill();
+
+		if (SoundResponseHit && bCanPlaySound) {
+			UGameplayStatics::PlaySound2D(this, SoundResponseHit);
+			DelayNextVoiceSound();
+		}
 	}
 }
 
 void AGOSAllyCharacter::PlayFollowResponseSound()
 {
+	if (!bCanPlaySound) return;
 	if (SoundResponseFollow && SoundResponseConfirm)
 	{
 		int RandomValue = FMath::RandRange(0, 10);
@@ -168,11 +173,14 @@ void AGOSAllyCharacter::PlayFollowResponseSound()
 		else {
 			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
 		}
+
+		DelayNextVoiceSound();
 	}
 }
 
 void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
 {
+	if (!bCanPlaySound) return;
 	if (SoundResponseAttackEnemy && SoundResponseConfirm)
 	{
 		int RandomValue = FMath::RandRange(0, 10);
@@ -183,29 +191,49 @@ void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
 		else {
 			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
 		}
+
+		DelayNextVoiceSound();
 	}
 }
 
 void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
 {
+	if (!bCanPlaySound) return;
 	if (SoundResponseConfirm)
 	{
 		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		DelayNextVoiceSound();
 	}
 }
 
 void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
 {
+	if (!bCanPlaySound) return;
 	if (SoundResponseEnemyKilled)
 	{
 		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
+		DelayNextVoiceSound();
 	}
 }
 
 void AGOSAllyCharacter::PlayConfirmResponseSound()
 {
+	if (!bCanPlaySound) return;
 	if (SoundResponseConfirm)
 	{
 		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+		DelayNextVoiceSound();
 	}
+}
+
+void AGOSAllyCharacter::DelayNextVoiceSound()
+{
+	bCanPlaySound = false;
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSAllyCharacter::ResponseSoundCompleted, 1.5f, false);
+}
+
+void AGOSAllyCharacter::ResponseSoundCompleted()
+{
+	bCanPlaySound = true;
 }
