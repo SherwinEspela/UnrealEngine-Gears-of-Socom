@@ -5,6 +5,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Characters/AI/BotAIController.h"
+#include "Characters/Ally/GOSAllyCharacter.h"
 #include "Perception/PawnSensingComponent.h"
 
 void AGOSBaseEnemyCharacter::BeginPlay()
@@ -64,6 +65,15 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 	if (Health > 0.f && BotAIController)
 	{
 		DamageReaction(DamageCauser);
+	}
+	else {
+		TargetActor = nullptr;
+		AGOSAllyCharacter* NavyBot = Cast<AGOSAllyCharacter>(DamageCauser);
+		if (NavyBot)
+		{
+			NavyBot->PlayEnemyKilledResponseSound();
+			NavyBot->HandleEnemyKilled();
+		}
 	}
 
 	return DamageApplied;

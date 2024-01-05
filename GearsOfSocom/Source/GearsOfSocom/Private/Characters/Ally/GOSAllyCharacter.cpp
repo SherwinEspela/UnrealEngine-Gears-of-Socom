@@ -46,11 +46,13 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
+		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
+		if (Enemy->IsDead()) return;
+
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTarget(SeenPawn);
 
-		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
 		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
 		{
 			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
@@ -103,6 +105,15 @@ float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	}
 
 	return DamageApplied;
+}
+
+void AGOSAllyCharacter::HandleEnemyKilled()
+{
+	if (AllyAIController)
+	{
+		TargetActor = nullptr;
+		AllyAIController->ClearTagetValues();
+	}
 }
 
 void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
@@ -166,5 +177,13 @@ void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
 	if (SoundResponseConfirm)
 	{
 		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
+	}
+}
+
+void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
+{
+	if (SoundResponseEnemyKilled)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
 	}
 }

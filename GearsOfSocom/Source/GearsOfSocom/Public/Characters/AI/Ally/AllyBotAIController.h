@@ -22,7 +22,7 @@ public:
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AActor* Enemy);
 	virtual void ClearValues();
-	//virtual void SetTargetEnemy(AActor* Enemy);
+	virtual void ClearTagetValues();
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();

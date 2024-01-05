@@ -21,8 +21,6 @@ class GEARSOFSOCOM_API AGOSBaseCharacter : public ACharacter
 public:
 	AGOSBaseCharacter();
 
-	//virtual void Tick(float DeltaSeconds) override;
-
 	virtual float TakeDamage
 	(
 		float DamageAmount,
@@ -37,6 +35,9 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
+
+public:
+	FORCEINLINE bool IsDead() { return bIsDead; }
 
 protected:
 	virtual void BeginPlay() override;

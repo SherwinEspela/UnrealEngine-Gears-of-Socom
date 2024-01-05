@@ -95,6 +95,18 @@ void AGOSBotCharacter::MakeDecision()
 {
 }
 
+float AGOSBotCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (bIsDead)
+	{
+		TargetActor = nullptr;
+	}
+
+	return DamageApplied;
+}
+
 void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)
 {
 	CurrentBotBehavior = NewBehavior;

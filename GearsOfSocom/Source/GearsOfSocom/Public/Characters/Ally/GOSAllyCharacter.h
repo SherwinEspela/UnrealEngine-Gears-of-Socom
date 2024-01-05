@@ -31,11 +31,14 @@ public:
 		AActor* DamageCauser
 	) override;
 
+	virtual void HandleEnemyKilled();
+
 public:
 	// Play Sound functions
 	virtual void PlayFollowResponseSound();
 	virtual void PlayAttackEnemyResponseSound();
 	virtual void PlayMoveToPositionResponseSound();
+	virtual void PlayEnemyKilledResponseSound();
 
 protected:
 	virtual void BeginPlay() override;
@@ -56,6 +59,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Voice Response")
 	USoundBase* SoundResponseEnemySighted;
+
+	UPROPERTY(EditAnywhere, Category = "Voice Response")
+	USoundBase* SoundResponseEnemyKilled;
 
 private:
 	AAllyBotAIController* AllyAIController;

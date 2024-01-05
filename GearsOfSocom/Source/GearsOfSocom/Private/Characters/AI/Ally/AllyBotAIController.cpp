@@ -68,3 +68,11 @@ void AAllyBotAIController::ClearValues()
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 }
+
+void AAllyBotAIController::ClearTagetValues()
+{
+	TargetEnemy = nullptr;
+	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET);
+	GetBlackboardComponent()->ClearValue(BB_KEY_HAS_TARGET_SIGHT);
+	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_SEEN);
+}
