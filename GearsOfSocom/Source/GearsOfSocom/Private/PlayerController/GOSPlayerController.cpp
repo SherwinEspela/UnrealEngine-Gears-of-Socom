@@ -73,20 +73,40 @@ void AGOSPlayerController::ReloadGame()
 
 void AGOSPlayerController::CommandAllyToFollow()
 {
+	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandAllyToFollow();
+	DelayNextCommand();
 }
 
 void AGOSPlayerController::CommandAttackOrMoveToTargetPosition()
 {
+	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandAttackOrMoveToTargetPosition();
+	DelayNextCommand();
 }
 
 void AGOSPlayerController::CommandFireAtWill()
 {
+	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandFireAtWill();
+	DelayNextCommand();
 }
 
 void AGOSPlayerController::CommandHoldFire()
 {
+	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandHoldFire();
+	DelayNextCommand();
+}
+
+void AGOSPlayerController::HandleDelayNextCommandCompleted()
+{
+	bCanIssueCommand = true;
+}
+
+void AGOSPlayerController::DelayNextCommand()
+{
+	bCanIssueCommand = false;
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerController::HandleDelayNextCommandCompleted, 2.f, false);
 }

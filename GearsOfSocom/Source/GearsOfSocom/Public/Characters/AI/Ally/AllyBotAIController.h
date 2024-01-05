@@ -15,7 +15,7 @@ class GEARSOFSOCOM_API AAllyBotAIController : public ABotAIController
 	GENERATED_BODY()
 
 public:
-	virtual void Tick(float DeltaSeconds);
+	//virtual void Tick(float DeltaSeconds);
 
 public:
 	virtual void FollowPlayer();
@@ -33,6 +33,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-protected:
-	AActor* TargetEnemy;
+//protected:
+//	AActor* TargetEnemy;
 };

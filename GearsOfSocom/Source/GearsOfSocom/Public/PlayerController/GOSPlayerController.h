@@ -73,4 +73,11 @@ protected:
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
+
+private:
+	bool bCanIssueCommand = true;
+
+private:
+	void HandleDelayNextCommandCompleted();
+	void DelayNextCommand();
 };

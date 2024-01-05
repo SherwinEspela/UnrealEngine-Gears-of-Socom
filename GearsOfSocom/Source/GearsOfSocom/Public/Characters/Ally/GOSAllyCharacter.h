@@ -77,5 +77,10 @@ protected:
 
 private:
 	AAllyBotAIController* AllyAIController;
+	bool bCanPlaySound = true;
+
+private:
+	void ResponseSoundCompleted();
+	void DelayNextVoiceSound();
 
 };
