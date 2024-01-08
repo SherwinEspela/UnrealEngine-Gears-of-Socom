@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* CommandHoldFireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ToggleCrouchAction;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -69,6 +72,8 @@ protected:
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void ReloadGame();
+	void ToggleCrouch();
+
 	void CommandAllyToFollow();
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();

@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Animation/GOSBaseAnimInstance.h"
+#include "Animation/GOSPlayerAnimInstance.h"
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "InputActionValue.h"
@@ -33,6 +34,8 @@ void AGOSPlayerCharacter::BeginPlay()
 	CameraDefaultFOV = FollowCamera->FieldOfView;
 	Tags.Add(FName(ACTOR_TAG_PLAYER));
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
+
+	PlayerAnimInstance = CastChecked<UGOSPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -122,6 +125,12 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 	}
+}
+
+void AGOSPlayerCharacter::ToggleCrouch()
+{
+	if (GetCharacterMovement()->IsFalling()) return;
+	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
 }
 
 void AGOSPlayerCharacter::CommandAllyToFollow()

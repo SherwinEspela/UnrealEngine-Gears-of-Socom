@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class AGOSAllyCharacter;
 class USoundBase;
+class UGOSPlayerAnimInstance;
 
 /**
  * 
@@ -36,6 +37,7 @@ public:
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
 	void ToggleWalkOrJog();
+	void ToggleCrouch();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void CommandAllyToFollow();
@@ -97,5 +99,5 @@ private:
 
 private:
 	float CurrentCameraFOV;
-
+	UGOSPlayerAnimInstance* PlayerAnimInstance;
 };

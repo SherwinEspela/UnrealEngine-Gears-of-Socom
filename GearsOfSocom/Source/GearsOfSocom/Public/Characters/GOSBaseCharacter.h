@@ -38,6 +38,7 @@ public:
 
 public:
 	FORCEINLINE bool IsDead() { return bIsDead; }
+	FORCEINLINE bool IsCrouching() { return bIsCrouching; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -86,4 +87,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bIsDead = false;
+
+	bool bIsCrouching = false;
 };
