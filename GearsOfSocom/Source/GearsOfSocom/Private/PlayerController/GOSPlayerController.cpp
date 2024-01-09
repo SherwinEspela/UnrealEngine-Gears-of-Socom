@@ -34,6 +34,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(CommandAttackOrMoveToTargetAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAttackOrMoveToTargetPosition);
 	EnhancedInputComponent->BindAction(CommandFireAtWillAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandFireAtWill);
 	EnhancedInputComponent->BindAction(CommandHoldFireAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandHoldFire);
+	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleCrouch);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -69,6 +70,11 @@ void AGOSPlayerController::RevertToDefaultCameraView()
 void AGOSPlayerController::ReloadGame()
 {
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+}
+
+void AGOSPlayerController::ToggleCrouch()
+{
+	PlayerCharacter->ToggleCrouch();
 }
 
 void AGOSPlayerController::CommandAllyToFollow()

@@ -27,6 +27,7 @@ public:
 public:
 	FORCEINLINE void SetAiming(bool IsAiming) { bIsAiming = IsAiming; }
 	FORCEINLINE void SetAsDead() { bIsDead = true; }
+	FORCEINLINE void ToggleCrouch() { bIsCrouching = !bIsCrouching; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
@@ -47,6 +48,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsCharacterSprinting;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
+	bool bIsCrouching = false;
+	
 	UPROPERTY(BlueprintReadOnly, Category = Weapon)
 	bool bIsAiming = false;
 
