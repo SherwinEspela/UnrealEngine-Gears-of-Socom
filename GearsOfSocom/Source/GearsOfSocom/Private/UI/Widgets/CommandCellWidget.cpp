@@ -3,3 +3,17 @@
 
 #include "UI/Widgets/CommandCellWidget.h"
 
+void UCommandCellWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
+void UCommandCellWidget::PlayShowAnimation()
+{
+	OnPlayShowRequested();
+}
+
+void UCommandCellWidget::PlayHideAnimation()
+{
+	OnPlayHideRequested();
+}

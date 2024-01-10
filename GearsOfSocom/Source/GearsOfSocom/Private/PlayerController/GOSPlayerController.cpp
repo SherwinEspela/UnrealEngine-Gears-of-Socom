@@ -3,6 +3,7 @@
 
 #include "PlayerController/GOSPlayerController.h"
 #include "Characters/GOSPlayerCharacter.h"
+#include "UI/Widgets/CommandMenuWidget.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -16,6 +17,15 @@ void AGOSPlayerController::BeginPlay()
 	
 	UEnhancedInputLocalPlayerSubsystem* PlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	PlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+
+	if (CommandMenuWidgetClass)
+	{
+		CommandMenuWidget = CreateWidget<UCommandMenuWidget>(GetWorld(), CommandMenuWidgetClass);
+		if (CommandMenuWidget)
+		{
+			CommandMenuWidget->AddToViewport();
+		}
+	}
 }
 
 void AGOSPlayerController::SetupInputComponent()
@@ -35,6 +45,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(CommandFireAtWillAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandFireAtWill);
 	EnhancedInputComponent->BindAction(CommandHoldFireAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandHoldFire);
 	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleCrouch);
+	EnhancedInputComponent->BindAction(ToggleShowCommandMenuAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleShowCommandMenu);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -103,6 +114,11 @@ void AGOSPlayerController::CommandHoldFire()
 	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandHoldFire();
 	DelayNextCommand();
+}
+
+void AGOSPlayerController::ToggleShowCommandMenu()
+{
+	if (CommandMenuWidget) CommandMenuWidget->ToggleShow();
 }
 
 void AGOSPlayerController::HandleDelayNextCommandCompleted()

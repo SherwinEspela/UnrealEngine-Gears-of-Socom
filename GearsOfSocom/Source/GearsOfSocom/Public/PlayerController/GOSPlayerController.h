@@ -9,6 +9,7 @@
 class AGOSPlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
+class UCommandMenuWidget;
 struct FInputActionValue;
 
 /**
@@ -64,6 +65,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ToggleCrouchAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ToggleShowCommandMenuAction;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = UI)
+	TSubclassOf<UCommandMenuWidget> CommandMenuWidgetClass;
+
+	UCommandMenuWidget* CommandMenuWidget;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -78,6 +88,8 @@ protected:
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
+
+	void ToggleShowCommandMenu();
 
 private:
 	bool bCanIssueCommand = true;
