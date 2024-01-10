@@ -11,6 +11,7 @@ class UCameraComponent;
 class AGOSAllyCharacter;
 class USoundBase;
 class UGOSPlayerAnimInstance;
+class UWeaponWidget;
 
 /**
  * 
@@ -55,6 +56,9 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
+	void ToggleCameraFOVInterp(float DeltaSeconds);
+
+protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float CameraZoomWeaponValue = 40.f;
 
@@ -89,7 +93,12 @@ protected:
 	USoundBase* SFXCommandHoldFire;
 
 protected:
-	void ToggleCameraFOVInterp(float DeltaSeconds);
+	// UI
+	UPROPERTY(EditAnywhere, Category = "Interface")
+	TSubclassOf<UWeaponWidget> WeaponWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Interface")
+	UWeaponWidget* WeaponWidget;
 
 private:
 	void PlayAllyFollowResponseSound();

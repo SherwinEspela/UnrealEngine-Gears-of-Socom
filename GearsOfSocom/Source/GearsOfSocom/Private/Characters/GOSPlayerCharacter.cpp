@@ -13,6 +13,7 @@
 #include "Characters/GOSBaseCharacter.h"
 #include "Engine/DamageEvents.h"
 #include "Sound/SoundBase.h"
+#include "UI/Widgets/WeaponWidget.h"
 #include "Constants/Constants.h"
 
 
@@ -36,6 +37,16 @@ void AGOSPlayerCharacter::BeginPlay()
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 
 	PlayerAnimInstance = CastChecked<UGOSPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (WeaponWidgetClass)
+	{
+		WeaponWidget = CreateWidget<UWeaponWidget>(GetWorld(), WeaponWidgetClass);
+		if (WeaponWidget)
+		{
+			WeaponWidget->AddToViewport();
+			WeaponWidget->SetWeaponName(TEXT("WeaponTest"));
+		}
+	}
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
