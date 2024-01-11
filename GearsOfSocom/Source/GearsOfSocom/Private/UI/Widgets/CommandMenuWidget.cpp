@@ -3,6 +3,7 @@
 
 #include "UI/Widgets/CommandMenuWidget.h"
 #include "UI/Widgets/CommandCellWidget.h"
+#include "Components/TextBlock.h"
 
 void UCommandMenuWidget::NativeConstruct()
 {
@@ -24,6 +25,10 @@ void UCommandMenuWidget::SetupCommandCells()
 		CommandCellAble->Unhighlight();
 		CommandCellBravo->Unhighlight();
 
+		CommandCellTeam->SetCommandType(ECommandType::ECT_Group);
+		CommandCellAble->SetCommandType(ECommandType::ECT_Group);
+		CommandCellBravo->SetCommandType(ECommandType::ECT_Group);
+
 		TeamCommandCells.Add(CommandCellTeam);
 		TeamCommandCells.Add(CommandCellAble);
 		TeamCommandCells.Add(CommandCellBravo);
@@ -31,6 +36,7 @@ void UCommandMenuWidget::SetupCommandCells()
 
 	CurrentCommandCell = CommandCellTeam;
 	CurrentCommandCell->Highlight();
+	UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
 }
 
 void UCommandMenuWidget::ToggleShow()
@@ -120,5 +126,14 @@ void UCommandMenuWidget::UpdateCommandCells(UCommandCellWidget* NewCommandCell)
 		CurrentCommandCell->Unhighlight();
 		NewCommandCell->Highlight();
 		CurrentCommandCell = NewCommandCell;
+		UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
+	}
+}
+
+void UCommandMenuWidget::UpdateTextDescription(FString Description)
+{
+	if (TextDescription)
+	{
+		TextDescription->SetText(FText::FromString(Description).ToUpper());
 	}
 }

@@ -7,6 +7,7 @@
 #include "CommandMenuWidget.generated.h"
 
 class UCommandCellWidget;
+class UTextBlock;
 
 /**
  * 
@@ -61,9 +62,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UCommandCellWidget* CommandCellBravo;
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* TextDescription;
+
 private:
 	void SetupCommandCells();
 	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
+	void UpdateTextDescription(FString Description);
 
 private:
 	UCommandCellWidget* CurrentCommandCell;

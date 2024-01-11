@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Constants/UICustomEnums.h"
 #include "CommandCellWidget.generated.h"
 
 class UTextBlock;
@@ -37,6 +38,9 @@ public:
 	FORCEINLINE UCommandCellWidget* GetCellLeft() const { return CellLeft; }
 	FORCEINLINE UCommandCellWidget* GetCellRight() const { return CellRight; }
 
+	FORCEINLINE void SetCommandType(ECommandType NewCommandType) { CommandType = NewCommandType; }
+	FORCEINLINE FString GetCommandDescription() const { return CommandDescription; }
+
 public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsSelected = false;
@@ -58,11 +62,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UImage* ImageTitleBG;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Command Title")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Command)
 	FText CommandName;
+
+	UPROPERTY(EditAnywhere, Category = Command)
+	FString CommandDescription;
 
 	UPROPERTY(EditAnywhere)
 	float BackgroundOpacity = 0.25f;
+
+	ECommandType CommandType;
 
 private:
 	UCommandCellWidget* CellAbove;
