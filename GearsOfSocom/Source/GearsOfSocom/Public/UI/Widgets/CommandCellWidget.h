@@ -39,6 +39,7 @@ public:
 	FORCEINLINE UCommandCellWidget* GetCellRight() const { return CellRight; }
 
 	FORCEINLINE void SetCommandType(ECommandType NewCommandType) { CommandType = NewCommandType; }
+	FORCEINLINE ECommandType GetCommandType() const { return CommandType; }
 	FORCEINLINE FString GetCommandDescription() const { return CommandDescription; }
 
 public:

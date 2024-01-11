@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Constants/UICustomEnums.h"
 #include "CommandMenuWidget.generated.h"
 
 class UCommandCellWidget;
 class UTextBlock;
+class UCanvasPanel;
 
 /**
  * 
@@ -24,13 +26,18 @@ public:
 	void SelectCommandLeft();
 	void SelectCommandRight();
 	void ChooseCommand();
-	void HideTeamCommandCells();
+	void HideCommandCells(TArray<UCommandCellWidget*> CommandCells);
+	/*void HideTeamCommandCells();
+	void HidePrimaryCommandCells();*/
 
 	UFUNCTION(BlueprintCallable)
 	void HandleTeamSelectAnimationEnded();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleHideTeamSelectAnimationEnded();
+
+	UFUNCTION(BlueprintCallable)
+	void ShowPrimaryCommandCells();
 
 public:
 	UPROPERTY(BlueprintReadOnly)
@@ -40,6 +47,7 @@ public:
 	bool bIsCommandSelected = false;
 
 protected:
+	void NativePreConstruct() override;
 	void NativeConstruct() override;
 
 protected:
@@ -53,6 +61,9 @@ protected:
 	void OnCommandSelected();
 
 protected:
+	UPROPERTY(meta = (BindWidget))
+	UCanvasPanel* CanvasPanel;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UCommandCellWidget* CommandCellTeam;
 
@@ -63,14 +74,55 @@ protected:
 	UCommandCellWidget* CommandCellBravo;
 
 	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellFireAtWill;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellCoverArea;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellDeploy;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellAmbush;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellRunTo;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellLeadTo;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellAttackTo;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellStealthTo;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellRegroup;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellFollow;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommandCellWidget* CommandCellHoldPosition;
+
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TextDescription;
+
+	UPROPERTY(BlueprintReadOnly)
+	ECommandType CurrentCommandType;
 
 private:
 	void SetupCommandCells();
+	void SetupGroupCommandCells();
+	void SetupPrimaryCommandCells();
+	bool CanSetupPrimaryCommandCells();
 	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
 	void UpdateTextDescription(FString Description);
 
 private:
 	UCommandCellWidget* CurrentCommandCell;
 	TArray<UCommandCellWidget*> TeamCommandCells;
+	TArray<UCommandCellWidget*> PrimaryCommandCells;
+
 };
