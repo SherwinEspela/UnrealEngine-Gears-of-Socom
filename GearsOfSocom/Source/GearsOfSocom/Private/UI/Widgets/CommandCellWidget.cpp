@@ -16,6 +16,7 @@ void UCommandCellWidget::PlayShowAnimation()
 
 void UCommandCellWidget::PlayHideAnimation()
 {
+	if (bIsSelected) return;
 	OnPlayHideRequested();
 }
 

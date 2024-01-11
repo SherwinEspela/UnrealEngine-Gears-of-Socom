@@ -50,6 +50,7 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(SelectCommandBelowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandBelow);
 	EnhancedInputComponent->BindAction(SelectCommandLeftAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandLeft);
 	EnhancedInputComponent->BindAction(SelectCommandRightAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandRight);
+	EnhancedInputComponent->BindAction(SelectCommandAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ChooseCommand);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -155,4 +156,9 @@ void AGOSPlayerController::SelectCommandLeft()
 void AGOSPlayerController::SelectCommandRight()
 {
 	if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
+}
+
+void AGOSPlayerController::ChooseCommand()
+{
+	if (CommandMenuWidget) CommandMenuWidget->ChooseCommand();
 }

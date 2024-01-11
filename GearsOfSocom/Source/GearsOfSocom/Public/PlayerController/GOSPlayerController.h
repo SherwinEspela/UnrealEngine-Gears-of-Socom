@@ -80,6 +80,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* SelectCommandRightAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandAction;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = UI)
 	TSubclassOf<UCommandMenuWidget> CommandMenuWidgetClass;
@@ -106,6 +109,7 @@ protected:
 	void SelectCommandBelow();
 	void SelectCommandLeft();
 	void SelectCommandRight();
+	void ChooseCommand();
 
 private:
 	bool bCanIssueCommand = true;

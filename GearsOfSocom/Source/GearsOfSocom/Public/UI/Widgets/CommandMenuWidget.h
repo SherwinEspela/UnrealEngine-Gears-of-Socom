@@ -22,6 +22,8 @@ public:
 	void SelectCommandBelow();
 	void SelectCommandLeft();
 	void SelectCommandRight();
+	void ChooseCommand();
+	void HideTeamCommandCells();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleTeamSelectAnimationEnded();
@@ -33,6 +35,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsDisplayed = false;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsCommandSelected = false;
+
 protected:
 	void NativeConstruct() override;
 
@@ -42,6 +47,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnHideRequested();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnCommandSelected();
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -59,4 +67,5 @@ private:
 
 private:
 	UCommandCellWidget* CurrentCommandCell;
+	TArray<UCommandCellWidget*> TeamCommandCells;
 };

@@ -37,6 +37,10 @@ public:
 	FORCEINLINE UCommandCellWidget* GetCellLeft() const { return CellLeft; }
 	FORCEINLINE UCommandCellWidget* GetCellRight() const { return CellRight; }
 
+public:
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsSelected = false;
+
 protected:
 	void NativeConstruct() override;
 

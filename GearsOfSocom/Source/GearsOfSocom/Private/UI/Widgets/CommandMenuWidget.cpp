@@ -23,6 +23,10 @@ void UCommandMenuWidget::SetupCommandCells()
 
 		CommandCellAble->Unhighlight();
 		CommandCellBravo->Unhighlight();
+
+		TeamCommandCells.Add(CommandCellTeam);
+		TeamCommandCells.Add(CommandCellAble);
+		TeamCommandCells.Add(CommandCellBravo);
 	}
 
 	CurrentCommandCell = CommandCellTeam;
@@ -33,6 +37,7 @@ void UCommandMenuWidget::ToggleShow()
 {
 	if (bIsDisplayed)
 	{
+		bIsCommandSelected = false;
 		OnHideRequested();
 	}
 	else {
@@ -55,6 +60,7 @@ void UCommandMenuWidget::HandleHideTeamSelectAnimationEnded()
 {
 	if (CommandCellAble && CommandCellBravo)
 	{
+		CommandCellTeam->PlayHideAnimation();
 		CommandCellAble->PlayHideAnimation();
 		CommandCellBravo->PlayHideAnimation();
 	}
@@ -84,6 +90,27 @@ void UCommandMenuWidget::SelectCommandRight()
 	if (!bIsDisplayed) return;
 	UE_LOG(LogTemp, Warning, TEXT("SelectCommandRight"));
 	UpdateCommandCells(CurrentCommandCell->GetCellRight());
+}
+
+void UCommandMenuWidget::ChooseCommand()
+{
+	if (!bIsDisplayed) return;
+	bIsCommandSelected = true;
+	CurrentCommandCell->bIsSelected = true;
+	CurrentCommandCell->Unhighlight();
+	HideTeamCommandCells();
+	OnCommandSelected();
+}
+
+void UCommandMenuWidget::HideTeamCommandCells()
+{
+	if (TeamCommandCells.Num() > 0)
+	{
+		for (auto Cell : TeamCommandCells)
+		{
+			Cell->PlayHideAnimation();
+		}
+	}
 }
 
 void UCommandMenuWidget::UpdateCommandCells(UCommandCellWidget* NewCommandCell)
