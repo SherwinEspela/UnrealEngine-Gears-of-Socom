@@ -68,6 +68,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* ToggleShowCommandMenuAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandAboveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandBelowAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandLeftAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandRightAction;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = UI)
 	TSubclassOf<UCommandMenuWidget> CommandMenuWidgetClass;
@@ -90,6 +102,10 @@ protected:
 	void CommandHoldFire();
 
 	void ToggleShowCommandMenu();
+	void SelectCommandAbove();
+	void SelectCommandBelow();
+	void SelectCommandLeft();
+	void SelectCommandRight();
 
 private:
 	bool bCanIssueCommand = true;

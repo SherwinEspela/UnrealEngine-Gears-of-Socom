@@ -2,6 +2,7 @@
 
 
 #include "UI/Widgets/CommandCellWidget.h"
+#include "Components/Image.h"
 
 void UCommandCellWidget::NativeConstruct()
 {
@@ -16,4 +17,22 @@ void UCommandCellWidget::PlayShowAnimation()
 void UCommandCellWidget::PlayHideAnimation()
 {
 	OnPlayHideRequested();
+}
+
+void UCommandCellWidget::Highlight()
+{
+	if (ImageTitleBG)
+	{
+		ImageTitleBG->SetColorAndOpacity(FLinearColor(FColor::Black));
+		ImageTitleBG->SetOpacity(BackgroundOpacity);
+	}
+}
+
+void UCommandCellWidget::Unhighlight()
+{
+	if (ImageTitleBG)
+	{
+		ImageTitleBG->SetColorAndOpacity(FLinearColor(FColor::White));
+		ImageTitleBG->SetOpacity(BackgroundOpacity);
+	}
 }

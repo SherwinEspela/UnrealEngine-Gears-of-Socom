@@ -7,7 +7,9 @@
 void UCommandMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	bIsShowed = false;
+	bIsDisplayed = false;
+
+	SetupCommandCells();
 }
 
 void UCommandMenuWidget::SetupCommandCells()
@@ -18,12 +20,18 @@ void UCommandMenuWidget::SetupCommandCells()
 		CommandCellAble->SetCellAbove(CommandCellTeam);
 		CommandCellAble->SetCellBelow(CommandCellBravo);
 		CommandCellBravo->SetCellAbove(CommandCellAble);
+
+		CommandCellAble->Unhighlight();
+		CommandCellBravo->Unhighlight();
 	}
+
+	CurrentCommandCell = CommandCellTeam;
+	CurrentCommandCell->Highlight();
 }
 
 void UCommandMenuWidget::ToggleShow()
 {
-	if (bIsShowed)
+	if (bIsDisplayed)
 	{
 		OnHideRequested();
 	}
@@ -31,7 +39,7 @@ void UCommandMenuWidget::ToggleShow()
 		OnShowRequested();
 	}
 
-	bIsShowed = !bIsShowed;
+	bIsDisplayed = !bIsDisplayed;
 }
 
 void UCommandMenuWidget::HandleTeamSelectAnimationEnded()
@@ -49,5 +57,41 @@ void UCommandMenuWidget::HandleHideTeamSelectAnimationEnded()
 	{
 		CommandCellAble->PlayHideAnimation();
 		CommandCellBravo->PlayHideAnimation();
+	}
+}
+
+void UCommandMenuWidget::SelectCommandAbove()
+{
+	if (!bIsDisplayed) return;
+	UpdateCommandCells(CurrentCommandCell->GetCellAbove());
+}
+
+void UCommandMenuWidget::SelectCommandBelow()
+{
+	if (!bIsDisplayed) return;
+	UpdateCommandCells(CurrentCommandCell->GetCellBelow());
+}
+
+void UCommandMenuWidget::SelectCommandLeft()
+{
+	if (!bIsDisplayed) return;
+	UE_LOG(LogTemp, Warning, TEXT("SelectCommandLeft"));
+	UpdateCommandCells(CurrentCommandCell->GetCellLeft());
+}
+
+void UCommandMenuWidget::SelectCommandRight()
+{
+	if (!bIsDisplayed) return;
+	UE_LOG(LogTemp, Warning, TEXT("SelectCommandRight"));
+	UpdateCommandCells(CurrentCommandCell->GetCellRight());
+}
+
+void UCommandMenuWidget::UpdateCommandCells(UCommandCellWidget* NewCommandCell)
+{
+	if (NewCommandCell)
+	{
+		CurrentCommandCell->Unhighlight();
+		NewCommandCell->Highlight();
+		CurrentCommandCell = NewCommandCell;
 	}
 }

@@ -46,6 +46,10 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(CommandHoldFireAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandHoldFire);
 	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleCrouch);
 	EnhancedInputComponent->BindAction(ToggleShowCommandMenuAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleShowCommandMenu);
+	EnhancedInputComponent->BindAction(SelectCommandAboveAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandAbove);
+	EnhancedInputComponent->BindAction(SelectCommandBelowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandBelow);
+	EnhancedInputComponent->BindAction(SelectCommandLeftAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandLeft);
+	EnhancedInputComponent->BindAction(SelectCommandRightAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandRight);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -116,11 +120,6 @@ void AGOSPlayerController::CommandHoldFire()
 	DelayNextCommand();
 }
 
-void AGOSPlayerController::ToggleShowCommandMenu()
-{
-	if (CommandMenuWidget) CommandMenuWidget->ToggleShow();
-}
-
 void AGOSPlayerController::HandleDelayNextCommandCompleted()
 {
 	bCanIssueCommand = true;
@@ -131,4 +130,29 @@ void AGOSPlayerController::DelayNextCommand()
 	bCanIssueCommand = false;
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerController::HandleDelayNextCommandCompleted, 2.f, false);
+}
+
+void AGOSPlayerController::ToggleShowCommandMenu()
+{
+	if (CommandMenuWidget) CommandMenuWidget->ToggleShow();
+}
+
+void AGOSPlayerController::SelectCommandAbove()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandAbove();
+}
+
+void AGOSPlayerController::SelectCommandBelow()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandBelow();
+}
+
+void AGOSPlayerController::SelectCommandLeft()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
+}
+
+void AGOSPlayerController::SelectCommandRight()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
 }

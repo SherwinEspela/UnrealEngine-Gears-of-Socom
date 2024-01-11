@@ -18,12 +18,20 @@ class GEARSOFSOCOM_API UCommandMenuWidget : public UUserWidget
 
 public:
 	void ToggleShow();
+	void SelectCommandAbove();
+	void SelectCommandBelow();
+	void SelectCommandLeft();
+	void SelectCommandRight();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleTeamSelectAnimationEnded();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleHideTeamSelectAnimationEnded();
+
+public:
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsDisplayed = false;
 
 protected:
 	void NativeConstruct() override;
@@ -47,8 +55,8 @@ protected:
 
 private:
 	void SetupCommandCells();
+	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
 
 private:
-	bool bIsShowed = false;
-	
+	UCommandCellWidget* CurrentCommandCell;
 };
