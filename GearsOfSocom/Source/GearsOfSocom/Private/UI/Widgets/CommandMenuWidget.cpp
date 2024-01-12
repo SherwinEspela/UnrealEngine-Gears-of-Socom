@@ -107,14 +107,15 @@ void UCommandMenuWidget::ToggleShow()
 
 	if (bIsDisplayed)
 	{
-		bIsCommandSelected = false;
+		Reset();
 		OnHideRequested();
+		SetVisibility(ESlateVisibility::Hidden);
 	}
 	else {
+		SetVisibility(ESlateVisibility::Visible);
 		OnShowRequested();
+		bIsDisplayed = true;
 	}
-
-	bIsDisplayed = !bIsDisplayed;
 }
 
 void UCommandMenuWidget::HandleTeamSelectAnimationEnded()
@@ -262,30 +263,28 @@ void UCommandMenuWidget::HandleHideMenuAnimationFinished()
 
 void UCommandMenuWidget::Reset()
 {
-	if (CurrentCommandType == ECommandType::ECT_Primary)
+	CurrentCommandType = ECommandType::ECT_Group;
+	SelectedGroupCommandCell = nullptr;
+	SelectedPrimaryCommandCell = nullptr;
+
+	for (auto TeamCell : TeamCommandCells)
 	{
-		CurrentCommandType = ECommandType::ECT_Group;
-		SelectedGroupCommandCell = nullptr;
-		SelectedPrimaryCommandCell = nullptr;
-
-		for (auto TeamCell : TeamCommandCells)
-		{
-			TeamCell->Unhighlight();
-			TeamCell->bIsSelected = false;
-		}
-
-		for (auto PrimaryCell : PrimaryCommandCells)
-		{
-			PrimaryCell->Unhighlight();
-			PrimaryCell->bIsSelected = false;
-		}
-
-		CurrentCommandCell = CommandCellTeam;
-		CurrentCommandCell->Highlight();
-		CurrentCommandCell->bIsSelected = true;
-		UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
-
-		bIsDisplayed = false;
-		bIsSystemBusy = false;
+		TeamCell->Unhighlight();
+		TeamCell->bIsSelected = false;
 	}
+
+	for (auto PrimaryCell : PrimaryCommandCells)
+	{
+		PrimaryCell->Unhighlight();
+		PrimaryCell->bIsSelected = false;
+		PrimaryCell->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	CurrentCommandCell = CommandCellTeam;
+	CurrentCommandCell->Highlight();
+	CurrentCommandCell->bIsSelected = true;
+	UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
+
+	bIsDisplayed = false;
+	bIsSystemBusy = false;
 }
