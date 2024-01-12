@@ -137,5 +137,6 @@ private:
 	UCommandCellWidget* SelectedPrimaryCommandCell;
 	TArray<UCommandCellWidget*> TeamCommandCells;
 	TArray<UCommandCellWidget*> PrimaryCommandCells;
+	bool bIsSystemBusy = false;
 
 };

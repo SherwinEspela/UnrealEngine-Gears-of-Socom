@@ -102,6 +102,9 @@ bool UCommandMenuWidget::CanSetupPrimaryCommandCells()
 
 void UCommandMenuWidget::ToggleShow()
 {
+	if (bIsSystemBusy) return;
+	bIsSystemBusy = true;
+
 	if (bIsDisplayed)
 	{
 		bIsCommandSelected = false;
@@ -122,6 +125,8 @@ void UCommandMenuWidget::HandleTeamSelectAnimationEnded()
 		CommandCellAble->PlayShowAnimation();
 		CommandCellBravo->PlayShowAnimation();
 	}
+
+	bIsSystemBusy = false;
 }
 
 void UCommandMenuWidget::HandleHideTeamSelectAnimationEnded()
@@ -171,7 +176,9 @@ void UCommandMenuWidget::SelectCommandRight()
 
 void UCommandMenuWidget::ChooseCommand()
 {
+	if (bIsSystemBusy) return;
 	if (!bIsDisplayed) return;
+	bIsSystemBusy = true;
 	bIsCommandSelected = true;
 	CurrentCommandCell->bIsSelected = true;
 	CurrentCommandCell->Unhighlight();
@@ -235,10 +242,13 @@ void UCommandMenuWidget::HandleBlinkAnimationFinished()
 
 void UCommandMenuWidget::HandlePrimaryCommandsAnimationFinished()
 {
+	bIsSystemBusy = false;
+
 	if (CurrentCommandType == ECommandType::ECT_Primary)
 	{
 		if (SelectedGroupCommandCell && SelectedPrimaryCommandCell)
 		{
+			bIsSystemBusy = true;
 			SelectedGroupCommandCell->PlayBlinkAnimation();
 			SelectedPrimaryCommandCell->PlayBlinkAnimation();
 		}
@@ -276,5 +286,6 @@ void UCommandMenuWidget::Reset()
 		UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
 
 		bIsDisplayed = false;
+		bIsSystemBusy = false;
 	}
 }
