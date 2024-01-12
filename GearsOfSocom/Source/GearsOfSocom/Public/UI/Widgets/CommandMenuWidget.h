@@ -29,13 +29,16 @@ public:
 	void HideCommandCells(TArray<UCommandCellWidget*> CommandCells);
 
 	UFUNCTION(BlueprintCallable)
-	void HandleTeamSelectAnimationEnded();
+	void HandleShowTeamSelectAnimationEnded();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleHideTeamSelectAnimationEnded();
 
 	UFUNCTION(BlueprintCallable)
 	void ShowPrimaryCommandCells();
+
+	UFUNCTION(BlueprintCallable)
+	void HidePrimaryCommandCells();
 
 	UFUNCTION(BlueprintCallable)
 	void HandlePrimaryCommandsAnimationFinished();
@@ -69,6 +72,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnCommandCellBlinkAnimationFinished();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnBackToGroupCommandRequested();
 
 protected:
 	UPROPERTY(meta = (BindWidget))
@@ -122,6 +128,15 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ECommandType CurrentCommandType;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsGoingBack = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	UCommandCellWidget* SelectedPrimaryCommandCell;
+
+	UPROPERTY(BlueprintReadOnly)
+	UCommandCellWidget* CurrentCommandCell;
+
 private:
 	void SetupCommandCells();
 	void SetupGroupCommandCells();
@@ -132,9 +147,8 @@ private:
 	void Reset();
 
 private:
-	UCommandCellWidget* CurrentCommandCell;
 	UCommandCellWidget* SelectedGroupCommandCell;
-	UCommandCellWidget* SelectedPrimaryCommandCell;
+	
 	TArray<UCommandCellWidget*> TeamCommandCells;
 	TArray<UCommandCellWidget*> PrimaryCommandCells;
 	bool bIsSystemBusy = false;

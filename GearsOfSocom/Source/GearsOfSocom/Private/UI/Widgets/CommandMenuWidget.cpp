@@ -118,13 +118,23 @@ void UCommandMenuWidget::ToggleShow()
 	}
 }
 
-void UCommandMenuWidget::HandleTeamSelectAnimationEnded()
+void UCommandMenuWidget::HandleShowTeamSelectAnimationEnded()
 {
-	if (CommandCellAble && CommandCellBravo)
+	CommandCellTeam->PlayShowAnimation();
+	CommandCellAble->PlayShowAnimation();
+	CommandCellBravo->PlayShowAnimation();
+
+	if (bIsGoingBack)
 	{
-		CommandCellTeam->PlayShowAnimation();
-		CommandCellAble->PlayShowAnimation();
-		CommandCellBravo->PlayShowAnimation();
+		if (SelectedGroupCommandCell)
+		{
+			CurrentCommandCell = SelectedGroupCommandCell;
+			CurrentCommandCell->Highlight();
+			CurrentCommandCell->bIsSelected = true;
+			UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
+		}
+
+		bIsGoingBack = false;
 	}
 
 	bIsSystemBusy = false;
@@ -151,6 +161,14 @@ void UCommandMenuWidget::ShowPrimaryCommandCells()
 	CommandCellFireAtWill->Highlight();
 }
 
+void UCommandMenuWidget::HidePrimaryCommandCells()
+{
+	for (UCommandCellWidget* Cell : PrimaryCommandCells)
+	{
+		Cell->PlayHideAnimation();
+	}
+}
+
 void UCommandMenuWidget::SelectCommandAbove()
 {
 	if (!bIsDisplayed) return;
@@ -166,13 +184,17 @@ void UCommandMenuWidget::SelectCommandBelow()
 void UCommandMenuWidget::SelectCommandLeft()
 {
 	if (!bIsDisplayed) return;
-	//UpdateCommandCells(CurrentCommandCell->GetCellLeft());
+	if (CurrentCommandType == ECommandType::ECT_Primary)
+	{
+		bIsSystemBusy = true;
+		bIsGoingBack = true;
+		OnBackToGroupCommandRequested();
+	}
 }
 
 void UCommandMenuWidget::SelectCommandRight()
 {
 	if (!bIsDisplayed) return;
-	//UpdateCommandCells(CurrentCommandCell->GetCellRight());
 }
 
 void UCommandMenuWidget::ChooseCommand()
@@ -191,6 +213,7 @@ void UCommandMenuWidget::ChooseCommand()
 		SelectedGroupCommandCell = CurrentCommandCell;
 		HideCommandCells(TeamCommandCells);
 		UpdateCommandCells(CommandCellFireAtWill);
+		CurrentCommandCell->PlayShowAnimation();
 		break;
 	case ECommandType::ECT_Primary:
 		SelectedPrimaryCommandCell = CurrentCommandCell;
@@ -243,6 +266,7 @@ void UCommandMenuWidget::HandleBlinkAnimationFinished()
 
 void UCommandMenuWidget::HandlePrimaryCommandsAnimationFinished()
 {
+	if (bIsGoingBack) return;
 	bIsSystemBusy = false;
 
 	if (CurrentCommandType == ECommandType::ECT_Primary)
@@ -280,6 +304,9 @@ void UCommandMenuWidget::Reset()
 		PrimaryCell->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+	CommandCellFireAtWill->Highlight();
+	CommandCellFireAtWill->SetVisibility(ESlateVisibility::Visible);
+
 	CurrentCommandCell = CommandCellTeam;
 	CurrentCommandCell->Highlight();
 	CurrentCommandCell->bIsSelected = true;
@@ -287,4 +314,5 @@ void UCommandMenuWidget::Reset()
 
 	bIsDisplayed = false;
 	bIsSystemBusy = false;
+	bIsGoingBack = false;
 }

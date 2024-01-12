@@ -24,8 +24,12 @@ class GEARSOFSOCOM_API UCommandCellWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
 	void PlayShowAnimation();
+
+	UFUNCTION(BlueprintCallable)
 	void PlayHideAnimation();
+
 	void PlayBlinkAnimation();
 	void Highlight();
 	void Unhighlight();
@@ -46,7 +50,7 @@ public:
 	FORCEINLINE FString GetCommandDescription() const { return CommandDescription; }
 
 public:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	bool bIsSelected = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
