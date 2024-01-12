@@ -27,8 +27,6 @@ public:
 	void SelectCommandRight();
 	void ChooseCommand();
 	void HideCommandCells(TArray<UCommandCellWidget*> CommandCells);
-	/*void HideTeamCommandCells();
-	void HidePrimaryCommandCells();*/
 
 	UFUNCTION(BlueprintCallable)
 	void HandleTeamSelectAnimationEnded();
@@ -38,6 +36,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowPrimaryCommandCells();
+
+	UFUNCTION(BlueprintCallable)
+	void HandlePrimaryCommandsAnimationFinished();
+
+	UFUNCTION(BlueprintCallable)
+	void HandleHideMenuAnimationFinished();
+
+	UFUNCTION()
+	void HandleBlinkAnimationFinished();
 
 public:
 	UPROPERTY(BlueprintReadOnly)
@@ -59,6 +66,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnCommandSelected();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnCommandCellBlinkAnimationFinished();
 
 protected:
 	UPROPERTY(meta = (BindWidget))
@@ -119,9 +129,12 @@ private:
 	bool CanSetupPrimaryCommandCells();
 	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
 	void UpdateTextDescription(FString Description);
+	void Reset();
 
 private:
 	UCommandCellWidget* CurrentCommandCell;
+	UCommandCellWidget* SelectedGroupCommandCell;
+	UCommandCellWidget* SelectedPrimaryCommandCell;
 	TArray<UCommandCellWidget*> TeamCommandCells;
 	TArray<UCommandCellWidget*> PrimaryCommandCells;
 

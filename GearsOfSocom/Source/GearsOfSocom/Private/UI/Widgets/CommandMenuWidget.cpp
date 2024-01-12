@@ -49,6 +49,10 @@ void UCommandMenuWidget::SetupGroupCommandCells()
 		CurrentCommandCell = CommandCellTeam;
 		CurrentCommandCell->Highlight();
 		UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
+
+		CommandCellTeam->OnBlinkAnimationFinished.AddDynamic(this, &UCommandMenuWidget::HandleBlinkAnimationFinished);
+		CommandCellAble->OnBlinkAnimationFinished.AddDynamic(this, &UCommandMenuWidget::HandleBlinkAnimationFinished);
+		CommandCellBravo->OnBlinkAnimationFinished.AddDynamic(this, &UCommandMenuWidget::HandleBlinkAnimationFinished);
 	}
 }
 
@@ -87,10 +91,6 @@ void UCommandMenuWidget::SetupPrimaryCommandCells()
 		PrimaryCommandCells[i]->bIsSelected = false;
 		PrimaryCommandCells[i]->SetCommandType(ECommandType::ECT_Primary);
 	}
-
-	CommandCellTeam->SetCellRight(CommandCellFireAtWill);
-	CommandCellAble->SetCellRight(CommandCellFireAtWill);
-	CommandCellBravo->SetCellRight(CommandCellFireAtWill);
 }
 
 bool UCommandMenuWidget::CanSetupPrimaryCommandCells()
@@ -118,6 +118,7 @@ void UCommandMenuWidget::HandleTeamSelectAnimationEnded()
 {
 	if (CommandCellAble && CommandCellBravo)
 	{
+		CommandCellTeam->PlayShowAnimation();
 		CommandCellAble->PlayShowAnimation();
 		CommandCellBravo->PlayShowAnimation();
 	}
@@ -179,10 +180,12 @@ void UCommandMenuWidget::ChooseCommand()
 	switch (CurrentCommandType)
 	{
 	case ECommandType::ECT_Group:
+		SelectedGroupCommandCell = CurrentCommandCell;
 		HideCommandCells(TeamCommandCells);
 		UpdateCommandCells(CommandCellFireAtWill);
 		break;
 	case ECommandType::ECT_Primary:
+		SelectedPrimaryCommandCell = CurrentCommandCell;
 		HideCommandCells(PrimaryCommandCells);
 		break;
 	case ECommandType::ECT_SubCommand:
@@ -203,28 +206,6 @@ void UCommandMenuWidget::HideCommandCells(TArray<UCommandCellWidget*> CommandCel
 	}
 }
 
-//void UCommandMenuWidget::HideTeamCommandCells()
-//{
-//	if (TeamCommandCells.Num() > 0)
-//	{
-//		for (auto Cell : TeamCommandCells)
-//		{
-//			Cell->PlayHideAnimation();
-//		}
-//	}
-//}
-//
-//void UCommandMenuWidget::HidePrimaryCommandCells()
-//{
-//	if (PrimaryCommandCells.Num() > 0)
-//	{
-//		for (auto Cell : PrimaryCommandCells)
-//		{
-//			Cell->PlayHideAnimation();
-//		}
-//	}
-//}
-
 void UCommandMenuWidget::UpdateCommandCells(UCommandCellWidget* NewCommandCell)
 {
 	if (NewCommandCell)
@@ -244,5 +225,56 @@ void UCommandMenuWidget::UpdateTextDescription(FString Description)
 	if (TextDescription)
 	{
 		TextDescription->SetText(FText::FromString(Description).ToUpper());
+	}
+}
+
+void UCommandMenuWidget::HandleBlinkAnimationFinished()
+{
+	OnCommandCellBlinkAnimationFinished();
+}
+
+void UCommandMenuWidget::HandlePrimaryCommandsAnimationFinished()
+{
+	if (CurrentCommandType == ECommandType::ECT_Primary)
+	{
+		if (SelectedGroupCommandCell && SelectedPrimaryCommandCell)
+		{
+			SelectedGroupCommandCell->PlayBlinkAnimation();
+			SelectedPrimaryCommandCell->PlayBlinkAnimation();
+		}
+	}
+}
+
+void UCommandMenuWidget::HandleHideMenuAnimationFinished()
+{
+	Reset();
+}
+
+void UCommandMenuWidget::Reset()
+{
+	if (CurrentCommandType == ECommandType::ECT_Primary)
+	{
+		CurrentCommandType = ECommandType::ECT_Group;
+		SelectedGroupCommandCell = nullptr;
+		SelectedPrimaryCommandCell = nullptr;
+
+		for (auto TeamCell : TeamCommandCells)
+		{
+			TeamCell->Unhighlight();
+			TeamCell->bIsSelected = false;
+		}
+
+		for (auto PrimaryCell : PrimaryCommandCells)
+		{
+			PrimaryCell->Unhighlight();
+			PrimaryCell->bIsSelected = false;
+		}
+
+		CurrentCommandCell = CommandCellTeam;
+		CurrentCommandCell->Highlight();
+		CurrentCommandCell->bIsSelected = true;
+		UpdateTextDescription(CurrentCommandCell->GetCommandDescription());
+
+		bIsDisplayed = false;
 	}
 }

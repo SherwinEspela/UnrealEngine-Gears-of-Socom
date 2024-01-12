@@ -7,6 +7,8 @@
 #include "Constants/UICustomEnums.h"
 #include "CommandCellWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBlinkAnimationFinishedSignature);
+
 class UTextBlock;
 class UImage;
 class UTimelineComponent;
@@ -24,6 +26,7 @@ class GEARSOFSOCOM_API UCommandCellWidget : public UUserWidget
 public:
 	void PlayShowAnimation();
 	void PlayHideAnimation();
+	void PlayBlinkAnimation();
 	void Highlight();
 	void Unhighlight();
 
@@ -46,6 +49,11 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsSelected = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bHasSubMenu = false;
+
+	FBlinkAnimationFinishedSignature OnBlinkAnimationFinished;
+
 protected:
 	void NativeConstruct() override;
 
@@ -56,12 +64,21 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayHideRequested();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayBlinkAnimationRequested();
+
+	UFUNCTION(BlueprintCallable)
+	void HandleBlinkAnimationFinished();
+
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* TextCommand;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UImage* ImageTitleBG;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageArrow;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Command)
 	FText CommandName;
