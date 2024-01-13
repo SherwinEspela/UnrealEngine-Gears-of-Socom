@@ -10,6 +10,7 @@
 class UCommandCellWidget;
 class UTextBlock;
 class UCanvasPanel;
+class UGroupCommandColumnWidget;
 
 /**
  * 
@@ -79,6 +80,9 @@ protected:
 protected:
 	UPROPERTY(meta = (BindWidget))
 	UCanvasPanel* CanvasPanel;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UGroupCommandColumnWidget* GroupCommands;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UCommandCellWidget* CommandCellTeam;
