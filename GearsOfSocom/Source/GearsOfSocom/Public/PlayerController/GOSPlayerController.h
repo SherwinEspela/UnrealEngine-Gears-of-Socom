@@ -9,7 +9,7 @@
 class AGOSPlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
-class UCommandMenuWidget;
+class UCommandsWidget;
 struct FInputActionValue;
 
 /**
@@ -85,9 +85,9 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = UI)
-	TSubclassOf<UCommandMenuWidget> CommandMenuWidgetClass;
+	TSubclassOf<UCommandsWidget> CommandMenuWidgetClass;
 
-	UCommandMenuWidget* CommandMenuWidget;
+	UCommandsWidget* CommandMenuWidget;
 
 protected:
 	void Move(const FInputActionValue& Value);

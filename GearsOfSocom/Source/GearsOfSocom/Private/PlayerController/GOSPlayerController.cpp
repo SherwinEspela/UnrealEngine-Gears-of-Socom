@@ -3,7 +3,7 @@
 
 #include "PlayerController/GOSPlayerController.h"
 #include "Characters/GOSPlayerCharacter.h"
-#include "UI/Widgets/CommandMenuWidget.h"
+#include "UI/Widgets/CommandsWidget.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -20,7 +20,7 @@ void AGOSPlayerController::BeginPlay()
 
 	if (CommandMenuWidgetClass)
 	{
-		CommandMenuWidget = CreateWidget<UCommandMenuWidget>(GetWorld(), CommandMenuWidgetClass);
+		CommandMenuWidget = CreateWidget<UCommandsWidget>(GetWorld(), CommandMenuWidgetClass);
 		if (CommandMenuWidget)
 		{
 			CommandMenuWidget->AddToViewport();
@@ -150,15 +150,15 @@ void AGOSPlayerController::SelectCommandBelow()
 
 void AGOSPlayerController::SelectCommandLeft()
 {
-	if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
+	//if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
 }
 
 void AGOSPlayerController::SelectCommandRight()
 {
-	if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
+	//if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
 }
 
 void AGOSPlayerController::ChooseCommand()
 {
-	if (CommandMenuWidget) CommandMenuWidget->ChooseCommand();
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommand();
 }

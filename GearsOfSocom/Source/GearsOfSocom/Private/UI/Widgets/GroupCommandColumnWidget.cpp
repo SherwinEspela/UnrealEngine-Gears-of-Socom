@@ -4,6 +4,16 @@
 #include "UI/Widgets/GroupCommandColumnWidget.h"
 #include "UI/Widgets/CommandCellWidget.h"
 
+void UGroupCommandColumnWidget::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+
+	if (CommandCellTeam)
+	{
+		DefaultCommandDescription = CommandCellTeam->GetCommandDescription();
+	}
+}
+
 void UGroupCommandColumnWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -34,11 +44,9 @@ void UGroupCommandColumnWidget::SetupCells()
 	CurrentCell->Highlight();
 }
 
-void UGroupCommandColumnWidget::PlayReveal()
+void UGroupCommandColumnWidget::Display()
 {
-	Super::PlayReveal();
-	CurrentCell->Highlight();
-	CurrentCell->bIsSelected = true;
+	Super::Display();
 	CommandCellTeam->PlayShowAnimation();
 }
 
@@ -47,4 +55,22 @@ void UGroupCommandColumnWidget::HandleAnimRevealFinished()
 	Super::HandleAnimRevealFinished();
 	CommandCellAble->PlayShowAnimation();
 	CommandCellBravo->PlayShowAnimation();
+}
+
+void UGroupCommandColumnWidget::SelectCommand()
+{
+	Super::SelectCommand();
+	CurrentCell->bIsSelected = true;
+	CurrentCell->Unhighlight();
+
+	for (auto Cell : CommandCells)
+	{
+		Cell->PlayHideAnimation();
+	}
+}
+
+void UGroupCommandColumnWidget::HandleHideCellsAnimationFinished()
+{
+	Super::HandleHideCellsAnimationFinished();
+	OnGroupCommandSelected.Broadcast();
 }

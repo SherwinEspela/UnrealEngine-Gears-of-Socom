@@ -8,6 +8,8 @@
 
 class UCommandCellWidget;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCommandDescriptionUpdatedSignature, FString, CommandDescription);
+
 /**
  * 
  */
@@ -18,22 +20,40 @@ class GEARSOFSOCOM_API UCommandColumnWidget : public UUserWidget
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	virtual void PlayReveal();
+	virtual void Display();
 
 	UFUNCTION(BlueprintCallable)
 	virtual void HandleAnimRevealFinished();
 
+	virtual void SelectCommandAbove();
+	virtual void SelectCommandBelow();
+	virtual void SelectCommand();
+
+	FCommandDescriptionUpdatedSignature OnCommandDescriptionUpdated;
+
+public:
+	FORCEINLINE FString GetDefaultCommandDescription() const { return DefaultCommandDescription; }
+
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayRevealRequested();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayHideCellsRequested();
 
 protected:
 	virtual void NativeConstruct() override;
 
 protected:
 	virtual void SetupCells();
+	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
+
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleHideCellsAnimationFinished();
 
 protected:
 	UCommandCellWidget* CurrentCell;
 	TArray<UCommandCellWidget*> CommandCells;
+	FString DefaultCommandDescription;
+
 };

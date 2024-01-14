@@ -5,6 +5,7 @@
 #include "UI/Widgets/CommandCellWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/CanvasPanel.h"
+#include "UI/Widgets/GroupCommandColumnWidget.h"
 
 void UCommandMenuWidget::NativePreConstruct()
 {
@@ -17,7 +18,7 @@ void UCommandMenuWidget::NativeConstruct()
 
 	bIsDisplayed = false;
 	CurrentCommandType = ECommandType::ECT_Group;
-	SetupCommandCells();
+	//SetupCommandCells();
 }
 
 void UCommandMenuWidget::SetupCommandCells()
@@ -112,9 +113,13 @@ void UCommandMenuWidget::ToggleShow()
 		SetVisibility(ESlateVisibility::Hidden);
 	}
 	else {
-		SetVisibility(ESlateVisibility::Visible);
-		OnShowRequested();
+		//SetVisibility(ESlateVisibility::Visible);
+		//OnShowRequested();
 		bIsDisplayed = true;
+		if (GroupCommands)
+		{
+			GroupCommands->Display();
+		}
 	}
 }
 
