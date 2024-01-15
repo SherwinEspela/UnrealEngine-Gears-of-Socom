@@ -65,28 +65,19 @@ void UCommandsWidget::HandleShowCommandsCompleted()
 	bIsSystemBusy = false;
 }
 
-void UCommandsWidget::Reset()
-{
-	if (TextDescription) TextDescription->SetText(FText::FromString(GroupCommands->GetDefaultCommandDescription()));
-	GroupCommands->Reset();
-	PrimaryCommands->Reset();
-	CurrentCommandColumn = GroupCommands;
-	TopBar->SetVisibility(ESlateVisibility::Hidden);
-	bIsDisplayed = false;
-	bIsSystemBusy = false;
-}
-
 void UCommandsWidget::ToggleShow()
 {
 	if (bIsSystemBusy) return;
 
 	if (bIsDisplayed)
 	{
-
+		SetVisibility(ESlateVisibility::Hidden);
+		Reset();
 	}
 	else {
-		bIsDisplayed = true;
+		SetVisibility(ESlateVisibility::Visible);
 		bIsSystemBusy = true;
+		bIsDisplayed = true;
 		TopBar->SetVisibility(ESlateVisibility::Visible);
 		CurrentCommandColumn->Display();
 	}
@@ -112,4 +103,15 @@ void UCommandsWidget::SelectCommand()
 	if (!bIsDisplayed) return;
 	CurrentCommandColumn->SelectCommand();
 	bIsSystemBusy = true;
+}
+
+void UCommandsWidget::Reset()
+{
+	if (TextDescription) TextDescription->SetText(FText::FromString(GroupCommands->GetDefaultCommandDescription()));
+	GroupCommands->Reset();
+	PrimaryCommands->Reset();
+	CurrentCommandColumn = GroupCommands;
+	TopBar->SetVisibility(ESlateVisibility::Hidden);
+	bIsDisplayed = false;
+	bIsSystemBusy = false;
 }

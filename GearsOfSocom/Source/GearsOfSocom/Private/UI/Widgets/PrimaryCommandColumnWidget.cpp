@@ -97,6 +97,7 @@ void UPrimaryCommandColumnWidget::Reset()
 	for (auto Cell : CommandCells) {
 		Cell->bIsSelected = false;
 		Cell->Unhighlight();
+		Cell->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	CurrentCell = CommandCellFireAtWill;

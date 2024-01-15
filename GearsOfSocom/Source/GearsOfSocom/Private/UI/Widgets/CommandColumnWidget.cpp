@@ -88,6 +88,8 @@ void UCommandColumnWidget::SelectCommand()
 
 void UCommandColumnWidget::Reset()
 {
+	OnPlayResetRequested();
+
 	if (CurrentCell)
 	{
 		CurrentCell->bIsSelected = false;

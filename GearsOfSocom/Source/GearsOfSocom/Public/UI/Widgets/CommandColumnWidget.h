@@ -55,6 +55,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayUnrevealRequested();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayResetRequested();
+
 protected:
 	virtual void NativeConstruct() override;
 
