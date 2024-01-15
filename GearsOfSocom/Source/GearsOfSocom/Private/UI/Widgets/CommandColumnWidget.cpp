@@ -58,9 +58,7 @@ void UCommandColumnWidget::HandleHideCellsAnimationFinished()
 
 void UCommandColumnWidget::HandleBlinkAnimationFinished()
 {
-	CurrentCell->bIsSelected = false;
-	CurrentCell->PlayHideAnimation();
-	OnPlayUnrevealRequested();
+	UnrevealCommands();
 }
 
 void UCommandColumnWidget::SelectCommandAbove()
@@ -95,4 +93,26 @@ void UCommandColumnWidget::Reset()
 		CurrentCell->bIsSelected = false;
 		CurrentCell->Unhighlight();
 	}
+}
+
+void UCommandColumnWidget::ShowCommands()
+{
+	OnPlayShowCellsRequested();
+	CurrentCell->Highlight();
+	for (auto Cell : CommandCells)
+	{
+		Cell->PlayShowAnimation();
+	}
+}
+
+void UCommandColumnWidget::UnrevealCommands()
+{
+	CurrentCell->bIsSelected = false;
+	CurrentCell->PlayHideAnimation();
+	OnPlayUnrevealRequested();
+}
+
+FString UCommandColumnWidget::GetCurrentCommandDescription() const
+{
+	return CurrentCell->GetCommandDescription().ToUpper();
 }

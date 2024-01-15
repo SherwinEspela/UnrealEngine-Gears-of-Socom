@@ -14,6 +14,7 @@ void UCommandsWidget::NativeConstruct()
 
 	bIsDisplayed = false;
 	bIsSystemBusy = false;
+	bIsNavigatingBack = false;
 	CurrentCommandType = ECommandType::ECT_Group;
 	if (GroupCommands) {
 		CurrentCommandColumn = GroupCommands;
@@ -44,15 +45,23 @@ void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
 
 void UCommandsWidget::HandleGroupCommandSelected()
 {
-	TextDescription->SetText(FText::FromString(PrimaryCommands->GetDefaultCommandDescription()));
+	TextDescription->SetText(FText::FromString(PrimaryCommands->GetCurrentCommandDescription()));
 	CurrentCommandColumn = PrimaryCommands;
 	CurrentCommandColumn->Display();
+	bIsNavigatingBack = false;
 }
 
 void UCommandsWidget::HandlePrimaryCommandSelected()
 {
-	GroupCommands->Hide();
-	PrimaryCommands->Hide();
+	if (bIsNavigatingBack)
+	{
+		TextDescription->SetText(FText::FromString(GroupCommands->GetCurrentCommandDescription()));
+		PrimaryCommands->UnrevealCommands();
+	}
+	else {
+		GroupCommands->Hide();
+		PrimaryCommands->Hide();
+	}
 }
 
 void UCommandsWidget::HandleHidingCommandsCompleted()
@@ -97,6 +106,17 @@ void UCommandsWidget::SelectCommandBelow()
 	CurrentCommandColumn->SelectCommandBelow();
 }
 
+void UCommandsWidget::SelectCommandLeft()
+{
+	if (bIsSystemBusy) return;
+	if (!bIsDisplayed) return;
+	bIsSystemBusy = true;
+	bIsNavigatingBack = true;
+	CurrentCommandColumn->SelectCommand();
+	CurrentCommandColumn = GroupCommands;
+	CurrentCommandColumn->ShowCommands();
+}
+
 void UCommandsWidget::SelectCommand()
 {
 	if (bIsSystemBusy) return;
@@ -114,4 +134,5 @@ void UCommandsWidget::Reset()
 	TopBar->SetVisibility(ESlateVisibility::Hidden);
 	bIsDisplayed = false;
 	bIsSystemBusy = false;
+	bIsNavigatingBack = false;
 }

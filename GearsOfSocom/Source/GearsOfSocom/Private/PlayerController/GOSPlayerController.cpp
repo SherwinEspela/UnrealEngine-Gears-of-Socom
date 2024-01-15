@@ -150,7 +150,7 @@ void AGOSPlayerController::SelectCommandBelow()
 
 void AGOSPlayerController::SelectCommandLeft()
 {
-	//if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
 }
 
 void AGOSPlayerController::SelectCommandRight()

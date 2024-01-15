@@ -104,3 +104,8 @@ void UPrimaryCommandColumnWidget::Reset()
 	CurrentCell->bIsSelected = true;
 	CurrentCell->Highlight();
 }
+
+void UPrimaryCommandColumnWidget::BackToGroupCommands()
+{
+
+}

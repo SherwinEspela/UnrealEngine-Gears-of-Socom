@@ -25,6 +25,7 @@ public:
 	void ToggleShow();
 	void SelectCommandAbove();
 	void SelectCommandBelow();
+	void SelectCommandLeft();
 	void SelectCommand();
 
 public:
@@ -71,4 +72,5 @@ private:
 private:
 	UCommandColumnWidget* CurrentCommandColumn;
 	bool bIsSystemBusy = false;
+	bool bIsNavigatingBack = false;
 };

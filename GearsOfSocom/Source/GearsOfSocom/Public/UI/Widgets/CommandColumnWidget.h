@@ -37,6 +37,9 @@ public:
 	virtual void SelectCommandBelow();
 	virtual void SelectCommand();
 	virtual void Reset();
+	virtual void ShowCommands();
+	virtual void UnrevealCommands();
+	FString GetCurrentCommandDescription() const;
 
 	FCommandDescriptionUpdatedSignature OnCommandDescriptionUpdated;
 	FHidingColumnCommandCompletedSignature OnHidingColumnCommandCompleted;
@@ -48,6 +51,9 @@ public:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayRevealRequested();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayShowCellsRequested();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayHideCellsRequested();
