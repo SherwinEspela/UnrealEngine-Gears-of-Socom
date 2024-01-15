@@ -12,6 +12,7 @@ class UPrimaryCommandColumnWidget;
 class UCommandColumnWidget;
 class UTextBlock;
 class UOverlay;
+class USoundBase;
 
 /**
  * 
@@ -50,6 +51,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	ECommandType CurrentCommandType;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* SFXCommandHighlight;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* SFXCommandSelected;
 
 private:
 	UFUNCTION()

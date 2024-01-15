@@ -7,6 +7,7 @@
 #include "UI/Widgets/CommandColumnWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Overlay.h"
+#include "Kismet/GameplayStatics.h"
 
 void UCommandsWidget::NativeConstruct()
 {
@@ -39,6 +40,7 @@ void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
 {
 	if (TextDescription)
 	{
+		UGameplayStatics::PlaySound2D(this, SFXCommandHighlight);
 		TextDescription->SetText(FText::FromString(NewDescription));
 	}
 }
@@ -72,12 +74,14 @@ void UCommandsWidget::HandleHidingCommandsCompleted()
 void UCommandsWidget::HandleShowCommandsCompleted()
 {
 	bIsSystemBusy = false;
+	UGameplayStatics::PlaySound2D(this, SFXCommandHighlight);
 }
 
 void UCommandsWidget::ToggleShow()
 {
 	if (bIsSystemBusy) return;
 
+	UGameplayStatics::PlaySound2D(this, SFXCommandSelected);
 	if (bIsDisplayed)
 	{
 		SetVisibility(ESlateVisibility::Hidden);
@@ -110,6 +114,7 @@ void UCommandsWidget::SelectCommandLeft()
 {
 	if (bIsSystemBusy) return;
 	if (!bIsDisplayed) return;
+	UGameplayStatics::PlaySound2D(this, SFXCommandSelected);
 	bIsSystemBusy = true;
 	bIsNavigatingBack = true;
 	CurrentCommandColumn->SelectCommand();
@@ -121,6 +126,7 @@ void UCommandsWidget::SelectCommand()
 {
 	if (bIsSystemBusy) return;
 	if (!bIsDisplayed) return;
+	UGameplayStatics::PlaySound2D(this, SFXCommandSelected);
 	CurrentCommandColumn->SelectCommand();
 	bIsSystemBusy = true;
 }

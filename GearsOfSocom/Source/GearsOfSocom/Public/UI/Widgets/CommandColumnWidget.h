@@ -7,6 +7,7 @@
 #include "CommandColumnWidget.generated.h"
 
 class UCommandCellWidget;
+class USoundBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCommandDescriptionUpdatedSignature, FString, CommandDescription);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHidingColumnCommandCompletedSignature);
