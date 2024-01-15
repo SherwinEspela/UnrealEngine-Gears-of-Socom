@@ -7,6 +7,7 @@
 #include "GOSBaseHUD.generated.h"
 
 class UReticleWidget;
+class UTeamStatusWidget;
 
 /**
  * 
@@ -20,6 +21,14 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
+	// Widget Blueprints
 	UPROPERTY(EditAnywhere, Category = Reticle)
 	TSubclassOf<UReticleWidget> ReticleWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category = "Display Info")
+	TSubclassOf<UTeamStatusWidget> TeamStatusWidgetClass;
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	UTeamStatusWidget* TeamStatusWidget;
 };

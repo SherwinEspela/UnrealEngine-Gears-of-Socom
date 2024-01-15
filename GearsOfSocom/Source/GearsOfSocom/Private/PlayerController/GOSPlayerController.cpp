@@ -3,6 +3,7 @@
 
 #include "PlayerController/GOSPlayerController.h"
 #include "Characters/GOSPlayerCharacter.h"
+#include "UI/Widgets/CommandsWidget.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -16,6 +17,15 @@ void AGOSPlayerController::BeginPlay()
 	
 	UEnhancedInputLocalPlayerSubsystem* PlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	PlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+
+	if (CommandMenuWidgetClass)
+	{
+		CommandMenuWidget = CreateWidget<UCommandsWidget>(GetWorld(), CommandMenuWidgetClass);
+		if (CommandMenuWidget)
+		{
+			CommandMenuWidget->AddToViewport();
+		}
+	}
 }
 
 void AGOSPlayerController::SetupInputComponent()
@@ -34,6 +44,13 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(CommandAttackOrMoveToTargetAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAttackOrMoveToTargetPosition);
 	EnhancedInputComponent->BindAction(CommandFireAtWillAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandFireAtWill);
 	EnhancedInputComponent->BindAction(CommandHoldFireAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandHoldFire);
+	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleCrouch);
+	EnhancedInputComponent->BindAction(ToggleShowCommandMenuAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleShowCommandMenu);
+	EnhancedInputComponent->BindAction(SelectCommandAboveAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandAbove);
+	EnhancedInputComponent->BindAction(SelectCommandBelowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandBelow);
+	EnhancedInputComponent->BindAction(SelectCommandLeftAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandLeft);
+	EnhancedInputComponent->BindAction(SelectCommandRightAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandRight);
+	EnhancedInputComponent->BindAction(SelectCommandAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ChooseCommand);
 }
 
 void AGOSPlayerController::Move(const FInputActionValue& Value)
@@ -69,6 +86,11 @@ void AGOSPlayerController::RevertToDefaultCameraView()
 void AGOSPlayerController::ReloadGame()
 {
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+}
+
+void AGOSPlayerController::ToggleCrouch()
+{
+	PlayerCharacter->ToggleCrouch();
 }
 
 void AGOSPlayerController::CommandAllyToFollow()
@@ -109,4 +131,34 @@ void AGOSPlayerController::DelayNextCommand()
 	bCanIssueCommand = false;
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerController::HandleDelayNextCommandCompleted, 2.f, false);
+}
+
+void AGOSPlayerController::ToggleShowCommandMenu()
+{
+	if (CommandMenuWidget) CommandMenuWidget->ToggleShow();
+}
+
+void AGOSPlayerController::SelectCommandAbove()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandAbove();
+}
+
+void AGOSPlayerController::SelectCommandBelow()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandBelow();
+}
+
+void AGOSPlayerController::SelectCommandLeft()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommandLeft();
+}
+
+void AGOSPlayerController::SelectCommandRight()
+{
+	//if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
+}
+
+void AGOSPlayerController::ChooseCommand()
+{
+	if (CommandMenuWidget) CommandMenuWidget->SelectCommand();
 }

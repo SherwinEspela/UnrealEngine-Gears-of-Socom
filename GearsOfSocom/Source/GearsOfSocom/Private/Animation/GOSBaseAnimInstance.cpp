@@ -18,6 +18,7 @@ void UGOSBaseAnimInstance::NativeInitializeAnimation()
 	}
 
 	bIsAiming = false;
+	bIsCrouching = false;
 }
 
 void UGOSBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -51,6 +52,12 @@ void UGOSBaseAnimInstance::PlayHitReact()
 		Montage_JumpToSection("Front");
 	}
 }
+
+//void UGOSBaseAnimInstance::ToggleCrouch()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("ToggleCrouch"));
+//	bIsCrouching = !bIsCrouching;
+//}
 
 void UGOSBaseAnimInstance::TurnInPlace()
 {

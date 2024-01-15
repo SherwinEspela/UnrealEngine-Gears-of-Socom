@@ -9,6 +9,7 @@
 class AGOSPlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
+class UCommandsWidget;
 struct FInputActionValue;
 
 /**
@@ -61,6 +62,33 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* CommandHoldFireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ToggleCrouchAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ToggleShowCommandMenuAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandAboveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandBelowAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandLeftAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandRightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SelectCommandAction;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = UI)
+	TSubclassOf<UCommandsWidget> CommandMenuWidgetClass;
+
+	UCommandsWidget* CommandMenuWidget;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -69,10 +97,19 @@ protected:
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void ReloadGame();
+	void ToggleCrouch();
+
 	void CommandAllyToFollow();
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
+
+	void ToggleShowCommandMenu();
+	void SelectCommandAbove();
+	void SelectCommandBelow();
+	void SelectCommandLeft();
+	void SelectCommandRight();
+	void ChooseCommand();
 
 private:
 	bool bCanIssueCommand = true;

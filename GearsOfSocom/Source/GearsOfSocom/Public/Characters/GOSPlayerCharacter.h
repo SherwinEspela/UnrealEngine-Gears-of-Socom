@@ -10,6 +10,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class AGOSAllyCharacter;
 class USoundBase;
+class UGOSPlayerAnimInstance;
+class UWeaponWidget;
 
 /**
  * 
@@ -36,6 +38,7 @@ public:
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
 	void ToggleWalkOrJog();
+	void ToggleCrouch();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void CommandAllyToFollow();
@@ -51,6 +54,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+protected:
+	void ToggleCameraFOVInterp(float DeltaSeconds);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
@@ -87,7 +93,12 @@ protected:
 	USoundBase* SFXCommandHoldFire;
 
 protected:
-	void ToggleCameraFOVInterp(float DeltaSeconds);
+	// UI
+	UPROPERTY(EditAnywhere, Category = "Interface")
+	TSubclassOf<UWeaponWidget> WeaponWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Interface")
+	UWeaponWidget* WeaponWidget;
 
 private:
 	void PlayAllyFollowResponseSound();
@@ -97,5 +108,5 @@ private:
 
 private:
 	float CurrentCameraFOV;
-
+	UGOSPlayerAnimInstance* PlayerAnimInstance;
 };
