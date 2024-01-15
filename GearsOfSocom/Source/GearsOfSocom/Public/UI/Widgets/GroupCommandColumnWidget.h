@@ -21,7 +21,6 @@ class GEARSOFSOCOM_API UGroupCommandColumnWidget : public UCommandColumnWidget
 public:
 	virtual void Display() override;
 	virtual void HandleAnimRevealFinished() override;
-
 	virtual void SelectCommand() override;
 
 	FGroupCommandSelectedSignature OnGroupCommandSelected;

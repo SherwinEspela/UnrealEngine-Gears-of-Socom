@@ -8,6 +8,7 @@
 #include "CommandsWidget.generated.h"
 
 class UGroupCommandColumnWidget;
+class UPrimaryCommandColumnWidget;
 class UCommandColumnWidget;
 class UTextBlock;
 
@@ -35,6 +36,9 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UGroupCommandColumnWidget* GroupCommands;
+
+	UPROPERTY(meta = (BindWidget))
+	UPrimaryCommandColumnWidget* PrimaryCommands;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TextDescription;

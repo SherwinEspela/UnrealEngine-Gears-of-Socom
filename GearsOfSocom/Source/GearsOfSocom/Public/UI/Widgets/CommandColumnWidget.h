@@ -32,7 +32,7 @@ public:
 	FCommandDescriptionUpdatedSignature OnCommandDescriptionUpdated;
 
 public:
-	FORCEINLINE FString GetDefaultCommandDescription() const { return DefaultCommandDescription; }
+	FORCEINLINE FString GetDefaultCommandDescription() const { return DefaultCommandDescription.ToUpper(); }
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)

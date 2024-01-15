@@ -47,7 +47,7 @@ public:
 
 	FORCEINLINE void SetCommandType(ECommandType NewCommandType) { CommandType = NewCommandType; }
 	FORCEINLINE ECommandType GetCommandType() const { return CommandType; }
-	FORCEINLINE FString GetCommandDescription() const { return CommandDescription; }
+	FORCEINLINE FString GetCommandDescription() const { return CommandDescription.ToUpper(); }
 
 public:
 	UPROPERTY(BlueprintReadWrite)

@@ -3,6 +3,7 @@
 
 #include "UI/Widgets/CommandsWidget.h"
 #include "UI/Widgets/GroupCommandColumnWidget.h"
+#include "UI/Widgets/PrimaryCommandColumnWidget.h"
 #include "UI/Widgets/CommandColumnWidget.h"
 #include "Components/TextBlock.h"
 
@@ -18,6 +19,11 @@ void UCommandsWidget::NativeConstruct()
 		GroupCommands->OnCommandDescriptionUpdated.AddDynamic(this, &UCommandsWidget::HandleCommandDescriptionUpdated);
 		GroupCommands->OnGroupCommandSelected.AddDynamic(this, &UCommandsWidget::HandleGroupCommandSelected);
 	}
+
+	if (PrimaryCommands)
+	{
+		PrimaryCommands->OnCommandDescriptionUpdated.AddDynamic(this, &UCommandsWidget::HandleCommandDescriptionUpdated);
+	}
 }
 
 void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
@@ -30,8 +36,9 @@ void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
 
 void UCommandsWidget::HandleGroupCommandSelected()
 {
-	UE_LOG(LogTemp, Warning, TEXT("HandleGroupCommandSelected....."));
-
+	TextDescription->SetText(FText::FromString(PrimaryCommands->GetDefaultCommandDescription()));
+	CurrentCommandColumn = PrimaryCommands;
+	CurrentCommandColumn->Display();
 }
 
 void UCommandsWidget::ToggleShow()
