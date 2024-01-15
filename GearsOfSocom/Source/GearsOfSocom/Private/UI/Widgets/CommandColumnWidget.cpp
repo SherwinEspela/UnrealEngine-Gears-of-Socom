@@ -26,6 +26,11 @@ void UCommandColumnWidget::UpdateCommandCells(UCommandCellWidget* NewCommandCell
 	}
 }
 
+void UCommandColumnWidget::HandleShowCellsAnimationFinished()
+{
+	OnShowCommandsCompleted.Broadcast();
+}
+
 void UCommandColumnWidget::Display()
 {
 	CurrentCell->Highlight();

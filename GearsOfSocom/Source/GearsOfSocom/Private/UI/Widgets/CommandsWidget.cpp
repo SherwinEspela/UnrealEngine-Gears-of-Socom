@@ -13,6 +13,7 @@ void UCommandsWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	bIsDisplayed = false;
+	bIsSystemBusy = false;
 	CurrentCommandType = ECommandType::ECT_Group;
 	if (GroupCommands) {
 		CurrentCommandColumn = GroupCommands;
@@ -20,12 +21,14 @@ void UCommandsWidget::NativeConstruct()
 		GroupCommands->OnCommandDescriptionUpdated.AddDynamic(this, &UCommandsWidget::HandleCommandDescriptionUpdated);
 		GroupCommands->OnGroupCommandSelected.AddDynamic(this, &UCommandsWidget::HandleGroupCommandSelected);
 		GroupCommands->OnHidingColumnCommandCompleted.AddDynamic(this, &UCommandsWidget::HandleHidingCommandsCompleted);
+		GroupCommands->OnShowCommandsCompleted.AddDynamic(this, &UCommandsWidget::HandleShowCommandsCompleted);
 	}
 
 	if (PrimaryCommands)
 	{
 		PrimaryCommands->OnCommandDescriptionUpdated.AddDynamic(this, &UCommandsWidget::HandleCommandDescriptionUpdated);
 		PrimaryCommands->OnPrimaryCommandSelected.AddDynamic(this, &UCommandsWidget::HandlePrimaryCommandSelected);
+		PrimaryCommands->OnShowCommandsCompleted.AddDynamic(this, &UCommandsWidget::HandleShowCommandsCompleted);
 	}
 
 	TopBar->SetVisibility(ESlateVisibility::Hidden);
@@ -57,6 +60,11 @@ void UCommandsWidget::HandleHidingCommandsCompleted()
 	Reset();
 }
 
+void UCommandsWidget::HandleShowCommandsCompleted()
+{
+	bIsSystemBusy = false;
+}
+
 void UCommandsWidget::Reset()
 {
 	if (TextDescription) TextDescription->SetText(FText::FromString(GroupCommands->GetDefaultCommandDescription()));
@@ -65,16 +73,20 @@ void UCommandsWidget::Reset()
 	CurrentCommandColumn = GroupCommands;
 	TopBar->SetVisibility(ESlateVisibility::Hidden);
 	bIsDisplayed = false;
+	bIsSystemBusy = false;
 }
 
 void UCommandsWidget::ToggleShow()
 {
+	if (bIsSystemBusy) return;
+
 	if (bIsDisplayed)
 	{
 
 	}
 	else {
 		bIsDisplayed = true;
+		bIsSystemBusy = true;
 		TopBar->SetVisibility(ESlateVisibility::Visible);
 		CurrentCommandColumn->Display();
 	}
@@ -82,15 +94,22 @@ void UCommandsWidget::ToggleShow()
 
 void UCommandsWidget::SelectCommandAbove()
 {
+	if (bIsSystemBusy) return;
+	if (!bIsDisplayed) return;
 	CurrentCommandColumn->SelectCommandAbove();
 }
 
 void UCommandsWidget::SelectCommandBelow()
 {
+	if (bIsSystemBusy) return;
+	if (!bIsDisplayed) return;
 	CurrentCommandColumn->SelectCommandBelow();
 }
 
 void UCommandsWidget::SelectCommand()
 {
+	if (bIsSystemBusy) return;
+	if (!bIsDisplayed) return;
 	CurrentCommandColumn->SelectCommand();
+	bIsSystemBusy = true;
 }

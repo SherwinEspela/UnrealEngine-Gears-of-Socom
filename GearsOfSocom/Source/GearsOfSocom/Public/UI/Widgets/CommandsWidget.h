@@ -63,8 +63,12 @@ private:
 	UFUNCTION()
 	void HandleHidingCommandsCompleted();
 
+	UFUNCTION()
+	void HandleShowCommandsCompleted();
+
 	void Reset();
 
 private:
 	UCommandColumnWidget* CurrentCommandColumn;
+	bool bIsSystemBusy = false;
 };

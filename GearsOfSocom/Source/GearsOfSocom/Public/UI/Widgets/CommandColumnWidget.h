@@ -10,6 +10,7 @@ class UCommandCellWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCommandDescriptionUpdatedSignature, FString, CommandDescription);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHidingColumnCommandCompletedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShowCommandsCompletedSignature);
 
 /**
  * 
@@ -39,6 +40,7 @@ public:
 
 	FCommandDescriptionUpdatedSignature OnCommandDescriptionUpdated;
 	FHidingColumnCommandCompletedSignature OnHidingColumnCommandCompleted;
+	FShowCommandsCompletedSignature OnShowCommandsCompleted;
 
 public:
 	FORCEINLINE FString GetDefaultCommandDescription() const { return DefaultCommandDescription.ToUpper(); }
@@ -59,6 +61,9 @@ protected:
 protected:
 	virtual void SetupCells();
 	void UpdateCommandCells(UCommandCellWidget* NewCommandCell);
+
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleShowCellsAnimationFinished();
 
 	UFUNCTION(BlueprintCallable)
 	virtual void HandleHideCellsAnimationFinished();
