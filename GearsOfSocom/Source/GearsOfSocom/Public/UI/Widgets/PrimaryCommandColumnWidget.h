@@ -20,6 +20,8 @@ class GEARSOFSOCOM_API UPrimaryCommandColumnWidget : public UCommandColumnWidget
 public:
 	virtual void Display() override;
 	virtual void HandleAnimRevealFinished() override;
+	virtual void SelectCommand() override;
+	virtual void Reset() override;
 
 	FPrimaryCommandSelectedSignature OnPrimaryCommandSelected;
 
@@ -29,6 +31,7 @@ protected:
 
 protected:
 	virtual void SetupCells() override;
+	virtual void HandleHideCellsAnimationFinished() override;
 
 protected:
 	UPROPERTY(meta = (BindWidget))

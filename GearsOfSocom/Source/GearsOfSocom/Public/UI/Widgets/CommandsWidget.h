@@ -11,6 +11,7 @@ class UGroupCommandColumnWidget;
 class UPrimaryCommandColumnWidget;
 class UCommandColumnWidget;
 class UTextBlock;
+class UOverlay;
 
 /**
  * 
@@ -43,6 +44,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TextDescription;
 
+	UPROPERTY(meta = (BindWidget))
+	UOverlay* TopBar;
+
 	UPROPERTY(BlueprintReadOnly)
 	ECommandType CurrentCommandType;
 
@@ -52,6 +56,14 @@ private:
 
 	UFUNCTION()
 	void HandleGroupCommandSelected();
+
+	UFUNCTION()
+	void HandlePrimaryCommandSelected();
+
+	UFUNCTION()
+	void HandleHidingCommandsCompleted();
+
+	void Reset();
 
 private:
 	UCommandColumnWidget* CurrentCommandColumn;

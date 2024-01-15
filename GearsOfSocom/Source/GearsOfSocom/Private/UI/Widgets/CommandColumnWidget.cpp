@@ -7,7 +7,6 @@
 void UCommandColumnWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 }
 
 void UCommandColumnWidget::SetupCells()
@@ -34,12 +33,29 @@ void UCommandColumnWidget::Display()
 	OnPlayRevealRequested();
 }
 
+void UCommandColumnWidget::Hide()
+{
+	CurrentCell->PlayBlinkAnimation();
+}
+
 void UCommandColumnWidget::HandleAnimRevealFinished()
 {
 }
 
+void UCommandColumnWidget::HandleAnimUnrevealFinished()
+{
+	OnHidingColumnCommandCompleted.Broadcast();
+}
+
 void UCommandColumnWidget::HandleHideCellsAnimationFinished()
 {
+}
+
+void UCommandColumnWidget::HandleBlinkAnimationFinished()
+{
+	CurrentCell->bIsSelected = false;
+	CurrentCell->PlayHideAnimation();
+	OnPlayUnrevealRequested();
 }
 
 void UCommandColumnWidget::SelectCommandAbove()
@@ -55,4 +71,21 @@ void UCommandColumnWidget::SelectCommandBelow()
 void UCommandColumnWidget::SelectCommand()
 {
 	OnPlayHideCellsRequested();
+
+	CurrentCell->bIsSelected = true;
+	CurrentCell->Unhighlight();
+
+	for (auto Cell : CommandCells)
+	{
+		Cell->PlayHideAnimation();
+	}
+}
+
+void UCommandColumnWidget::Reset()
+{
+	if (CurrentCell)
+	{
+		CurrentCell->bIsSelected = false;
+		CurrentCell->Unhighlight();
+	}
 }

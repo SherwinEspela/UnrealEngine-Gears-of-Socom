@@ -29,19 +29,19 @@ void UGroupCommandColumnWidget::SetupCells()
 	CommandCellAble->SetCellBelow(CommandCellBravo);
 	CommandCellBravo->SetCellAbove(CommandCellAble);
 
-	CommandCellAble->Unhighlight();
-	CommandCellBravo->Unhighlight();
-
 	CommandCellTeam->SetCommandType(ECommandType::ECT_Group);
 	CommandCellAble->SetCommandType(ECommandType::ECT_Group);
 	CommandCellBravo->SetCommandType(ECommandType::ECT_Group);
+
+	CommandCellTeam->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
+	CommandCellAble->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
+	CommandCellBravo->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
 
 	CommandCells.Add(CommandCellTeam);
 	CommandCells.Add(CommandCellAble);
 	CommandCells.Add(CommandCellBravo);
 
-	CurrentCell = CommandCellTeam;
-	CurrentCell->Highlight();
+	Reset();
 }
 
 void UGroupCommandColumnWidget::Display()
@@ -60,13 +60,15 @@ void UGroupCommandColumnWidget::HandleAnimRevealFinished()
 void UGroupCommandColumnWidget::SelectCommand()
 {
 	Super::SelectCommand();
-	CurrentCell->bIsSelected = true;
-	CurrentCell->Unhighlight();
+}
 
-	for (auto Cell : CommandCells)
-	{
-		Cell->PlayHideAnimation();
-	}
+void UGroupCommandColumnWidget::Reset()
+{
+	Super::Reset();
+	CurrentCell = CommandCellTeam;
+	CurrentCell->Highlight();
+	CommandCellAble->Unhighlight();
+	CommandCellBravo->Unhighlight();
 }
 
 void UGroupCommandColumnWidget::HandleHideCellsAnimationFinished()

@@ -22,6 +22,7 @@ public:
 	virtual void Display() override;
 	virtual void HandleAnimRevealFinished() override;
 	virtual void SelectCommand() override;
+	virtual void Reset() override;
 
 	FGroupCommandSelectedSignature OnGroupCommandSelected;
 

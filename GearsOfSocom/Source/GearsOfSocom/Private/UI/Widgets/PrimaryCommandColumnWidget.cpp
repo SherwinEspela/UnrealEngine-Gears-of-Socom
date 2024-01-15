@@ -22,8 +22,6 @@ void UPrimaryCommandColumnWidget::NativeConstruct()
 
 void UPrimaryCommandColumnWidget::SetupCells()
 {
-	Super::SetupCells();
-
 	CommandCells.Add(CommandCellFireAtWill);
 	CommandCells.Add(CommandCellCoverArea);
 	CommandCells.Add(CommandCellDeploy);
@@ -55,11 +53,20 @@ void UPrimaryCommandColumnWidget::SetupCells()
 		CommandCells[i]->bIsSelected = false;
 		CommandCells[i]->Unhighlight();
 		CommandCells[i]->SetCommandType(ECommandType::ECT_Primary);
+		CommandCells[i]->OnBlinkAnimationFinished.AddDynamic(this, &UPrimaryCommandColumnWidget::HandleBlinkAnimationFinished);
 	}
 
 	CurrentCell = CommandCellFireAtWill;
 	CurrentCell->bIsSelected = true;
 	CurrentCell->Highlight();
+
+	Super::SetupCells();
+}
+
+void UPrimaryCommandColumnWidget::HandleHideCellsAnimationFinished()
+{
+	Super::HandleHideCellsAnimationFinished();
+	OnPrimaryCommandSelected.Broadcast();
 }
 
 void UPrimaryCommandColumnWidget::Display()
@@ -76,4 +83,23 @@ void UPrimaryCommandColumnWidget::HandleAnimRevealFinished()
 	{
 		Cell->PlayShowAnimation();
 	}
+}
+
+void UPrimaryCommandColumnWidget::SelectCommand()
+{
+	Super::SelectCommand();
+}
+
+void UPrimaryCommandColumnWidget::Reset()
+{
+	Super::Reset();
+
+	for (auto Cell : CommandCells) {
+		Cell->bIsSelected = false;
+		Cell->Unhighlight();
+	}
+
+	CurrentCell = CommandCellFireAtWill;
+	CurrentCell->bIsSelected = true;
+	CurrentCell->Highlight();
 }
