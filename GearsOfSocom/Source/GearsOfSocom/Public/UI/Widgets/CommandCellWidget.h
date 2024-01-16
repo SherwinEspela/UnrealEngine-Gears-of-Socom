@@ -34,6 +34,8 @@ public:
 	void Highlight();
 	void Unhighlight();
 
+	void SetTextCommand(FString CommandTitle);
+
 public:
 	FORCEINLINE void SetCellAbove(UCommandCellWidget* Cell) { CellAbove = Cell; }
 	FORCEINLINE void SetCellBelow(UCommandCellWidget* Cell) { CellBelow = Cell; }

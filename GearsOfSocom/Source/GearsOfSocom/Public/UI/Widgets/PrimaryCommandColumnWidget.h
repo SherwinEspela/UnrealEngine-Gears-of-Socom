@@ -23,7 +23,6 @@ public:
 	virtual void HandleAnimRevealFinished() override;
 	virtual void SelectCommand() override;
 	virtual void Reset() override;
-	//void BackToGroupCommands();
 	EPrimaryCommandType GetPrimaryCommandType() const;
 
 	FPrimaryCommandSelectedSignature OnPrimaryCommandSelected;
@@ -71,5 +70,9 @@ protected:
 	UPrimaryCommandCellWidget* CommandCellHoldPosition;
 
 private:
+	void ToggleBetweenFireAtWillAndHoldFire();
+
+private:
 	EPrimaryCommandType SelectedPrimaryCommandType;
+
 };

@@ -152,6 +152,9 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 	case EPrimaryCommandType::EPCT_FireAtWill:
 		CommandFireAtWill();
 		break;
+	case EPrimaryCommandType::EPCT_HoldFire:
+		CommandHoldFire();
+		break;
 	case EPrimaryCommandType::EPCT_CoverArea:
 		break;
 	case EPrimaryCommandType::EPCT_Deploy:
@@ -173,7 +176,6 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 		CommandAllyToFollow();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
-		CommandHoldFire();
 		break;
 	default:
 		break;
@@ -202,7 +204,6 @@ void AGOSPlayerController::SelectCommandLeft()
 
 void AGOSPlayerController::SelectCommandRight()
 {
-	//if (CommandMenuWidget) CommandMenuWidget->SelectCommandRight();
 }
 
 void AGOSPlayerController::ChooseCommand()

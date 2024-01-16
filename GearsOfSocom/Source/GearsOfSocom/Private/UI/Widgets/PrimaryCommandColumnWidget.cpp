@@ -3,6 +3,7 @@
 
 #include "UI/Widgets/PrimaryCommandColumnWidget.h"
 #include "UI/Widgets/PrimaryCommandCellWidget.h"
+#include "Constants/UICustomEnums.h"
 
 void UPrimaryCommandColumnWidget::NativePreConstruct()
 {
@@ -118,6 +119,7 @@ void UPrimaryCommandColumnWidget::Reset()
 	CurrentCell = CommandCellFireAtWill;
 	CurrentCell->bIsSelected = true;
 	CurrentCell->Highlight();
+	ToggleBetweenFireAtWillAndHoldFire();
 }
 
 EPrimaryCommandType UPrimaryCommandColumnWidget::GetPrimaryCommandType() const
@@ -129,4 +131,18 @@ EPrimaryCommandType UPrimaryCommandColumnWidget::GetPrimaryCommandType() const
 	}
 
 	return EPrimaryCommandType::EPCT_FireAtWill;
+}
+
+void UPrimaryCommandColumnWidget::ToggleBetweenFireAtWillAndHoldFire()
+{
+	if (SelectedPrimaryCommandType == EPrimaryCommandType::EPCT_FireAtWill)
+	{
+		CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_HoldFire);
+		CommandCellFireAtWill->SetTextCommand(TEXT("Hold Fire"));
+	}
+	else if (SelectedPrimaryCommandType == EPrimaryCommandType::EPCT_HoldFire)
+	{
+		CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_FireAtWill);
+		CommandCellFireAtWill->SetTextCommand(TEXT("Fire At Will"));
+	}
 }

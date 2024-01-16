@@ -22,6 +22,7 @@ UENUM(BlueprintType)
 enum class EPrimaryCommandType : uint8
 {
 	EPCT_FireAtWill		UMETA(DisplayName = "Fire At Will"),
+	EPCT_HoldFire		UMETA(DisplayName = "Hold Fire"),
 	EPCT_CoverArea		UMETA(DisplayName = "Cover Area"),
 	EPCT_Deploy			UMETA(DisplayName = "Deploy"),
 	EPCT_Ambush			UMETA(DisplayName = "Ambush"),
