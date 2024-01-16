@@ -14,6 +14,7 @@
 #include "Engine/DamageEvents.h"
 #include "Sound/SoundBase.h"
 #include "UI/Widgets/WeaponWidget.h"
+#include "ActorComponents/MemberStatusComponent.h"
 #include "Constants/Constants.h"
 
 
@@ -27,6 +28,8 @@ AGOSPlayerCharacter::AGOSPlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatus"));
 }
 
 void AGOSPlayerCharacter::BeginPlay()
@@ -146,9 +149,9 @@ void AGOSPlayerCharacter::ToggleCrouch()
 
 void AGOSPlayerCharacter::CommandAllyToFollow()
 {
-	if (Ally1)
+	if (Boomer)
 	{
-		Ally1->FollowPlayer();
+		Boomer->FollowPlayer();
 
 		if (SFXCommandFollow)
 		{
@@ -175,16 +178,16 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 		Hit, PVPLocation, LineTraceEnd, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams
 	);
 
-	if (bHitSuccess && Ally1)
+	if (bHitSuccess && Boomer)
 	{
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
 		if (Enemy)
 		{
-			Ally1->AttackTargetEnemy(Enemy);
+			Boomer->AttackTargetEnemy(Enemy);
 			PlayAllyAttackEnemyResponseSound();
 		}
 		else {
-			Ally1->MoveToTargetPosition(Hit.Location);
+			Boomer->MoveToTargetPosition(Hit.Location);
 
 			if (SFXCommandMoveToPosition)
 			{
@@ -198,8 +201,8 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 
 void AGOSPlayerCharacter::CommandFireAtWill()
 {
-	if (Ally1) {
-		Ally1->FireAtWill();
+	if (Boomer) {
+		Boomer->FireAtWill();
 		if (SFXCommandFireAtWill) {
 			UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
 			FTimerHandle TimerHandle;
@@ -210,8 +213,8 @@ void AGOSPlayerCharacter::CommandFireAtWill()
 
 void AGOSPlayerCharacter::CommandHoldFire()
 {
-	if (Ally1) {
-		Ally1->HoldFire();
+	if (Boomer) {
+		Boomer->HoldFire();
 		if (SFXCommandHoldFire)
 		{
 			UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
@@ -223,20 +226,20 @@ void AGOSPlayerCharacter::CommandHoldFire()
 
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
 {
-	if (Ally1) Ally1->PlayFollowResponseSound();
+	if (Boomer) Boomer->PlayFollowResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound()
 {
-	if (Ally1) Ally1->PlayAttackEnemyResponseSound();
+	if (Boomer) Boomer->PlayAttackEnemyResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound()
 {
-	if (Ally1) Ally1->PlayMoveToPositionResponseSound();
+	if (Boomer) Boomer->PlayMoveToPositionResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 {
-	if (Ally1) Ally1->PlayConfirmResponseSound();
+	if (Boomer) Boomer->PlayConfirmResponseSound();
 }

@@ -8,6 +8,7 @@
 
 class AAllyBotAIController;
 class AGOSBaseEnemyCharacter;
+class UMemberStatusComponent;
 
 /**
  * 
@@ -17,7 +18,7 @@ class GEARSOFSOCOM_API AGOSAllyCharacter : public AGOSBotCharacter
 {
 	GENERATED_BODY()
 public:
-	//virtual void Tick(float DeltaSeconds) override;
+	AGOSAllyCharacter();
 
 public:
 	virtual void FireWeapon() override;
@@ -49,13 +50,16 @@ public:
 	virtual void PlayEnemyKilledResponseSound();
 	virtual void PlayConfirmResponseSound();
 
+public:
+	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn);
 
 protected:
 	virtual void DamageReaction(AActor* DamageCauser);
-	
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "Voice Response")
 	USoundBase* SoundResponseConfirm;
@@ -74,6 +78,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Voice Response")
 	USoundBase* SoundResponseHit;
+
+	UPROPERTY(EditDefaultsOnly)
+	UMemberStatusComponent* MemberStatusComponent;
 
 private:
 	AAllyBotAIController* AllyAIController;

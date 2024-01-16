@@ -8,13 +8,7 @@ void UTeamStatusWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (MemberStatus1)
-	{
-		MemberStatus1->SetName(TEXT("sdlfjsdlfkjs"));
-		MemberStatus1->SetStatus(TEXT("sdfs234sf"));
-	}
-
-	if (MemberStatus2)
+	/*if (MemberStatus2)
 	{
 		MemberStatus2->SetName(TEXT("xlowokse"));
 		MemberStatus2->SetStatus(TEXT("2kd9ckwslw"));
@@ -30,5 +24,5 @@ void UTeamStatusWidget::NativeConstruct()
 	{
 		MemberStatus4->SetName(TEXT("ik5rsegef"));
 		MemberStatus4->SetStatus(TEXT("1234fsf"));
-	}
+	}*/
 }

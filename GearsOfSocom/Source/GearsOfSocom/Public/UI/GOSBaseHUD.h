@@ -16,7 +16,6 @@ UCLASS()
 class GEARSOFSOCOM_API AGOSBaseHUD : public AHUD
 {
 	GENERATED_BODY()
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,4 +30,7 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTeamStatusWidget* TeamStatusWidget;
+
+private:
+	void AssignMemberStatusWidgets();
 };

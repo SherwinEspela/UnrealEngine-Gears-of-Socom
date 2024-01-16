@@ -13,6 +13,9 @@
 #define ACTOR_TAG_PLAYER TEXT("Player")
 #define ACTOR_TAG_ENEMY TEXT("Enemy")
 #define ACTOR_TAG_NAVYSEALS TEXT("NavySeals")
+#define ACTOR_TAG_BOOMER TEXT("Boomer")
+#define ACTOR_TAG_JESTER TEXT("Jester")
+#define ACTOR_TAG_SPECTRE TEXT("Spectre")
 
 // Blackboard Keys
 #define BB_KEY_PLAYER TEXT("Player")
@@ -67,6 +70,8 @@ enum class EBotBehaviorTypes : uint8
 	EBBT_Evading			UMETA(DisplayName = "Evading"),
 	EBBT_FollowingPlayer	UMETA(DisplayName = "Following Player"),
 	EBBT_MovingToPosition	UMETA(DisplayName = "Moving To Position"),
+	EBBT_Ambushing			UMETA(DisplayName = "Ambushing"),
+	EBBT_HoldingFire		UMETA(DisplayName = "Holding Fire"),
 
 	EBBT_Default			UMETA(DisplayName = "Default")
 };

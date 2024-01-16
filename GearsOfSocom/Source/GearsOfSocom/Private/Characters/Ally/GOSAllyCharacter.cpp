@@ -12,7 +12,13 @@
 #include "Components/ArrowComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Sound/SoundBase.h"
+#include "ActorComponents/MemberStatusComponent.h"
 #include "Constants/Constants.h"
+
+AGOSAllyCharacter::AGOSAllyCharacter()
+{
+	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatusComponent"));
+}
 
 void AGOSAllyCharacter::BeginPlay()
 {
@@ -67,6 +73,7 @@ void AGOSAllyCharacter::FollowPlayer()
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_FollowingPlayer) return;
 	if (AllyAIController)
 	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_FollowingPlayer);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_FollowingPlayer);
 		AllyAIController->FollowPlayer();
 	}
@@ -76,6 +83,7 @@ void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
 {
 	if (AllyAIController)
 	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_MovingToPosition);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
 	}
@@ -86,8 +94,8 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	if (AllyAIController)
 	{
 		TargetActor = Enemy;
-		
 		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Attacking);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(Enemy);
 		AllyAIController->FireAtWill();
@@ -107,6 +115,7 @@ void AGOSAllyCharacter::HoldFire()
 {
 	if (AllyAIController)
 	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
 		AllyAIController->HoldFire();
 	}
