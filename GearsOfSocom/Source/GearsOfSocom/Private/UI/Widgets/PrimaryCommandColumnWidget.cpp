@@ -2,7 +2,7 @@
 
 
 #include "UI/Widgets/PrimaryCommandColumnWidget.h"
-#include "UI/Widgets/CommandCellWidget.h"
+#include "UI/Widgets/PrimaryCommandCellWidget.h"
 
 void UPrimaryCommandColumnWidget::NativePreConstruct()
 {
@@ -22,6 +22,18 @@ void UPrimaryCommandColumnWidget::NativeConstruct()
 
 void UPrimaryCommandColumnWidget::SetupCells()
 {
+	CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_FireAtWill);
+	CommandCellCoverArea->SetPrimaryCommandType(EPrimaryCommandType::EPCT_CoverArea);
+	CommandCellDeploy->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Deploy);
+	CommandCellAmbush->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Ambush);
+	CommandCellRunTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_RunTo);
+	CommandCellLeadTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_LeadTo);
+	CommandCellAttackTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_AttackTo);
+	CommandCellStealthTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_StealthTo);
+	CommandCellRegroup->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Regroup);
+	CommandCellFollow->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Follow);
+	CommandCellHoldPosition->SetPrimaryCommandType(EPrimaryCommandType::EPCT_HoldPosition);
+
 	CommandCells.Add(CommandCellFireAtWill);
 	CommandCells.Add(CommandCellCoverArea);
 	CommandCells.Add(CommandCellDeploy);

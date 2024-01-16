@@ -6,7 +6,7 @@
 #include "UI/Widgets/CommandColumnWidget.h"
 #include "GroupCommandColumnWidget.generated.h"
 
-class UCommandCellWidget;
+class UGroupCommandCellWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGroupCommandSelectedSignature);
 
@@ -36,12 +36,12 @@ protected:
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellTeam;
+	UGroupCommandCellWidget* CommandCellTeam;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellAble;
+	UGroupCommandCellWidget* CommandCellAble;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellBravo;
+	UGroupCommandCellWidget* CommandCellBravo;
 	
 };

@@ -2,7 +2,7 @@
 
 
 #include "UI/Widgets/GroupCommandColumnWidget.h"
-#include "UI/Widgets/CommandCellWidget.h"
+#include "UI/Widgets/GroupCommandCellWidget.h"
 
 void UGroupCommandColumnWidget::NativePreConstruct()
 {
@@ -32,6 +32,10 @@ void UGroupCommandColumnWidget::SetupCells()
 	CommandCellTeam->SetCommandType(ECommandType::ECT_Group);
 	CommandCellAble->SetCommandType(ECommandType::ECT_Group);
 	CommandCellBravo->SetCommandType(ECommandType::ECT_Group);
+
+	CommandCellTeam->SetGroupCommandType(EGroupCommandType::EGCT_Team);
+	CommandCellAble->SetGroupCommandType(EGroupCommandType::EGCT_Able);
+	CommandCellBravo->SetGroupCommandType(EGroupCommandType::EGCT_Bravo);
 
 	CommandCellTeam->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
 	CommandCellAble->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);

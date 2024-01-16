@@ -14,6 +14,8 @@ class UTextBlock;
 class UOverlay;
 class USoundBase;
 
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCommandRequestedSignature, )
+
 /**
  * 
  */

@@ -69,6 +69,11 @@ void UCommandsWidget::HandlePrimaryCommandSelected()
 void UCommandsWidget::HandleHidingCommandsCompleted()
 {
 	Reset();
+
+
+
+
+
 }
 
 void UCommandsWidget::HandleShowCommandsCompleted()
