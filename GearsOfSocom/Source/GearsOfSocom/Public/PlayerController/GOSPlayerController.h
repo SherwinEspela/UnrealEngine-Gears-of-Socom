@@ -119,7 +119,7 @@ private:
 private:
 	void HandleDelayNextCommandCompleted();
 	void DelayNextCommand();
-	void SetupCommandInputs() const;
+	void SetupCommandInputs();
 
 	UFUNCTION()
 	void HandleCommandRequested(EGroupCommandType SelectedGroupCommandType, EPrimaryCommandType SelectedPrimaryCommandType);

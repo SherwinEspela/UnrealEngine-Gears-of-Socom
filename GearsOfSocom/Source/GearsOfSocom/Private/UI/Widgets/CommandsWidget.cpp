@@ -71,6 +71,7 @@ void UCommandsWidget::HandlePrimaryCommandSelected(EPrimaryCommandType PrimaryCo
 void UCommandsWidget::HandleHidingCommandsCompleted()
 {
 	Reset();
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
 	OnCommandRequested.Broadcast(SelectedGroupCommandType, SelectedPrimaryCommandType);
 }
 
@@ -87,10 +88,12 @@ void UCommandsWidget::ToggleShow()
 	UGameplayStatics::PlaySound2D(this, SFXCommandSelected);
 	if (bIsDisplayed)
 	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		SetVisibility(ESlateVisibility::Hidden);
 		Reset();
 	}
 	else {
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		SetVisibility(ESlateVisibility::Visible);
 		bIsSystemBusy = true;
 		bIsDisplayed = true;

@@ -48,10 +48,16 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(SelectCommandLeftAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandLeft);
 	EnhancedInputComponent->BindAction(SelectCommandRightAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::SelectCommandRight);
 	EnhancedInputComponent->BindAction(SelectCommandAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ChooseCommand);
+
+	ToggleShowCommandMenuAction->bTriggerWhenPaused = true;
+	SelectCommandAboveAction->bTriggerWhenPaused = true;
+	SelectCommandBelowAction->bTriggerWhenPaused = true;
+	SelectCommandLeftAction->bTriggerWhenPaused = true;
+	SelectCommandAction->bTriggerWhenPaused = true;
 }
 
 // Note: Add inside SetupInputComponent if shortcut keys are needed
-void AGOSPlayerController::SetupCommandInputs() const
+void AGOSPlayerController::SetupCommandInputs()
 {
 	EnhancedInputComponent->BindAction(CommandAllyToFollowAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAllyToFollow);
 	EnhancedInputComponent->BindAction(CommandAttackOrMoveToTargetAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::CommandAttackOrMoveToTargetPosition);
