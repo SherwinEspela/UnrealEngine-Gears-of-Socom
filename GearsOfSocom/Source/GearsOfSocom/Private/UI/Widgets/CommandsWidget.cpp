@@ -71,8 +71,7 @@ void UCommandsWidget::HandlePrimaryCommandSelected(EPrimaryCommandType PrimaryCo
 void UCommandsWidget::HandleHidingCommandsCompleted()
 {
 	Reset();
-
-	// TODO: submit commands
+	OnCommandRequested.Broadcast(SelectedGroupCommandType, SelectedPrimaryCommandType);
 }
 
 void UCommandsWidget::HandleShowCommandsCompleted()

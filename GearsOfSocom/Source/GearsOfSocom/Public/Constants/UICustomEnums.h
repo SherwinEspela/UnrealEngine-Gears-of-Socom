@@ -33,3 +33,11 @@ enum class EPrimaryCommandType : uint8
 	EPCT_Follow			UMETA(DisplayName = "Follow"),
 	EPCT_HoldPosition	UMETA(DisplayName = "Hold Position")
 };
+
+FORCEINLINE void PrintGroupCommandType(EGroupCommandType CommandType) {
+	UE_LOG(LogTemp, Log, TEXT("Group Command: %s"), *UEnum::GetValueAsName(CommandType).ToString());
+}
+
+FORCEINLINE void PrintPrimaryCommandType(EPrimaryCommandType CommandType) {
+	UE_LOG(LogTemp, Log, TEXT("Primary Command: %s"), *UEnum::GetValueAsName(CommandType).ToString());
+}

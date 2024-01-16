@@ -14,7 +14,7 @@ class UTextBlock;
 class UOverlay;
 class USoundBase;
 
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCommandRequestedSignature, )
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCommandRequestedSignature, EGroupCommandType, SelectedGroupCommandType, EPrimaryCommandType, SelectedPrimaryCommandType);
 
 /**
  * 
@@ -30,6 +30,8 @@ public:
 	void SelectCommandBelow();
 	void SelectCommandLeft();
 	void SelectCommand();
+
+	FCommandRequestedSignature OnCommandRequested;
 
 public:
 	UPROPERTY(BlueprintReadOnly)

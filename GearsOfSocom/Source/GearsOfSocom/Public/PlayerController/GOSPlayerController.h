@@ -10,6 +10,7 @@ class AGOSPlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
 class UCommandsWidget;
+class UEnhancedInputComponent;
 struct FInputActionValue;
 
 /**
@@ -113,8 +114,13 @@ protected:
 
 private:
 	bool bCanIssueCommand = true;
+	UEnhancedInputComponent* EnhancedInputComponent;
 
 private:
 	void HandleDelayNextCommandCompleted();
 	void DelayNextCommand();
+	void SetupCommandInputs() const;
+
+	UFUNCTION()
+	void HandleCommandRequested(EGroupCommandType SelectedGroupCommandType, EPrimaryCommandType SelectedPrimaryCommandType);
 };
