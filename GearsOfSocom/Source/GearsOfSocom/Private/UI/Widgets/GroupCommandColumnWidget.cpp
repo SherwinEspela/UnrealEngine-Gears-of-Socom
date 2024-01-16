@@ -64,6 +64,15 @@ void UGroupCommandColumnWidget::HandleAnimRevealFinished()
 void UGroupCommandColumnWidget::SelectCommand()
 {
 	Super::SelectCommand();
+
+	UGroupCommandCellWidget* GroupCell = CastChecked<UGroupCommandCellWidget>(CurrentCell);
+	SelectedGroupCommandType = GroupCell->GetGroupCommandType();
+
+	// TODO: Reference for printing Enum values. Delete when no longer needed.
+	/*if (GroupCell)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Group Command: %s"), *UEnum::GetValueAsName(GroupCell->GetGroupCommandType()).ToString());
+	}*/
 }
 
 void UGroupCommandColumnWidget::Reset()
@@ -75,8 +84,19 @@ void UGroupCommandColumnWidget::Reset()
 	CommandCellBravo->Unhighlight();
 }
 
+EGroupCommandType UGroupCommandColumnWidget::GetGroupCommandType() const
+{
+	UGroupCommandCellWidget* GroupCell = Cast<UGroupCommandCellWidget>(CurrentCell);
+	if (GroupCell)
+	{
+		return GroupCell->GetGroupCommandType();
+	}
+
+	return EGroupCommandType::EGCT_Team;
+}
+
 void UGroupCommandColumnWidget::HandleHideCellsAnimationFinished()
 {
 	Super::HandleHideCellsAnimationFinished();
-	OnGroupCommandSelected.Broadcast();
+	OnGroupCommandSelected.Broadcast(SelectedGroupCommandType);
 }

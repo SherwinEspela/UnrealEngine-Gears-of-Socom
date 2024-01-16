@@ -78,7 +78,7 @@ void UPrimaryCommandColumnWidget::SetupCells()
 void UPrimaryCommandColumnWidget::HandleHideCellsAnimationFinished()
 {
 	Super::HandleHideCellsAnimationFinished();
-	OnPrimaryCommandSelected.Broadcast();
+	OnPrimaryCommandSelected.Broadcast(SelectedPrimaryCommandType);
 }
 
 void UPrimaryCommandColumnWidget::Display()
@@ -100,6 +100,9 @@ void UPrimaryCommandColumnWidget::HandleAnimRevealFinished()
 void UPrimaryCommandColumnWidget::SelectCommand()
 {
 	Super::SelectCommand();
+
+	UPrimaryCommandCellWidget* Cell = CastChecked<UPrimaryCommandCellWidget>(CurrentCell);
+	SelectedPrimaryCommandType = Cell->GetPrimaryCommandType();
 }
 
 void UPrimaryCommandColumnWidget::Reset()
@@ -117,7 +120,13 @@ void UPrimaryCommandColumnWidget::Reset()
 	CurrentCell->Highlight();
 }
 
-void UPrimaryCommandColumnWidget::BackToGroupCommands()
+EPrimaryCommandType UPrimaryCommandColumnWidget::GetPrimaryCommandType() const
 {
+	UPrimaryCommandCellWidget* PrimaryCell = Cast<UPrimaryCommandCellWidget>(CurrentCell);
+	if (PrimaryCell)
+	{
+		return PrimaryCell->GetPrimaryCommandType();
+	}
 
+	return EPrimaryCommandType::EPCT_FireAtWill;
 }

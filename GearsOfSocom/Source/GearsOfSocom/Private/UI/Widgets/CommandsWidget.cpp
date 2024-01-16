@@ -45,15 +45,16 @@ void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
 	}
 }
 
-void UCommandsWidget::HandleGroupCommandSelected()
+void UCommandsWidget::HandleGroupCommandSelected(EGroupCommandType GroupCommandType)
 {
+	SelectedGroupCommandType = GroupCommandType;
 	TextDescription->SetText(FText::FromString(PrimaryCommands->GetCurrentCommandDescription()));
 	CurrentCommandColumn = PrimaryCommands;
 	CurrentCommandColumn->Display();
 	bIsNavigatingBack = false;
 }
 
-void UCommandsWidget::HandlePrimaryCommandSelected()
+void UCommandsWidget::HandlePrimaryCommandSelected(EPrimaryCommandType PrimaryCommandType)
 {
 	if (bIsNavigatingBack)
 	{
@@ -61,6 +62,7 @@ void UCommandsWidget::HandlePrimaryCommandSelected()
 		PrimaryCommands->UnrevealCommands();
 	}
 	else {
+		SelectedPrimaryCommandType = PrimaryCommandType;
 		GroupCommands->Hide();
 		PrimaryCommands->Hide();
 	}
@@ -70,10 +72,7 @@ void UCommandsWidget::HandleHidingCommandsCompleted()
 {
 	Reset();
 
-
-
-
-
+	// TODO: submit commands
 }
 
 void UCommandsWidget::HandleShowCommandsCompleted()

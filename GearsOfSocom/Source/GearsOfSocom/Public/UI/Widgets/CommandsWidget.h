@@ -65,10 +65,10 @@ private:
 	void HandleCommandDescriptionUpdated(FString NewDescription);
 
 	UFUNCTION()
-	void HandleGroupCommandSelected();
+	void HandleGroupCommandSelected(EGroupCommandType GroupCommandType);
 
 	UFUNCTION()
-	void HandlePrimaryCommandSelected();
+	void HandlePrimaryCommandSelected(EPrimaryCommandType PrimaryCommandType);
 
 	UFUNCTION()
 	void HandleHidingCommandsCompleted();
@@ -82,4 +82,6 @@ private:
 	UCommandColumnWidget* CurrentCommandColumn;
 	bool bIsSystemBusy = false;
 	bool bIsNavigatingBack = false;
+	EGroupCommandType SelectedGroupCommandType;
+	EPrimaryCommandType SelectedPrimaryCommandType;
 };

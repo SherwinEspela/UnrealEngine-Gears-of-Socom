@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UI/Widgets/CommandColumnWidget.h"
+#include "Constants/UICustomEnums.h"
 #include "PrimaryCommandColumnWidget.generated.h"
 
 class UPrimaryCommandCellWidget;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPrimaryCommandSelectedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPrimaryCommandSelectedSignature, EPrimaryCommandType, PrimaryCommandType);
 
 /**
  * 
@@ -22,7 +23,8 @@ public:
 	virtual void HandleAnimRevealFinished() override;
 	virtual void SelectCommand() override;
 	virtual void Reset() override;
-	void BackToGroupCommands();
+	//void BackToGroupCommands();
+	EPrimaryCommandType GetPrimaryCommandType() const;
 
 	FPrimaryCommandSelectedSignature OnPrimaryCommandSelected;
 
@@ -67,4 +69,7 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UPrimaryCommandCellWidget* CommandCellHoldPosition;
+
+private:
+	EPrimaryCommandType SelectedPrimaryCommandType;
 };
