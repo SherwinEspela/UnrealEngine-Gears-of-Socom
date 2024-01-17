@@ -92,7 +92,9 @@ void AGOSPlayerCharacter::SetupTeam()
 			}
 			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_SPECTRE)))
 			{
-
+				Spectre = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Spectre);
+				BravoTeam.Add(Spectre);
 			}
 		}
 	}
@@ -183,7 +185,10 @@ void AGOSPlayerCharacter::CommandFollow()
 	{
 		for (auto Bot : Team)
 		{
-			Bot->FollowPlayer();
+			if (Bot)
+			{
+				Bot->FollowPlayer();
+			}
 		}
 		
 		if (SFXCommandFollow)

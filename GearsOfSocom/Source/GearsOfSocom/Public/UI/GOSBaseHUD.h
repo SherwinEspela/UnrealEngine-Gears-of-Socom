@@ -8,6 +8,8 @@
 
 class UReticleWidget;
 class UTeamStatusWidget;
+class AGOSAllyCharacter;
+class UMemberStatusWidget;
 
 /**
  * 
@@ -33,4 +35,5 @@ protected:
 
 private:
 	void AssignMemberStatusWidgets();
+	void SetupMemberStatusWidget(AGOSAllyCharacter* Bot, UMemberStatusWidget* Widget);
 };

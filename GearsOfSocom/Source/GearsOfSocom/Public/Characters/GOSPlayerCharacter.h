@@ -85,6 +85,7 @@ protected:
 	// Ally Bots / AI
 	AGOSAllyCharacter* Boomer;
 	AGOSAllyCharacter* Jester;
+	AGOSAllyCharacter* Spectre;
 
 	TArray<AGOSAllyCharacter*> Team;
 	TArray<AGOSAllyCharacter*> BravoTeam;

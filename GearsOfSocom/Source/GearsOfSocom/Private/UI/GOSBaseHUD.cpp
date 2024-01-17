@@ -50,7 +50,7 @@ void AGOSBaseHUD::AssignMemberStatusWidgets()
 			Player->GetMemberStatusComponent()->SetMemberStatusWidget(PlayerWidget);
 		}
 
-		UMemberStatusWidget* BoomerWidget = TeamStatusWidget->GetBoomerMemberStatusWidget();
+		/*UMemberStatusWidget* BoomerWidget = TeamStatusWidget->GetBoomerMemberStatusWidget();
 		if (BoomerWidget)
 		{
 			TArray<AActor*> NavySeals;
@@ -67,6 +67,41 @@ void AGOSBaseHUD::AssignMemberStatusWidgets()
 					MemberStatus->SetMemberStatusWidget(BoomerWidget);
 				}
 			}
+		}*/
+
+		TArray<AActor*> SealActors;
+		UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), SealActors);
+
+		if (SealActors.Num() > 0)
+		{
+			for (AActor* SealActor : SealActors)
+			{
+				if (SealActor->ActorHasTag(FName(ACTOR_TAG_BOOMER)))
+				{
+					AGOSAllyCharacter* Bot = Cast<AGOSAllyCharacter>(SealActor);
+					UMemberStatusWidget* Widget = TeamStatusWidget->GetBoomerMemberStatusWidget();
+					SetupMemberStatusWidget(Bot, Widget);
+				}
+				else if (SealActor->ActorHasTag(FName(ACTOR_TAG_JESTER)))
+				{
+					AGOSAllyCharacter* Bot = Cast<AGOSAllyCharacter>(SealActor);
+					UMemberStatusWidget* Widget = TeamStatusWidget->GetJesterMemberStatusWidget();
+					SetupMemberStatusWidget(Bot, Widget);
+				}
+				else if (SealActor->ActorHasTag(FName(ACTOR_TAG_SPECTRE)))
+				{
+					AGOSAllyCharacter* Bot = Cast<AGOSAllyCharacter>(SealActor);
+					UMemberStatusWidget* Widget = TeamStatusWidget->GetSpectreMemberStatusWidget();
+					SetupMemberStatusWidget(Bot, Widget);
+				}
+			}
 		}
 	}
+}
+
+void AGOSBaseHUD::SetupMemberStatusWidget(AGOSAllyCharacter* Bot, UMemberStatusWidget* Widget)
+{
+	auto MemberStatus = Bot->GetMemberStatusComponent();
+	Widget->SetName(MemberStatus->GetCharacterName());
+	MemberStatus->SetMemberStatusWidget(Widget);
 }
