@@ -43,7 +43,7 @@ public:
 	void ToggleCrouch();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
-	void CommandAllyToFollow();
+	void CommandFollow();
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
@@ -56,7 +56,6 @@ public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
-	FORCEINLINE void SetAlly1(TObjectPtr<AGOSAllyCharacter> NewAlly) { Boomer = NewAlly; }
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
 
 protected:
@@ -64,6 +63,7 @@ protected:
 
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+	void SetupTeam();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
@@ -83,7 +83,11 @@ protected:
 
 protected:
 	// Ally Bots / AI
-	TObjectPtr<AGOSAllyCharacter> Boomer;
+	AGOSAllyCharacter* Boomer;
+	AGOSAllyCharacter* Jester;
+
+	TArray<AGOSAllyCharacter*> Team;
+	TArray<AGOSAllyCharacter*> BravoTeam;
 
 protected:
 	// Voice Commands

@@ -50,6 +50,8 @@ void AGOSPlayerCharacter::BeginPlay()
 			WeaponWidget->SetWeaponName(TEXT("WeaponTest"));
 		}
 	}
+
+	SetupTeam();
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -66,6 +68,34 @@ void AGOSPlayerCharacter::ToggleCameraFOVInterp(float DeltaSeconds)
 		CameraZoomWeaponSpeed
 	);
 	FollowCamera->SetFieldOfView(CurrentCameraFOV);
+}
+
+void AGOSPlayerCharacter::SetupTeam()
+{
+	TArray<AActor*> SealActors;
+	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), SealActors);
+
+	if (SealActors.Num() > 0)
+	{
+		for (AActor* SealActor : SealActors)
+		{
+			if (SealActor->ActorHasTag(FName(ACTOR_TAG_BOOMER)))
+			{
+				Boomer = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Boomer);
+			}
+			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_JESTER)))
+			{
+				Jester = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Jester);
+				BravoTeam.Add(Jester);
+			}
+			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_SPECTRE)))
+			{
+
+			}
+		}
+	}
 }
 
 void AGOSPlayerCharacter::SetZoomWeaponView()
@@ -147,12 +177,15 @@ void AGOSPlayerCharacter::ToggleCrouch()
 	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
 }
 
-void AGOSPlayerCharacter::CommandAllyToFollow()
+void AGOSPlayerCharacter::CommandFollow()
 {
-	if (Boomer)
+	if (Team.Num() > 0)
 	{
-		Boomer->FollowPlayer();
-
+		for (auto Bot : Team)
+		{
+			Bot->FollowPlayer();
+		}
+		
 		if (SFXCommandFollow)
 		{
 			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);

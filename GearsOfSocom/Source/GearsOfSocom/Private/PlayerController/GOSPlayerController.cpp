@@ -108,7 +108,7 @@ void AGOSPlayerController::ToggleCrouch()
 void AGOSPlayerController::CommandAllyToFollow()
 {
 	if (!bCanIssueCommand) return;
-	PlayerCharacter->CommandAllyToFollow();
+	PlayerCharacter->CommandFollow();
 	DelayNextCommand();
 }
 
