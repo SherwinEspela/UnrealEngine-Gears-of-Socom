@@ -123,6 +123,7 @@ private:
 	void PlayAllyMoveToTargetResponseSound();
 	void PlayAllyConfirmResponseSound();
 	void MoveToTargetPosition(FVector TargetPosition);
+	void PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType);
 
 private:
 	float CurrentCameraFOV;

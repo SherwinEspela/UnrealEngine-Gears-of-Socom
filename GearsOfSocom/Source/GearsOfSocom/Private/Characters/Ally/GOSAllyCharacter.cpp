@@ -25,18 +25,7 @@ void AGOSAllyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	PrimaryActorTick.bCanEverTick = true;
-
 	AllyAIController = Cast<AAllyBotAIController>(GetController());
-
-	//APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	//if (PlayerPawn)
-	//{
-	//	AGOSPlayerCharacter* Player = Cast<AGOSPlayerCharacter>(PlayerPawn);
-	//	if (Player)
-	//	{
-	//		Player->SetNavySealBoomer(this);
-	//	}
-	//}
 
 	if (PawnSensingComponent)
 	{
@@ -140,6 +129,45 @@ void AGOSAllyCharacter::Regroup()
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Regrouping);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Regrouping);
 		AllyAIController->RegroupToPlayer();
+	}
+}
+
+void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
+{
+	switch (CommandType)
+	{
+	case EPrimaryCommandType::EPCT_FireAtWill:
+		FireAtWill();
+		break;
+	case EPrimaryCommandType::EPCT_HoldFire:
+		HoldFire();
+		break;
+	case EPrimaryCommandType::EPCT_CoverArea:
+		break;
+	case EPrimaryCommandType::EPCT_Deploy:
+		break;
+	case EPrimaryCommandType::EPCT_Ambush:
+		
+		break;
+	case EPrimaryCommandType::EPCT_RunTo:
+		break;
+	case EPrimaryCommandType::EPCT_LeadTo:
+		break;
+	case EPrimaryCommandType::EPCT_AttackTo:
+		break;
+	case EPrimaryCommandType::EPCT_StealthTo:
+		break;
+	case EPrimaryCommandType::EPCT_Regroup:
+		Regroup();
+		break;
+	case EPrimaryCommandType::EPCT_Follow:
+		FollowPlayer();
+		break;
+	case EPrimaryCommandType::EPCT_HoldPosition:
+		HoldPosition();
+		break;
+	default:
+		break;
 	}
 }
 
