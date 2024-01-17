@@ -181,22 +181,32 @@ void AGOSPlayerCharacter::ToggleCrouch()
 
 void AGOSPlayerCharacter::CommandFollow()
 {
-	if (Team.Num() > 0)
+	switch (SelectedGroupCommandType)
 	{
-		for (auto Bot : Team)
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
 		{
-			if (Bot)
-			{
-				Bot->FollowPlayer();
-			}
+			for (auto Bot : Team) if (Bot) Bot->FollowPlayer();
 		}
-		
-		if (SFXCommandFollow)
+		break;
+	case EGroupCommandType::EGCT_Able:
+		if (Boomer) Boomer->FollowPlayer();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
 		{
-			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 1.f, false);
+			for (auto Bot : BravoTeam) if (Bot) Bot->FollowPlayer();
 		}
+		break;
+	default:
+		break;
+	}
+
+	if (SFXCommandFollow)
+	{
+		UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 1.f, false);
 	}
 }
 
@@ -221,7 +231,26 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
 		if (Enemy)
 		{
-			Boomer->AttackTargetEnemy(Enemy);
+			switch (SelectedGroupCommandType)
+			{
+			case EGroupCommandType::EGCT_Team:
+				if (Team.Num() > 0)
+				{
+					for (auto Bot : Team) if (Bot) Bot->AttackTargetEnemy(Enemy);
+				}
+				break;
+			case EGroupCommandType::EGCT_Able:
+				Boomer->AttackTargetEnemy(Enemy);
+				break;
+			case EGroupCommandType::EGCT_Bravo:
+				if (BravoTeam.Num() > 0)
+				{
+					for (auto Bot : BravoTeam) if (Bot) Bot->AttackTargetEnemy(Enemy);
+				}
+				break;
+			default:
+				break;
+			}
 			PlayAllyAttackEnemyResponseSound();
 		}
 		else {
@@ -232,41 +261,115 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 
 void AGOSPlayerCharacter::CommandFireAtWill()
 {
-	if (Boomer) {
-		Boomer->FireAtWill();
-		if (SFXCommandFireAtWill) {
-			UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->FireAtWill();
 		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->FireAtWill();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->FireAtWill();
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (SFXCommandFireAtWill) {
+		UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
 	}
 }
 
 void AGOSPlayerCharacter::CommandHoldFire()
 {
-	if (Boomer) {
-		Boomer->HoldFire();
-		if (SFXCommandHoldFire)
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
 		{
-			UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
+			for (auto Bot : Team) if (Bot) Bot->HoldFire();
 		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->HoldFire();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->HoldFire();
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (SFXCommandHoldFire)
+	{
+		UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
 	}
 }
 
 void AGOSPlayerCharacter::CommandRegroup()
 {
-	if (Boomer) {
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->Regroup();
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
 		Boomer->Regroup();
-		PlayAllyConfirmResponseSound();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->Regroup();
+		}
+		break;
+	default:
+		break;
 	}
+
+	PlayAllyConfirmResponseSound();
 }
 
 void AGOSPlayerCharacter::CommandAmbush()
 {
 	CommandAttackOrMoveToTargetPosition();
-	if (Boomer) Boomer->FireAtWill();
+	
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->FireAtWill();
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->FireAtWill();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->FireAtWill();
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void AGOSPlayerCharacter::CommandRunTo()
@@ -276,10 +379,28 @@ void AGOSPlayerCharacter::CommandRunTo()
 
 void AGOSPlayerCharacter::CommandHoldPosition()
 {
-	if (Boomer) {
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->HoldPosition();
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
 		Boomer->HoldPosition();
-		PlayAllyConfirmResponseSound();
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->HoldPosition();
+		}
+		break;
+	default:
+		break;
 	}
+
+	PlayAllyConfirmResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
@@ -304,7 +425,27 @@ void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 
 void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
 {
-	Boomer->MoveToTargetPosition(TargetPosition);
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->MoveToTargetPosition(TargetPosition);
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->MoveToTargetPosition(TargetPosition);
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->MoveToTargetPosition(TargetPosition);
+		}
+		break;
+	default:
+		break;
+	}
+
 	if (SFXCommandMoveToPosition)
 	{
 		UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);

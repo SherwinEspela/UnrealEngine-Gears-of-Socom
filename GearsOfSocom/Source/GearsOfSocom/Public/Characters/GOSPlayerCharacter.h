@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GOSBaseCharacter.h"
+#include "Constants/UICustomEnums.h"
 #include "GOSPlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -57,6 +58,7 @@ public:
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
+	FORCEINLINE void SetSelectedGroupCommandType(EGroupCommandType GroupCommandType) { SelectedGroupCommandType = GroupCommandType; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -125,4 +127,5 @@ private:
 private:
 	float CurrentCameraFOV;
 	UGOSPlayerAnimInstance* PlayerAnimInstance;
+	EGroupCommandType SelectedGroupCommandType;
 };

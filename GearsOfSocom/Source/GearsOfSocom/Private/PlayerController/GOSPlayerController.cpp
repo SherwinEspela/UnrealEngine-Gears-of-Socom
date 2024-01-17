@@ -107,9 +107,9 @@ void AGOSPlayerController::ToggleCrouch()
 
 void AGOSPlayerController::CommandAllyToFollow()
 {
-	if (!bCanIssueCommand) return;
+	/*if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandFollow();
-	DelayNextCommand();
+	DelayNextCommand();*/
 }
 
 void AGOSPlayerController::CommandAttackOrMoveToTargetPosition()
@@ -150,6 +150,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 	if (!PlayerCharacter) return;
 	if (!bCanIssueCommand) return;
 
+	PlayerCharacter->SetSelectedGroupCommandType(SelectedGroupCommandType);
 	switch (SelectedPrimaryCommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
@@ -179,7 +180,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 		PlayerCharacter->CommandRegroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
-		CommandAllyToFollow();
+		PlayerCharacter->CommandFollow();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
 		PlayerCharacter->CommandHoldPosition();

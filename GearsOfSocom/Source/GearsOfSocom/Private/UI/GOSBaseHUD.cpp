@@ -50,25 +50,6 @@ void AGOSBaseHUD::AssignMemberStatusWidgets()
 			Player->GetMemberStatusComponent()->SetMemberStatusWidget(PlayerWidget);
 		}
 
-		/*UMemberStatusWidget* BoomerWidget = TeamStatusWidget->GetBoomerMemberStatusWidget();
-		if (BoomerWidget)
-		{
-			TArray<AActor*> NavySeals;
-			UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_BOOMER), NavySeals);
-
-			if (NavySeals.Num() > 0)
-			{
-				AActor* BoomerActor = NavySeals[0];
-				if (BoomerActor)
-				{
-					AGOSAllyCharacter* Boomer = CastChecked<AGOSAllyCharacter>(BoomerActor);
-					auto MemberStatus = Boomer->GetMemberStatusComponent();
-					BoomerWidget->SetName(MemberStatus->GetCharacterName());
-					MemberStatus->SetMemberStatusWidget(BoomerWidget);
-				}
-			}
-		}*/
-
 		TArray<AActor*> SealActors;
 		UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), SealActors);
 
