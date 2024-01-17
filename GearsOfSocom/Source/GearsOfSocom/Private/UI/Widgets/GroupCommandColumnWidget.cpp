@@ -2,7 +2,7 @@
 
 
 #include "UI/Widgets/GroupCommandColumnWidget.h"
-#include "UI/Widgets/CommandCellWidget.h"
+#include "UI/Widgets/GroupCommandCellWidget.h"
 
 void UGroupCommandColumnWidget::NativePreConstruct()
 {
@@ -33,6 +33,10 @@ void UGroupCommandColumnWidget::SetupCells()
 	CommandCellAble->SetCommandType(ECommandType::ECT_Group);
 	CommandCellBravo->SetCommandType(ECommandType::ECT_Group);
 
+	CommandCellTeam->SetGroupCommandType(EGroupCommandType::EGCT_Team);
+	CommandCellAble->SetGroupCommandType(EGroupCommandType::EGCT_Able);
+	CommandCellBravo->SetGroupCommandType(EGroupCommandType::EGCT_Bravo);
+
 	CommandCellTeam->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
 	CommandCellAble->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
 	CommandCellBravo->OnBlinkAnimationFinished.AddDynamic(this, &UGroupCommandColumnWidget::HandleBlinkAnimationFinished);
@@ -60,6 +64,15 @@ void UGroupCommandColumnWidget::HandleAnimRevealFinished()
 void UGroupCommandColumnWidget::SelectCommand()
 {
 	Super::SelectCommand();
+
+	UGroupCommandCellWidget* GroupCell = CastChecked<UGroupCommandCellWidget>(CurrentCell);
+	SelectedGroupCommandType = GroupCell->GetGroupCommandType();
+
+	// TODO: Reference for printing Enum values. Delete when no longer needed.
+	/*if (GroupCell)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Group Command: %s"), *UEnum::GetValueAsName(GroupCell->GetGroupCommandType()).ToString());
+	}*/
 }
 
 void UGroupCommandColumnWidget::Reset()
@@ -71,8 +84,19 @@ void UGroupCommandColumnWidget::Reset()
 	CommandCellBravo->Unhighlight();
 }
 
+EGroupCommandType UGroupCommandColumnWidget::GetGroupCommandType() const
+{
+	UGroupCommandCellWidget* GroupCell = Cast<UGroupCommandCellWidget>(CurrentCell);
+	if (GroupCell)
+	{
+		return GroupCell->GetGroupCommandType();
+	}
+
+	return EGroupCommandType::EGCT_Team;
+}
+
 void UGroupCommandColumnWidget::HandleHideCellsAnimationFinished()
 {
 	Super::HandleHideCellsAnimationFinished();
-	OnGroupCommandSelected.Broadcast();
+	OnGroupCommandSelected.Broadcast(SelectedGroupCommandType);
 }

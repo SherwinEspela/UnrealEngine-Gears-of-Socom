@@ -13,10 +13,12 @@ void AAllyBotAIController::BeginPlay()
 	InitializeAI();
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+	HoldPosition();
 }
 
 void AAllyBotAIController::FollowPlayer()
 {
+	ClearValues();
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
@@ -25,6 +27,7 @@ void AAllyBotAIController::FollowPlayer()
 
 void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 {
+	ClearValues();
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, true);
@@ -34,6 +37,7 @@ void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 void AAllyBotAIController::AttackTargetEnemy(AActor* Enemy)
 {
 	TargetActor = Enemy;
+	ClearValues();
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, Enemy);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
@@ -60,6 +64,8 @@ void AAllyBotAIController::ClearValues()
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, false);
 }
 
 void AAllyBotAIController::ClearTagetValues()
@@ -78,4 +84,16 @@ void AAllyBotAIController::FireAtWill()
 void AAllyBotAIController::HoldFire()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+}
+
+void AAllyBotAIController::RegroupToPlayer()
+{
+	ClearValues();
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, true);
+}
+
+void AAllyBotAIController::HoldPosition()
+{
+	ClearValues();
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
 }

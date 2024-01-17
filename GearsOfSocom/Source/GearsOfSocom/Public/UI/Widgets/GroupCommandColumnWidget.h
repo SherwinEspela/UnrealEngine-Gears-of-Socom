@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UI/Widgets/CommandColumnWidget.h"
+#include "Constants/UICustomEnums.h"
 #include "GroupCommandColumnWidget.generated.h"
 
-class UCommandCellWidget;
+class UGroupCommandCellWidget;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGroupCommandSelectedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGroupCommandSelectedSignature, EGroupCommandType, GroupCommandType);
 
 /**
  * 
@@ -23,6 +24,7 @@ public:
 	virtual void HandleAnimRevealFinished() override;
 	virtual void SelectCommand() override;
 	virtual void Reset() override;
+	EGroupCommandType GetGroupCommandType() const;
 
 	FGroupCommandSelectedSignature OnGroupCommandSelected;
 
@@ -36,12 +38,15 @@ protected:
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellTeam;
+	UGroupCommandCellWidget* CommandCellTeam;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellAble;
+	UGroupCommandCellWidget* CommandCellAble;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellBravo;
+	UGroupCommandCellWidget* CommandCellBravo;
+
+private:
+	EGroupCommandType SelectedGroupCommandType;
 	
 };

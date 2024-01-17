@@ -12,6 +12,8 @@ class AGOSAllyCharacter;
 class USoundBase;
 class UGOSPlayerAnimInstance;
 class UWeaponWidget;
+class UMemberStatusWidget;
+class UMemberStatusComponent;
 
 /**
  * 
@@ -45,12 +47,17 @@ public:
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
+	void CommandRegroup();
+	void CommandAmbush();
+	void CommandRunTo();
+	void CommandHoldPosition();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
-	FORCEINLINE void SetAlly1(TObjectPtr<AGOSAllyCharacter> NewAlly) { Ally1 = NewAlly; }
+	FORCEINLINE void SetAlly1(TObjectPtr<AGOSAllyCharacter> NewAlly) { Boomer = NewAlly; }
+	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,9 +78,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	bool bIsAiming = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	UMemberStatusComponent* MemberStatusComponent;
+
 protected:
 	// Ally Bots / AI
-	TObjectPtr<AGOSAllyCharacter> Ally1;
+	TObjectPtr<AGOSAllyCharacter> Boomer;
 
 protected:
 	// Voice Commands
@@ -105,6 +115,7 @@ private:
 	void PlayAllyAttackEnemyResponseSound();
 	void PlayAllyMoveToTargetResponseSound();
 	void PlayAllyConfirmResponseSound();
+	void MoveToTargetPosition(FVector TargetPosition);
 
 private:
 	float CurrentCameraFOV;

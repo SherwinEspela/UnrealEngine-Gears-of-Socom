@@ -45,15 +45,16 @@ void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)
 	}
 }
 
-void UCommandsWidget::HandleGroupCommandSelected()
+void UCommandsWidget::HandleGroupCommandSelected(EGroupCommandType GroupCommandType)
 {
+	SelectedGroupCommandType = GroupCommandType;
 	TextDescription->SetText(FText::FromString(PrimaryCommands->GetCurrentCommandDescription()));
 	CurrentCommandColumn = PrimaryCommands;
 	CurrentCommandColumn->Display();
 	bIsNavigatingBack = false;
 }
 
-void UCommandsWidget::HandlePrimaryCommandSelected()
+void UCommandsWidget::HandlePrimaryCommandSelected(EPrimaryCommandType PrimaryCommandType)
 {
 	if (bIsNavigatingBack)
 	{
@@ -61,6 +62,7 @@ void UCommandsWidget::HandlePrimaryCommandSelected()
 		PrimaryCommands->UnrevealCommands();
 	}
 	else {
+		SelectedPrimaryCommandType = PrimaryCommandType;
 		GroupCommands->Hide();
 		PrimaryCommands->Hide();
 	}
@@ -69,6 +71,8 @@ void UCommandsWidget::HandlePrimaryCommandSelected()
 void UCommandsWidget::HandleHidingCommandsCompleted()
 {
 	Reset();
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	OnCommandRequested.Broadcast(SelectedGroupCommandType, SelectedPrimaryCommandType);
 }
 
 void UCommandsWidget::HandleShowCommandsCompleted()
@@ -84,10 +88,12 @@ void UCommandsWidget::ToggleShow()
 	UGameplayStatics::PlaySound2D(this, SFXCommandSelected);
 	if (bIsDisplayed)
 	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		SetVisibility(ESlateVisibility::Hidden);
 		Reset();
 	}
 	else {
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		SetVisibility(ESlateVisibility::Visible);
 		bIsSystemBusy = true;
 		bIsDisplayed = true;

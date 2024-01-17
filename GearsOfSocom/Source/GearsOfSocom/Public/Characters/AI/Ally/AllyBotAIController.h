@@ -26,6 +26,8 @@ public:
 	virtual void ClearTagetValues();
 	virtual void FireAtWill();
 	virtual void HoldFire();
+	virtual void RegroupToPlayer();
+	virtual void HoldPosition();
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();

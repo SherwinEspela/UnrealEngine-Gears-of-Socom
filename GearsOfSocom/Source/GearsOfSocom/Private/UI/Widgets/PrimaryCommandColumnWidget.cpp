@@ -2,7 +2,8 @@
 
 
 #include "UI/Widgets/PrimaryCommandColumnWidget.h"
-#include "UI/Widgets/CommandCellWidget.h"
+#include "UI/Widgets/PrimaryCommandCellWidget.h"
+#include "Constants/UICustomEnums.h"
 
 void UPrimaryCommandColumnWidget::NativePreConstruct()
 {
@@ -22,6 +23,18 @@ void UPrimaryCommandColumnWidget::NativeConstruct()
 
 void UPrimaryCommandColumnWidget::SetupCells()
 {
+	CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_FireAtWill);
+	CommandCellCoverArea->SetPrimaryCommandType(EPrimaryCommandType::EPCT_CoverArea);
+	CommandCellDeploy->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Deploy);
+	CommandCellAmbush->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Ambush);
+	CommandCellRunTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_RunTo);
+	CommandCellLeadTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_LeadTo);
+	CommandCellAttackTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_AttackTo);
+	CommandCellStealthTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_StealthTo);
+	CommandCellRegroup->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Regroup);
+	CommandCellFollow->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Follow);
+	CommandCellHoldPosition->SetPrimaryCommandType(EPrimaryCommandType::EPCT_HoldPosition);
+
 	CommandCells.Add(CommandCellFireAtWill);
 	CommandCells.Add(CommandCellCoverArea);
 	CommandCells.Add(CommandCellDeploy);
@@ -66,7 +79,7 @@ void UPrimaryCommandColumnWidget::SetupCells()
 void UPrimaryCommandColumnWidget::HandleHideCellsAnimationFinished()
 {
 	Super::HandleHideCellsAnimationFinished();
-	OnPrimaryCommandSelected.Broadcast();
+	OnPrimaryCommandSelected.Broadcast(SelectedPrimaryCommandType);
 }
 
 void UPrimaryCommandColumnWidget::Display()
@@ -88,6 +101,9 @@ void UPrimaryCommandColumnWidget::HandleAnimRevealFinished()
 void UPrimaryCommandColumnWidget::SelectCommand()
 {
 	Super::SelectCommand();
+
+	UPrimaryCommandCellWidget* Cell = CastChecked<UPrimaryCommandCellWidget>(CurrentCell);
+	SelectedPrimaryCommandType = Cell->GetPrimaryCommandType();
 }
 
 void UPrimaryCommandColumnWidget::Reset()
@@ -103,9 +119,30 @@ void UPrimaryCommandColumnWidget::Reset()
 	CurrentCell = CommandCellFireAtWill;
 	CurrentCell->bIsSelected = true;
 	CurrentCell->Highlight();
+	ToggleBetweenFireAtWillAndHoldFire();
 }
 
-void UPrimaryCommandColumnWidget::BackToGroupCommands()
+EPrimaryCommandType UPrimaryCommandColumnWidget::GetPrimaryCommandType() const
 {
+	UPrimaryCommandCellWidget* PrimaryCell = Cast<UPrimaryCommandCellWidget>(CurrentCell);
+	if (PrimaryCell)
+	{
+		return PrimaryCell->GetPrimaryCommandType();
+	}
 
+	return EPrimaryCommandType::EPCT_FireAtWill;
+}
+
+void UPrimaryCommandColumnWidget::ToggleBetweenFireAtWillAndHoldFire()
+{
+	if (SelectedPrimaryCommandType == EPrimaryCommandType::EPCT_FireAtWill)
+	{
+		CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_HoldFire);
+		CommandCellFireAtWill->SetTextCommand(TEXT("Hold Fire"));
+	}
+	else if (SelectedPrimaryCommandType == EPrimaryCommandType::EPCT_HoldFire)
+	{
+		CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_FireAtWill);
+		CommandCellFireAtWill->SetTextCommand(TEXT("Fire At Will"));
+	}
 }

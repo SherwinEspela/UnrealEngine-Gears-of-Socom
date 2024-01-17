@@ -78,7 +78,6 @@ protected:
 	UPawnNoiseEmitterComponent* NoiseEmitter;
 
 protected:
-	// Character States
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHealth = 100.f;
 

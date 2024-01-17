@@ -3,6 +3,7 @@
 
 #include "UI/Widgets/CommandCellWidget.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Animation/WidgetAnimation.h"
 
 void UCommandCellWidget::NativeConstruct()
@@ -52,5 +53,13 @@ void UCommandCellWidget::Unhighlight()
 	{
 		ImageTitleBG->SetColorAndOpacity(FLinearColor(FColor::White));
 		ImageTitleBG->SetOpacity(BackgroundOpacity);
+	}
+}
+
+void UCommandCellWidget::SetTextCommand(FString CommandTitle)
+{
+	if (TextCommand)
+	{
+		TextCommand->SetText(FText::FromString(CommandTitle).ToUpper());
 	}
 }

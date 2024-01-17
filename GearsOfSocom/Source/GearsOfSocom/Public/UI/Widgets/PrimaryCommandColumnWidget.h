@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UI/Widgets/CommandColumnWidget.h"
+#include "Constants/UICustomEnums.h"
 #include "PrimaryCommandColumnWidget.generated.h"
 
-class UCommandCellWidget;
+class UPrimaryCommandCellWidget;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPrimaryCommandSelectedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPrimaryCommandSelectedSignature, EPrimaryCommandType, PrimaryCommandType);
 
 /**
  * 
@@ -22,7 +23,7 @@ public:
 	virtual void HandleAnimRevealFinished() override;
 	virtual void SelectCommand() override;
 	virtual void Reset() override;
-	void BackToGroupCommands();
+	EPrimaryCommandType GetPrimaryCommandType() const;
 
 	FPrimaryCommandSelectedSignature OnPrimaryCommandSelected;
 
@@ -36,35 +37,42 @@ protected:
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellFireAtWill;
+	UPrimaryCommandCellWidget* CommandCellFireAtWill;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellCoverArea;
+	UPrimaryCommandCellWidget* CommandCellCoverArea;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellDeploy;
+	UPrimaryCommandCellWidget* CommandCellDeploy;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellAmbush;
+	UPrimaryCommandCellWidget* CommandCellAmbush;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellRunTo;
+	UPrimaryCommandCellWidget* CommandCellRunTo;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellLeadTo;
+	UPrimaryCommandCellWidget* CommandCellLeadTo;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellAttackTo;
+	UPrimaryCommandCellWidget* CommandCellAttackTo;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellStealthTo;
+	UPrimaryCommandCellWidget* CommandCellStealthTo;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellRegroup;
+	UPrimaryCommandCellWidget* CommandCellRegroup;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellFollow;
+	UPrimaryCommandCellWidget* CommandCellFollow;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommandCellWidget* CommandCellHoldPosition;
+	UPrimaryCommandCellWidget* CommandCellHoldPosition;
+
+private:
+	void ToggleBetweenFireAtWillAndHoldFire();
+
+private:
+	EPrimaryCommandType SelectedPrimaryCommandType;
+
 };
