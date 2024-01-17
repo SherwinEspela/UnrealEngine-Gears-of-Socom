@@ -163,8 +163,10 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 	case EPrimaryCommandType::EPCT_Deploy:
 		break;
 	case EPrimaryCommandType::EPCT_Ambush:
+		PlayerCharacter->CommandAmbush();
 		break;
 	case EPrimaryCommandType::EPCT_RunTo:
+		PlayerCharacter->CommandRunTo();
 		break;
 	case EPrimaryCommandType::EPCT_LeadTo:
 		break;
@@ -180,6 +182,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 		CommandAllyToFollow();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
+		PlayerCharacter->CommandHoldPosition();
 		break;
 	default:
 		break;

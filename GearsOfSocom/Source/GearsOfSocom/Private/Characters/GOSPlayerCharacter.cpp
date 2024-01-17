@@ -187,14 +187,7 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 			PlayAllyAttackEnemyResponseSound();
 		}
 		else {
-			Boomer->MoveToTargetPosition(Hit.Location);
-
-			if (SFXCommandMoveToPosition)
-			{
-				UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
-				FTimerHandle TimerHandle;
-				GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 1.f, false);
-			}
+			MoveToTargetPosition(Hit.Location);
 		}
 	}
 }
@@ -228,13 +221,25 @@ void AGOSPlayerCharacter::CommandRegroup()
 {
 	if (Boomer) {
 		Boomer->Regroup();
-		/*if (SFXCommandMoveToPosition)
-		{
-			UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
-		}*/
+		PlayAllyConfirmResponseSound();
+	}
+}
 
+void AGOSPlayerCharacter::CommandAmbush()
+{
+	CommandAttackOrMoveToTargetPosition();
+	if (Boomer) Boomer->FireAtWill();
+}
+
+void AGOSPlayerCharacter::CommandRunTo()
+{
+	CommandAttackOrMoveToTargetPosition();
+}
+
+void AGOSPlayerCharacter::CommandHoldPosition()
+{
+	if (Boomer) {
+		Boomer->HoldPosition();
 		PlayAllyConfirmResponseSound();
 	}
 }
@@ -257,4 +262,15 @@ void AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound()
 void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 {
 	if (Boomer) Boomer->PlayConfirmResponseSound();
+}
+
+void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
+{
+	Boomer->MoveToTargetPosition(TargetPosition);
+	if (SFXCommandMoveToPosition)
+	{
+		UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 1.f, false);
+	}
 }

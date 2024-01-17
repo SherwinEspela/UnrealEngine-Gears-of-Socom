@@ -48,6 +48,9 @@ public:
 	void CommandFireAtWill();
 	void CommandHoldFire();
 	void CommandRegroup();
+	void CommandAmbush();
+	void CommandRunTo();
+	void CommandHoldPosition();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -112,6 +115,7 @@ private:
 	void PlayAllyAttackEnemyResponseSound();
 	void PlayAllyMoveToTargetResponseSound();
 	void PlayAllyConfirmResponseSound();
+	void MoveToTargetPosition(FVector TargetPosition);
 
 private:
 	float CurrentCameraFOV;
