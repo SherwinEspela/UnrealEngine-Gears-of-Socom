@@ -47,7 +47,11 @@ void UMemberStatusComponent::SetStatus(EBotBehaviorTypes BehaviorType) const
 		Status = TEXT("Ambushing");
 		break;
 	case EBotBehaviorTypes::EBBT_HoldingFire:
-		Status = TEXT("Holding Fire");
+	case EBotBehaviorTypes::EBBT_HoldingPosition:
+		Status = TEXT("Holding");
+		break;
+	case EBotBehaviorTypes::EBBT_Regrouping:
+		Status = TEXT("Regrouping");
 		break;
 
 	default:

@@ -44,7 +44,8 @@ void AGOSAllyCharacter::BeginPlay()
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
-	SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
+	SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
 }
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -118,6 +119,27 @@ void AGOSAllyCharacter::HoldFire()
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
 		AllyAIController->HoldFire();
+	}
+}
+
+void AGOSAllyCharacter::HoldPosition()
+{
+	if (AllyAIController)
+	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
+		AllyAIController->HoldPosition();
+	}
+}
+
+void AGOSAllyCharacter::Regroup()
+{
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Regrouping) return;
+	if (AllyAIController)
+	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Regrouping);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Regrouping);
+		AllyAIController->RegroupToPlayer();
 	}
 }
 

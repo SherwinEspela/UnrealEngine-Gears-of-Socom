@@ -41,6 +41,8 @@ public:
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
 	virtual void FireAtWill();
 	virtual void HoldFire();
+	virtual void HoldPosition();
+	virtual void Regroup();
 
 public:
 	// Play Sound functions

@@ -224,6 +224,21 @@ void AGOSPlayerCharacter::CommandHoldFire()
 	}
 }
 
+void AGOSPlayerCharacter::CommandRegroup()
+{
+	if (Boomer) {
+		Boomer->Regroup();
+		/*if (SFXCommandMoveToPosition)
+		{
+			UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
+			FTimerHandle TimerHandle;
+			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
+		}*/
+
+		PlayAllyConfirmResponseSound();
+	}
+}
+
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
 {
 	if (Boomer) Boomer->PlayFollowResponseSound();

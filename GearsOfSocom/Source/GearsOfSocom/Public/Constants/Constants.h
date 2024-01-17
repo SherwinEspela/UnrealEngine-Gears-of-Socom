@@ -40,6 +40,8 @@
 #define BB_KEY_TARGET_HEARD TEXT("TargetHeard")
 #define BB_KEY_COVERING TEXT("IsCovering")
 #define BB_KEY_EVADING TEXT("IsEvading")
+#define BB_KEY_HOLDING TEXT("IsHolding")
+#define BB_KEY_REGROUPING TEXT("IsRegrouping")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8
@@ -72,6 +74,8 @@ enum class EBotBehaviorTypes : uint8
 	EBBT_MovingToPosition	UMETA(DisplayName = "Moving To Position"),
 	EBBT_Ambushing			UMETA(DisplayName = "Ambushing"),
 	EBBT_HoldingFire		UMETA(DisplayName = "Holding Fire"),
+	EBBT_HoldingPosition	UMETA(DisplayName = "Holding Position"),
+	EBBT_Regrouping			UMETA(DisplayName = "Regrouping"),
 
 	EBBT_Default			UMETA(DisplayName = "Default")
 };

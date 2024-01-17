@@ -147,6 +147,9 @@ void AGOSPlayerController::DelayNextCommand()
 
 void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGroupCommandType, EPrimaryCommandType SelectedPrimaryCommandType)
 {
+	if (!PlayerCharacter) return;
+	if (!bCanIssueCommand) return;
+
 	switch (SelectedPrimaryCommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
@@ -171,6 +174,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 	case EPrimaryCommandType::EPCT_StealthTo:
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
+		PlayerCharacter->CommandRegroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
 		CommandAllyToFollow();
