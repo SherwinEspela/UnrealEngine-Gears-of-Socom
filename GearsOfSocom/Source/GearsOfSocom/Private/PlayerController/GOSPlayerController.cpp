@@ -175,6 +175,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 		CommandAttackOrMoveToTargetPosition();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
+		PlayerCharacter->CommandStealthTo();
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
 		PlayerCharacter->CommandRegroup();

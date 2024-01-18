@@ -37,6 +37,7 @@ public:
 
 public:
 	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
+	void DecideToCrouchOrUncrouch();
 
 protected:
 	virtual void BeginPlay() override;

@@ -112,3 +112,15 @@ void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)
 	CurrentBotBehavior = NewBehavior;
 	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(NewBehavior);
 }
+
+void AGOSBotCharacter::DecideToCrouchOrUncrouch()
+{
+	bool ShouldCrouch = FMath::RandBool();
+	if (ShouldCrouch)
+	{
+		SetCrouch();
+	}
+	else {
+		SetUnCrouch();
+	}
+}

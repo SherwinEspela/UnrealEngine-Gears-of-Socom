@@ -278,6 +278,13 @@ void AGOSPlayerCharacter::CommandAmbush()
 void AGOSPlayerCharacter::CommandRunTo()
 {
 	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_RunTo);
+}
+
+void AGOSPlayerCharacter::CommandStealthTo()
+{
+	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_StealthTo);
 }
 
 void AGOSPlayerCharacter::CommandHoldPosition()
@@ -329,12 +336,15 @@ void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
 		break;
 	}
 
-	if (SFXCommandMoveToPosition)
+	// TODO: move to command when clearing area
+	/*if (SFXCommandMoveToPosition)
 	{
 		UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 1.f, false);
-	}
+	}*/
+
+	PlayAllyMoveToTargetResponseSound();
 }
 
 void AGOSPlayerCharacter::PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType)

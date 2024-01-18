@@ -117,7 +117,6 @@ void AGOSAllyCharacter::HoldPosition()
 	{
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
-		SetCrouch();
 		AllyAIController->HoldPosition();
 	}
 }
@@ -148,23 +147,30 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 	case EPrimaryCommandType::EPCT_Deploy:
 		break;
 	case EPrimaryCommandType::EPCT_Ambush:
-		
+		DecideToCrouchOrUncrouch();
 		break;
 	case EPrimaryCommandType::EPCT_RunTo:
+		SetUnCrouch();
 		break;
 	case EPrimaryCommandType::EPCT_LeadTo:
+		DecideToCrouchOrUncrouch();
 		break;
 	case EPrimaryCommandType::EPCT_AttackTo:
+		DecideToCrouchOrUncrouch();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
+		SetCrouch();
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
+		DecideToCrouchOrUncrouch();
 		Regroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
+		DecideToCrouchOrUncrouch();
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
+		DecideToCrouchOrUncrouch();
 		HoldPosition();
 		break;
 	default:
