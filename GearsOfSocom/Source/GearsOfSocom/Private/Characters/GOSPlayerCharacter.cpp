@@ -168,16 +168,10 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 	}
 	else {
 		MovementType = EMovementType::EMT_Jog;
-		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+		GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
 	}
 }
-
-//void AGOSPlayerCharacter::ToggleCrouch()
-//{
-//	Super::ToggleCrouch();
-//	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
-//}
 
 void AGOSPlayerCharacter::CommandFollow()
 {

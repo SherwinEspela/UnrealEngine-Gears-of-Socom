@@ -34,8 +34,8 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-	GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED; //JOG_SPEED * JogSpeedMultiplier;
+	GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED; //JOG_SPEED * JogSpeedMultiplier;
 	GetCharacterMovement()->GroundFriction = 2.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 85.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -106,18 +106,24 @@ void AGOSBaseCharacter::FireWeapon()
 void AGOSBaseCharacter::ToggleCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
+	bIsCrouching = !bIsCrouching;
+	GetCharacterMovement()->MaxWalkSpeed = bIsCrouching ? CROUCH_SPEED : RUN_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->ToggleCrouch();
 }
 
 void AGOSBaseCharacter::SetCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
+	bIsCrouching = true;
+	GetCharacterMovement()->MaxWalkSpeed = CROUCH_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->SetCrouch();
 }
 
 void AGOSBaseCharacter::SetUnCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
+	bIsCrouching = false;
+	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
 }
 
