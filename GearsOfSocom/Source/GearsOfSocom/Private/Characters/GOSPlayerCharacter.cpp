@@ -103,13 +103,13 @@ void AGOSPlayerCharacter::SetupTeam()
 void AGOSPlayerCharacter::SetZoomWeaponView()
 {
 	bIsAiming = true;
-	if (GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
+	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSPlayerCharacter::RevertToDefaultCameraView()
 {
 	bIsAiming = false;
-	if (GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
+	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSPlayerCharacter::Move(const FInputActionValue& Value)
@@ -142,9 +142,9 @@ void AGOSPlayerCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	if (GOSAnimInstance)
+	if (BaseAnimInstance)
 	{
-		GOSAnimInstance->Montage_JumpToSection("Default");
+		BaseAnimInstance->Montage_JumpToSection("Default");
 	}
 
 	if (GetController()) {
@@ -173,11 +173,11 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 	}
 }
 
-void AGOSPlayerCharacter::ToggleCrouch()
-{
-	if (GetCharacterMovement()->IsFalling()) return;
-	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
-}
+//void AGOSPlayerCharacter::ToggleCrouch()
+//{
+//	Super::ToggleCrouch();
+//	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
+//}
 
 void AGOSPlayerCharacter::CommandFollow()
 {

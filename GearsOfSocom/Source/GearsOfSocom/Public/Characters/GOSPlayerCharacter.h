@@ -41,7 +41,7 @@ public:
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
 	void ToggleWalkOrJog();
-	void ToggleCrouch();
+	/*void ToggleCrouch() override;*/
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void CommandFollow();

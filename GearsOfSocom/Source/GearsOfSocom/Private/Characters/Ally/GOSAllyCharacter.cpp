@@ -117,6 +117,7 @@ void AGOSAllyCharacter::HoldPosition()
 	{
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
+		SetCrouch();
 		AllyAIController->HoldPosition();
 	}
 }
@@ -175,9 +176,9 @@ void AGOSAllyCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	if (GOSAnimInstance && MontageFireWeapon)
+	if (BaseAnimInstance && MontageFireWeapon)
 	{
-		GOSAnimInstance->Montage_JumpToSection("Default");
+		BaseAnimInstance->Montage_JumpToSection("Default");
 	}
 }
 

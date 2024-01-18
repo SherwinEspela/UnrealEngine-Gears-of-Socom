@@ -28,6 +28,8 @@ public:
 	FORCEINLINE void SetAiming(bool IsAiming) { bIsAiming = IsAiming; }
 	FORCEINLINE void SetAsDead() { bIsDead = true; }
 	FORCEINLINE void ToggleCrouch() { bIsCrouching = !bIsCrouching; }
+	FORCEINLINE void SetCrouch() { bIsCrouching = true; }
+	FORCEINLINE void SetUnCrouch() { bIsCrouching = false; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)

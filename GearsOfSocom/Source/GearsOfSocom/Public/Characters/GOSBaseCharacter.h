@@ -31,6 +31,9 @@ public:
 
 public:
 	virtual void FireWeapon();
+	virtual void ToggleCrouch();
+	void SetCrouch();
+	void SetUnCrouch();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -39,6 +42,7 @@ public:
 public:
 	FORCEINLINE bool IsDead() { return bIsDead; }
 	FORCEINLINE bool IsCrouching() { return bIsCrouching; }
+	
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,7 +75,7 @@ protected:
 	UParticleSystem* FXImpact;
 
 protected:
-	UGOSBaseAnimInstance* GOSAnimInstance;
+	UGOSBaseAnimInstance* BaseAnimInstance;
 	EMovementType MovementType = EMovementType::EMT_Jog;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
