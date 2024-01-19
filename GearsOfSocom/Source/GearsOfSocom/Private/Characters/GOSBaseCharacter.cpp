@@ -107,14 +107,26 @@ void AGOSBaseCharacter::ToggleCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
 	bIsCrouching = !bIsCrouching;
-	GetCharacterMovement()->MaxWalkSpeed = bIsCrouching ? CROUCH_SPEED : RUN_SPEED;
+	
+	if (bIsCrouching)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = CROUCH_SPEED;
+		MovementType = EMovementType::EMT_Crouch;
+	}
+	else {
+		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+		MovementType = EMovementType::EMT_Walk;
+	}
+
 	if (BaseAnimInstance) BaseAnimInstance->ToggleCrouch();
 }
 
 void AGOSBaseCharacter::SetCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
+	if (MovementType == EMovementType::EMT_Crouch) return;
 	bIsCrouching = true;
+	MovementType = EMovementType::EMT_Crouch;
 	GetCharacterMovement()->MaxWalkSpeed = CROUCH_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->SetCrouch();
 }
@@ -122,7 +134,9 @@ void AGOSBaseCharacter::SetCrouch()
 void AGOSBaseCharacter::SetUnCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
+	if (MovementType == EMovementType::EMT_Walk) return;
 	bIsCrouching = false;
+	MovementType = EMovementType::EMT_Walk;
 	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
 }

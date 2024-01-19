@@ -76,7 +76,7 @@ protected:
 
 protected:
 	UGOSBaseAnimInstance* BaseAnimInstance;
-	EMovementType MovementType = EMovementType::EMT_Jog;
+	EMovementType MovementType = EMovementType::EMT_Walk;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
 	UPawnNoiseEmitterComponent* NoiseEmitter;

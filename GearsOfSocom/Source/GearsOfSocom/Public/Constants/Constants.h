@@ -8,7 +8,7 @@
 #define RUN_SPEED 534.f
 #define CROUCH_SPEED 230.f
 #define JOG_SPEED_2 367.5f
-#define WALK_SPEED 140.f
+#define WALK_SPEED 244.f
 #define SPRINT_SPEED 389.f
 
 // Actor Tags

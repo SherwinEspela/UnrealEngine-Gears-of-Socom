@@ -40,6 +40,7 @@ void AGOSPlayerCharacter::BeginPlay()
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 
 	PlayerAnimInstance = CastChecked<UGOSPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 
 	if (WeaponWidgetClass)
 	{
