@@ -113,7 +113,7 @@ void AGOSBotCharacter::SetBotBehavior(EBotBehaviorTypes NewBehavior)
 	if (BotAnimInstance) BotAnimInstance->SetBotBehavior(NewBehavior);
 }
 
-void AGOSBotCharacter::DecideToCrouchOrUncrouch()
+void AGOSBotCharacter::DecideMovementType()
 {
 	bool ShouldCrouch = FMath::RandBool();
 	if (ShouldCrouch)
@@ -121,6 +121,13 @@ void AGOSBotCharacter::DecideToCrouchOrUncrouch()
 		SetCrouch();
 	}
 	else {
-		SetUnCrouch();
+		bool ShouldWalk = FMath::RandBool();
+		if (ShouldWalk)
+		{
+			SetWalk();
+		}
+		else {
+			SetRun();
+		}
 	}
 }

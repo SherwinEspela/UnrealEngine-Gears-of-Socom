@@ -44,6 +44,7 @@ public:
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
 	void CommandFollow();
+	void CommandAttackTo();
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();

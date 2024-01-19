@@ -49,6 +49,7 @@ UENUM(BlueprintType)
 enum class EMovementType : uint8
 {
 	EMT_Walk	UMETA(DisplayName = "Walk"),
+	EMT_Run		UMETA(DisplayName = "Run"),
 	EMT_Jog		UMETA(DisplayName = "Jog"),
 	EMT_Sprint	UMETA(DisplayName = "Sprint"),
 	EMT_Crouch	UMETA(DisplayName = "Crouch"),

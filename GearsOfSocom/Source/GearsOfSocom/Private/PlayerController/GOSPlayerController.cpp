@@ -107,9 +107,9 @@ void AGOSPlayerController::ToggleCrouch()
 
 void AGOSPlayerController::CommandAllyToFollow()
 {
-	/*if (!bCanIssueCommand) return;
+	if (!bCanIssueCommand) return;
 	PlayerCharacter->CommandFollow();
-	DelayNextCommand();*/
+	DelayNextCommand();
 }
 
 void AGOSPlayerController::CommandAttackOrMoveToTargetPosition()
@@ -172,7 +172,7 @@ void AGOSPlayerController::HandleCommandRequested(EGroupCommandType SelectedGrou
 	case EPrimaryCommandType::EPCT_LeadTo:
 		break;
 	case EPrimaryCommandType::EPCT_AttackTo:
-		CommandAttackOrMoveToTargetPosition();
+		PlayerCharacter->CommandAttackTo();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
 		PlayerCharacter->CommandStealthTo();

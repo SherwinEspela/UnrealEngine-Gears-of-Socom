@@ -258,6 +258,12 @@ void AGOSPlayerCharacter::CommandHoldFire()
 	}
 }
 
+void AGOSPlayerCharacter::CommandAttackTo()
+{
+	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_AttackTo);
+}
+
 void AGOSPlayerCharacter::CommandRegroup()
 {
 	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_Regroup);
@@ -267,7 +273,7 @@ void AGOSPlayerCharacter::CommandRegroup()
 void AGOSPlayerCharacter::CommandAmbush()
 {
 	CommandAttackOrMoveToTargetPosition();
-	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_FireAtWill);
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_Ambush);
 }
 
 void AGOSPlayerCharacter::CommandRunTo()

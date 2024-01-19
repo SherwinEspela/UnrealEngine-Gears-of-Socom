@@ -34,15 +34,15 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED; //JOG_SPEED * JogSpeedMultiplier;
-	GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED; //JOG_SPEED * JogSpeedMultiplier;
+	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+	GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED;
 	GetCharacterMovement()->GroundFriction = 2.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 85.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	BaseAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
-
 	NoiseEmitter = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("Noise Emitter"));
+	MovementType = EMovementType::EMT_Idle;
 }
 
 void AGOSBaseCharacter::BeginPlay()
@@ -131,14 +131,26 @@ void AGOSBaseCharacter::SetCrouch()
 	if (BaseAnimInstance) BaseAnimInstance->SetCrouch();
 }
 
-void AGOSBaseCharacter::SetUnCrouch()
+void AGOSBaseCharacter::SetWalk()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetWalk"));
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Walk) return;
 	bIsCrouching = false;
-	MovementType = EMovementType::EMT_Walk;
-	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
+	MovementType = EMovementType::EMT_Walk;
+	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+}
+
+void AGOSBaseCharacter::SetRun()
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetRun"));
+	if (GetCharacterMovement()->IsFalling()) return;
+	if (MovementType == EMovementType::EMT_Run) return;
+	bIsCrouching = false;
+	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
+	MovementType = EMovementType::EMT_Run;
+	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 }
 
 void AGOSBaseCharacter::WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection)

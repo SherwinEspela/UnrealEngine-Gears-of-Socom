@@ -147,30 +147,30 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 	case EPrimaryCommandType::EPCT_Deploy:
 		break;
 	case EPrimaryCommandType::EPCT_Ambush:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_RunTo:
-		SetUnCrouch();
+		SetRun();
 		break;
 	case EPrimaryCommandType::EPCT_LeadTo:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_AttackTo:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
 		SetCrouch();
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		Regroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
-		DecideToCrouchOrUncrouch();
+		DecideMovementType();
 		HoldPosition();
 		break;
 	default:

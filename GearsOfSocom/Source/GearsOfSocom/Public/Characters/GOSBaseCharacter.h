@@ -33,7 +33,8 @@ public:
 	virtual void FireWeapon();
 	virtual void ToggleCrouch();
 	void SetCrouch();
-	void SetUnCrouch();
+	void SetWalk();
+	void SetRun();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -76,6 +77,8 @@ protected:
 
 protected:
 	UGOSBaseAnimInstance* BaseAnimInstance;
+
+	UPROPERTY(VisibleAnywhere)
 	EMovementType MovementType = EMovementType::EMT_Walk;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
