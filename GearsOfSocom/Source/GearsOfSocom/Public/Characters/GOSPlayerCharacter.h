@@ -62,6 +62,9 @@ public:
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
 	FORCEINLINE void SetSelectedGroupCommandType(EGroupCommandType GroupCommandType) { SelectedGroupCommandType = GroupCommandType; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetWalkSpeed() { return WALK_SPEED; }
+
 protected:
 	virtual void BeginPlay() override;
 

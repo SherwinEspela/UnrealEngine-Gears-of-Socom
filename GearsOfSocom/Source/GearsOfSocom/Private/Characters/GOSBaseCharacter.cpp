@@ -35,7 +35,6 @@ AGOSBaseCharacter::AGOSBaseCharacter()
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
-	GetCharacterMovement()->MinAnalogWalkSpeed = WALK_SPEED;
 	GetCharacterMovement()->GroundFriction = 2.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 85.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -111,11 +110,9 @@ void AGOSBaseCharacter::ToggleCrouch()
 	if (bIsCrouching)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = CROUCH_SPEED;
-		MovementType = EMovementType::EMT_Crouch;
 	}
 	else {
 		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
-		MovementType = EMovementType::EMT_Walk;
 	}
 
 	if (BaseAnimInstance) BaseAnimInstance->ToggleCrouch();
@@ -133,7 +130,6 @@ void AGOSBaseCharacter::SetCrouch()
 
 void AGOSBaseCharacter::SetWalk()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetWalk"));
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Walk) return;
 	bIsCrouching = false;
@@ -144,7 +140,6 @@ void AGOSBaseCharacter::SetWalk()
 
 void AGOSBaseCharacter::SetRun()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetRun"));
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Run) return;
 	bIsCrouching = false;

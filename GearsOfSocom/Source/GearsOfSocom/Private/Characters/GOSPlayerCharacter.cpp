@@ -41,6 +41,7 @@ void AGOSPlayerCharacter::BeginPlay()
 
 	PlayerAnimInstance = CastChecked<UGOSPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = CROUCH_SPEED;
 
 	if (WeaponWidgetClass)
 	{
@@ -53,6 +54,7 @@ void AGOSPlayerCharacter::BeginPlay()
 	}
 
 	SetupTeam();
+	MovementType = EMovementType::EMT_Idle;
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -164,12 +166,11 @@ void AGOSPlayerCharacter::FireWeapon()
 void AGOSPlayerCharacter::ToggleCrouch()
 {
 	Super::ToggleCrouch();
-	bCrouchingMovementInProgress = true;
 }
 
 void AGOSPlayerCharacter::ToggleWalkOrJog()
 {
-	if (MovementType == EMovementType::EMT_Jog)
+	/*if (MovementType == EMovementType::EMT_Jog)
 	{
 		MovementType = EMovementType::EMT_Walk;
 		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
@@ -179,7 +180,7 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 		MovementType = EMovementType::EMT_Jog;
 		GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-	}
+	}*/
 }
 
 void AGOSPlayerCharacter::CommandFollow()
