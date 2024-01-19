@@ -25,18 +25,7 @@ void AGOSAllyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	PrimaryActorTick.bCanEverTick = true;
-
 	AllyAIController = Cast<AAllyBotAIController>(GetController());
-
-	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	if (PlayerPawn)
-	{
-		AGOSPlayerCharacter* Player = Cast<AGOSPlayerCharacter>(PlayerPawn);
-		if (Player)
-		{
-			Player->SetAlly1(this);
-		}
-	}
 
 	if (PawnSensingComponent)
 	{
@@ -143,13 +132,59 @@ void AGOSAllyCharacter::Regroup()
 	}
 }
 
+void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
+{
+	switch (CommandType)
+	{
+	case EPrimaryCommandType::EPCT_FireAtWill:
+		FireAtWill();
+		break;
+	case EPrimaryCommandType::EPCT_HoldFire:
+		HoldFire();
+		break;
+	case EPrimaryCommandType::EPCT_CoverArea:
+		break;
+	case EPrimaryCommandType::EPCT_Deploy:
+		break;
+	case EPrimaryCommandType::EPCT_Ambush:
+		DecideMovementType();
+		break;
+	case EPrimaryCommandType::EPCT_RunTo:
+		SetRun();
+		break;
+	case EPrimaryCommandType::EPCT_LeadTo:
+		DecideMovementType();
+		break;
+	case EPrimaryCommandType::EPCT_AttackTo:
+		DecideMovementType();
+		break;
+	case EPrimaryCommandType::EPCT_StealthTo:
+		SetCrouch();
+		break;
+	case EPrimaryCommandType::EPCT_Regroup:
+		DecideMovementType();
+		Regroup();
+		break;
+	case EPrimaryCommandType::EPCT_Follow:
+		DecideMovementType();
+		FollowPlayer();
+		break;
+	case EPrimaryCommandType::EPCT_HoldPosition:
+		DecideMovementType();
+		HoldPosition();
+		break;
+	default:
+		break;
+	}
+}
+
 void AGOSAllyCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	if (GOSAnimInstance && MontageFireWeapon)
+	if (BaseAnimInstance && MontageFireWeapon)
 	{
-		GOSAnimInstance->Montage_JumpToSection("Default");
+		BaseAnimInstance->Montage_JumpToSection("Default");
 	}
 }
 

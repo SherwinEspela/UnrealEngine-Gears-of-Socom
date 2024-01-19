@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GOSBaseCharacter.h"
+#include "Constants/UICustomEnums.h"
 #include "GOSPlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -39,31 +40,37 @@ public:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
+	virtual void ToggleCrouch() override;
 	void ToggleWalkOrJog();
-	void ToggleCrouch();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
-	void CommandAllyToFollow();
+	void CommandFollow();
+	void CommandAttackTo();
 	void CommandAttackOrMoveToTargetPosition();
 	void CommandFireAtWill();
 	void CommandHoldFire();
 	void CommandRegroup();
 	void CommandAmbush();
 	void CommandRunTo();
+	void CommandStealthTo();
 	void CommandHoldPosition();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE bool CheckIfAiming() const { return bIsAiming; }
-	FORCEINLINE void SetAlly1(TObjectPtr<AGOSAllyCharacter> NewAlly) { Boomer = NewAlly; }
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
+	FORCEINLINE void SetSelectedGroupCommandType(EGroupCommandType GroupCommandType) { SelectedGroupCommandType = GroupCommandType; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetWalkSpeed() { return WALK_SPEED; }
 
 protected:
 	virtual void BeginPlay() override;
 
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+	void SetupTeam();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
@@ -83,7 +90,12 @@ protected:
 
 protected:
 	// Ally Bots / AI
-	TObjectPtr<AGOSAllyCharacter> Boomer;
+	AGOSAllyCharacter* Boomer;
+	AGOSAllyCharacter* Jester;
+	AGOSAllyCharacter* Spectre;
+
+	TArray<AGOSAllyCharacter*> Team;
+	TArray<AGOSAllyCharacter*> BravoTeam;
 
 protected:
 	// Voice Commands
@@ -116,8 +128,14 @@ private:
 	void PlayAllyMoveToTargetResponseSound();
 	void PlayAllyConfirmResponseSound();
 	void MoveToTargetPosition(FVector TargetPosition);
+	void PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType);
+
+	UFUNCTION(BlueprintCallable)
+	void HandleCrouchingAnimationFinished();
 
 private:
 	float CurrentCameraFOV;
 	UGOSPlayerAnimInstance* PlayerAnimInstance;
+	EGroupCommandType SelectedGroupCommandType;
+	bool bCrouchingMovementInProgress = false;
 };

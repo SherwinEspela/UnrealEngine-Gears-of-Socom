@@ -40,6 +40,8 @@ void AGOSPlayerCharacter::BeginPlay()
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
 
 	PlayerAnimInstance = CastChecked<UGOSPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = CROUCH_SPEED;
 
 	if (WeaponWidgetClass)
 	{
@@ -50,6 +52,9 @@ void AGOSPlayerCharacter::BeginPlay()
 			WeaponWidget->SetWeaponName(TEXT("WeaponTest"));
 		}
 	}
+
+	SetupTeam();
+	MovementType = EMovementType::EMT_Idle;
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -68,20 +73,52 @@ void AGOSPlayerCharacter::ToggleCameraFOVInterp(float DeltaSeconds)
 	FollowCamera->SetFieldOfView(CurrentCameraFOV);
 }
 
+void AGOSPlayerCharacter::SetupTeam()
+{
+	TArray<AActor*> SealActors;
+	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), SealActors);
+
+	if (SealActors.Num() > 0)
+	{
+		for (AActor* SealActor : SealActors)
+		{
+			if (SealActor->ActorHasTag(FName(ACTOR_TAG_BOOMER)))
+			{
+				Boomer = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Boomer);
+			}
+			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_JESTER)))
+			{
+				Jester = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Jester);
+				BravoTeam.Add(Jester);
+			}
+			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_SPECTRE)))
+			{
+				Spectre = Cast<AGOSAllyCharacter>(SealActor);
+				Team.Add(Spectre);
+				BravoTeam.Add(Spectre);
+			}
+		}
+	}
+}
+
 void AGOSPlayerCharacter::SetZoomWeaponView()
 {
 	bIsAiming = true;
-	if (GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
+	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSPlayerCharacter::RevertToDefaultCameraView()
 {
 	bIsAiming = false;
-	if (GOSAnimInstance) GOSAnimInstance->SetAiming(bIsAiming);
+	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSPlayerCharacter::Move(const FInputActionValue& Value)
 {
+	if (bCrouchingMovementInProgress) return;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -110,9 +147,9 @@ void AGOSPlayerCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	if (GOSAnimInstance)
+	if (BaseAnimInstance)
 	{
-		GOSAnimInstance->Montage_JumpToSection("Default");
+		BaseAnimInstance->Montage_JumpToSection("Default");
 	}
 
 	if (GetController()) {
@@ -126,9 +163,14 @@ void AGOSPlayerCharacter::FireWeapon()
 	}
 }
 
+void AGOSPlayerCharacter::ToggleCrouch()
+{
+	Super::ToggleCrouch();
+}
+
 void AGOSPlayerCharacter::ToggleWalkOrJog()
 {
-	if (MovementType == EMovementType::EMT_Jog)
+	/*if (MovementType == EMovementType::EMT_Jog)
 	{
 		MovementType = EMovementType::EMT_Walk;
 		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
@@ -136,29 +178,20 @@ void AGOSPlayerCharacter::ToggleWalkOrJog()
 	}
 	else {
 		MovementType = EMovementType::EMT_Jog;
-		GetCharacterMovement()->MaxWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
+		GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
 		GetCharacterMovement()->MinAnalogWalkSpeed = JOG_SPEED * JogSpeedMultiplier;
-	}
+	}*/
 }
 
-void AGOSPlayerCharacter::ToggleCrouch()
+void AGOSPlayerCharacter::CommandFollow()
 {
-	if (GetCharacterMovement()->IsFalling()) return;
-	if (PlayerAnimInstance) PlayerAnimInstance->ToggleCrouch();
-}
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_Follow);
 
-void AGOSPlayerCharacter::CommandAllyToFollow()
-{
-	if (Boomer)
+	if (SFXCommandFollow)
 	{
-		Boomer->FollowPlayer();
-
-		if (SFXCommandFollow)
-		{
-			UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 1.f, false);
-		}
+		UGameplayStatics::PlaySound2D(this, SFXCommandFollow);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyFollowResponseSound, 1.f, false);
 	}
 }
 
@@ -183,7 +216,26 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(Hit.GetActor());
 		if (Enemy)
 		{
-			Boomer->AttackTargetEnemy(Enemy);
+			switch (SelectedGroupCommandType)
+			{
+			case EGroupCommandType::EGCT_Team:
+				if (Team.Num() > 0)
+				{
+					for (auto Bot : Team) if (Bot) Bot->AttackTargetEnemy(Enemy);
+				}
+				break;
+			case EGroupCommandType::EGCT_Able:
+				Boomer->AttackTargetEnemy(Enemy);
+				break;
+			case EGroupCommandType::EGCT_Bravo:
+				if (BravoTeam.Num() > 0)
+				{
+					for (auto Bot : BravoTeam) if (Bot) Bot->AttackTargetEnemy(Enemy);
+				}
+				break;
+			default:
+				break;
+			}
 			PlayAllyAttackEnemyResponseSound();
 		}
 		else {
@@ -194,54 +246,61 @@ void AGOSPlayerCharacter::CommandAttackOrMoveToTargetPosition()
 
 void AGOSPlayerCharacter::CommandFireAtWill()
 {
-	if (Boomer) {
-		Boomer->FireAtWill();
-		if (SFXCommandFireAtWill) {
-			UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
-		}
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_FireAtWill);
+
+	if (SFXCommandFireAtWill) {
+		UGameplayStatics::PlaySound2D(this, SFXCommandFireAtWill);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
 	}
 }
 
 void AGOSPlayerCharacter::CommandHoldFire()
 {
-	if (Boomer) {
-		Boomer->HoldFire();
-		if (SFXCommandHoldFire)
-		{
-			UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
-			FTimerHandle TimerHandle;
-			GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
-		}
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_HoldFire);
+
+	if (SFXCommandHoldFire)
+	{
+		UGameplayStatics::PlaySound2D(this, SFXCommandHoldFire);
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
 	}
+}
+
+void AGOSPlayerCharacter::CommandAttackTo()
+{
+	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_AttackTo);
 }
 
 void AGOSPlayerCharacter::CommandRegroup()
 {
-	if (Boomer) {
-		Boomer->Regroup();
-		PlayAllyConfirmResponseSound();
-	}
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_Regroup);
+	PlayAllyConfirmResponseSound();
 }
 
 void AGOSPlayerCharacter::CommandAmbush()
 {
 	CommandAttackOrMoveToTargetPosition();
-	if (Boomer) Boomer->FireAtWill();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_Ambush);
 }
 
 void AGOSPlayerCharacter::CommandRunTo()
 {
 	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_RunTo);
+}
+
+void AGOSPlayerCharacter::CommandStealthTo()
+{
+	CommandAttackOrMoveToTargetPosition();
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_StealthTo);
 }
 
 void AGOSPlayerCharacter::CommandHoldPosition()
 {
-	if (Boomer) {
-		Boomer->HoldPosition();
-		PlayAllyConfirmResponseSound();
-	}
+	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_HoldPosition);
+	PlayAllyConfirmResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
@@ -266,11 +325,63 @@ void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 
 void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
 {
-	Boomer->MoveToTargetPosition(TargetPosition);
-	if (SFXCommandMoveToPosition)
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->MoveToTargetPosition(TargetPosition);
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->MoveToTargetPosition(TargetPosition);
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->MoveToTargetPosition(TargetPosition);
+		}
+		break;
+	default:
+		break;
+	}
+
+	// TODO: move to command when clearing area
+	/*if (SFXCommandMoveToPosition)
 	{
 		UGameplayStatics::PlaySound2D(this, SFXCommandMoveToPosition);
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound, 1.f, false);
+	}*/
+
+	PlayAllyMoveToTargetResponseSound();
+}
+
+void AGOSPlayerCharacter::PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType)
+{
+	switch (SelectedGroupCommandType)
+	{
+	case EGroupCommandType::EGCT_Team:
+		if (Team.Num() > 0)
+		{
+			for (auto Bot : Team) if (Bot) Bot->PerformCommandWithPrimaryCommmandType(CommandType);
+		}
+		break;
+	case EGroupCommandType::EGCT_Able:
+		Boomer->PerformCommandWithPrimaryCommmandType(CommandType);
+		break;
+	case EGroupCommandType::EGCT_Bravo:
+		if (BravoTeam.Num() > 0)
+		{
+			for (auto Bot : BravoTeam) if (Bot) Bot->PerformCommandWithPrimaryCommmandType(CommandType);
+		}
+		break;
+	default:
+		break;
 	}
+}
+
+void AGOSPlayerCharacter::HandleCrouchingAnimationFinished()
+{
+	bCrouchingMovementInProgress = false;
 }

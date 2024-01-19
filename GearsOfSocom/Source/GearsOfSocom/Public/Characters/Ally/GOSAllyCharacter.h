@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/AI/GOSBotCharacter.h"
+#include "Constants/UICustomEnums.h"
 #include "GOSAllyCharacter.generated.h"
 
 class AAllyBotAIController;
@@ -43,6 +44,7 @@ public:
 	virtual void HoldFire();
 	virtual void HoldPosition();
 	virtual void Regroup();
+	virtual void PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType);
 
 public:
 	// Play Sound functions
