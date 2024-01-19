@@ -40,6 +40,7 @@ public:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void FireWeapon() override;
+	virtual void ToggleCrouch() override;
 	void ToggleWalkOrJog();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();
@@ -126,8 +127,12 @@ private:
 	void MoveToTargetPosition(FVector TargetPosition);
 	void PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType);
 
+	UFUNCTION(BlueprintCallable)
+	void HandleCrouchingAnimationFinished();
+
 private:
 	float CurrentCameraFOV;
 	UGOSPlayerAnimInstance* PlayerAnimInstance;
 	EGroupCommandType SelectedGroupCommandType;
+	bool bCrouchingMovementInProgress = false;
 };

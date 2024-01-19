@@ -115,6 +115,8 @@ void AGOSPlayerCharacter::RevertToDefaultCameraView()
 
 void AGOSPlayerCharacter::Move(const FInputActionValue& Value)
 {
+	if (bCrouchingMovementInProgress) return;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -157,6 +159,12 @@ void AGOSPlayerCharacter::FireWeapon()
 
 		WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 	}
+}
+
+void AGOSPlayerCharacter::ToggleCrouch()
+{
+	Super::ToggleCrouch();
+	bCrouchingMovementInProgress = true;
 }
 
 void AGOSPlayerCharacter::ToggleWalkOrJog()
@@ -370,4 +378,9 @@ void AGOSPlayerCharacter::PerformAllyCommandWithPrimaryType(EPrimaryCommandType 
 	default:
 		break;
 	}
+}
+
+void AGOSPlayerCharacter::HandleCrouchingAnimationFinished()
+{
+	bCrouchingMovementInProgress = false;
 }
