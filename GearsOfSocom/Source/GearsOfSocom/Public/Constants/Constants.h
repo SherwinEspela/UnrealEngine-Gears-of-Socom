@@ -18,6 +18,7 @@
 #define ACTOR_TAG_BOOMER TEXT("Boomer")
 #define ACTOR_TAG_JESTER TEXT("Jester")
 #define ACTOR_TAG_SPECTRE TEXT("Spectre")
+#define ACTOR_TAG_TARGET_LOCATION_PIN TEXT("TargetLocationPin")
 
 // Blackboard Keys
 #define BB_KEY_PLAYER TEXT("Player")
