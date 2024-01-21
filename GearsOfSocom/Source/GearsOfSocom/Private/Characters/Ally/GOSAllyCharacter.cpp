@@ -43,17 +43,19 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
-		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
+		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
 		if (Enemy->IsDead()) return;
 
+		TargetEnemy = Enemy;
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTargetEnemy(SeenPawn);
-
-		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		
+		if (TargetEnemy->GetIsNotSeen() && SoundResponseEnemySighted)
 		{
 			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
-			Enemy->SetSeen();
+			TargetEnemy->SetSeen();
 		}
 	}
 }
@@ -84,7 +86,8 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	if (AllyAIController)
 	{
 		TargetActor = Enemy;
-		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		TargetEnemy = Enemy;
+		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Attacking);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(Enemy);
@@ -156,6 +159,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_AttackTo:
+		FireAtWill();
 		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
@@ -203,6 +207,12 @@ void AGOSAllyCharacter::HandleEnemyKilled()
 {
 	if (AllyAIController)
 	{
+		if (TargetEnemy)
+		{
+			TargetEnemy->OnEnemyKilled.RemoveAll(this);
+			TargetEnemy = nullptr;
+		}
+
 		TargetActor = nullptr;
 		AllyAIController->ClearTagetValues();
 	}

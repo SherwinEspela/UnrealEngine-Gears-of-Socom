@@ -68,14 +68,7 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 	}
 	else {
 		OnEnemyKilled.Broadcast();
-
 		TargetActor = nullptr;
-		AGOSAllyCharacter* NavyBot = Cast<AGOSAllyCharacter>(DamageCauser);
-		if (NavyBot)
-		{
-			NavyBot->PlayEnemyKilledResponseSound();
-			NavyBot->HandleEnemyKilled();
-		}
 	}
 
 	return DamageApplied;

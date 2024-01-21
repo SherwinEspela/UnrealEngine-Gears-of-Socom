@@ -88,6 +88,7 @@ protected:
 
 private:
 	AAllyBotAIController* AllyAIController;
+	AGOSBaseEnemyCharacter* TargetEnemy;
 	bool bCanPlaySound = true;
 
 private:
