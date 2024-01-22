@@ -95,6 +95,44 @@ void AGOSBotCharacter::MakeDecision()
 {
 }
 
+void AGOSBotCharacter::CrouchAndHoldFire()
+{
+	SetCrouch();
+	HoldFire();
+}
+
+void AGOSBotCharacter::StandAndShoot()
+{
+	SetWalk();
+	FireAtWill();
+}
+
+void AGOSBotCharacter::HoldFire()
+{
+	if (BotAIController)
+	{
+		BotAIController->HoldFire();
+	}
+}
+
+void AGOSBotCharacter::FireAtWill()
+{
+	if (BotAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		BotAIController->FireAtWill();
+	}
+}
+
+void AGOSBotCharacter::FindCover()
+{
+	if (BotAIController)
+	{
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+		BotAIController->SetCovering(true);
+	}
+}
+
 float AGOSBotCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);

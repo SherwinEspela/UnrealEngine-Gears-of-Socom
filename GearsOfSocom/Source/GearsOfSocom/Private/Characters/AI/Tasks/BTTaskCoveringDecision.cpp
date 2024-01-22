@@ -2,7 +2,7 @@
 
 #include "Characters/AI/Tasks/BTTaskCoveringDecision.h"
 #include "Constants/Constants.h"
-#include "Characters/Ally/GOSAllyCharacter.h"
+#include "Characters/AI/GOSBotCharacter.h"
 #include "AIController.h"
 
 UBTTaskCoveringDecision::UBTTaskCoveringDecision()
@@ -15,7 +15,7 @@ EBTNodeResult::Type UBTTaskCoveringDecision::ExecuteTask(UBehaviorTreeComponent&
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	if (OwnerComp.GetAIOwner() == nullptr) return EBTNodeResult::Failed;
-	AGOSAllyCharacter* Bot = Cast<AGOSAllyCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
 		int Decision = FMath::RandBool();

@@ -26,6 +26,11 @@ public:
 
 	virtual void FireWeapon() override;
 	virtual void MakeDecision();
+	virtual void CrouchAndHoldFire();
+	virtual void StandAndShoot();
+	virtual void HoldFire();
+	virtual void FireAtWill();
+	virtual void FindCover();
 
 	virtual float TakeDamage
 	(

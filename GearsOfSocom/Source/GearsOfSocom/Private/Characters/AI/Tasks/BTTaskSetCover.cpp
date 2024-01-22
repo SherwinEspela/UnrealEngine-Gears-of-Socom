@@ -3,7 +3,7 @@
 
 #include "Characters/AI/Tasks/BTTaskSetCover.h"
 #include "Constants/Constants.h"
-#include "Characters/Ally/GOSAllyCharacter.h"
+#include "Characters/AI/GOSBotCharacter.h"
 #include "AIController.h"
 
 UBTTaskSetCover::UBTTaskSetCover()
@@ -16,7 +16,7 @@ EBTNodeResult::Type UBTTaskSetCover::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	if (OwnerComp.GetAIOwner() == nullptr) return EBTNodeResult::Failed;
-	AGOSAllyCharacter* Bot = Cast<AGOSAllyCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
 		Bot->FindCover();

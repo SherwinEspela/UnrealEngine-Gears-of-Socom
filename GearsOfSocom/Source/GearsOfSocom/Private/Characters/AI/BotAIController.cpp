@@ -11,7 +11,18 @@
 void ABotAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	bIsInitialized = false;
+	//bIsInitialized = false;
+
+	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
+	if (BotCharacter) BotAnimInstance = Cast<UGOSBotAnimInstance>(BotCharacter->GetMesh()->GetAnimInstance());
+
+	if (BehaviorTree)
+	{
+		RunBehaviorTree(BehaviorTree);
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+		HoldPosition();
+	}
 }
 
 void ABotAIController::Tick(float DeltaSeconds)
@@ -48,26 +59,26 @@ void ABotAIController::InitializeAI()
 
 void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_PATROL_POINT, NewPatrolPoint);
 }
 
 void ABotAIController::SetTarget(AActor* NewTarget)
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	TargetActor = NewTarget;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTarget);
 }
 
 void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
 }
 
 void ABotAIController::SetTargetSeen()
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
@@ -77,20 +88,19 @@ void ABotAIController::SetTargetSeen()
 
 void ABotAIController::SetTargetHeard(bool Heard)
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, Heard);
 }
 
 void ABotAIController::SetCovering(bool IsCovering)
 {
-	if (!bIsInitialized) return;
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
+	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
-	if (!bIsInitialized) return;
+	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }
@@ -98,4 +108,26 @@ void ABotAIController::SetEvading(bool IsEvading)
 void ABotAIController::SetStealth()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, true);
+}
+
+void ABotAIController::HoldPosition()
+{
+	ClearValues();
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
+}
+
+void ABotAIController::ClearValues()
+{
+	TargetActor = nullptr;
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+}
+
+void ABotAIController::HoldFire()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+}
+
+void ABotAIController::FireAtWill()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
 }

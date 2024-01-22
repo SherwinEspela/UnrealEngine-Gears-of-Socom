@@ -95,23 +95,25 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	}
 }
 
-void AGOSAllyCharacter::FireAtWill()
-{
-	if (AllyAIController)
-	{
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-		AllyAIController->FireAtWill();
-	}
-}
+//void AGOSAllyCharacter::FireAtWill()
+//{
+//	if (AllyAIController)
+//	{
+//		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+//		AllyAIController->FireAtWill();
+//	}
+//}
 
 void AGOSAllyCharacter::HoldFire()
 {
-	if (AllyAIController)
-	{
-		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
-		AllyAIController->HoldFire();
-	}
+	Super::HoldFire();
+
+	//if (AllyAIController)
+	//{
+	//	
+	//	AllyAIController->HoldFire();
+	//}
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
 }
 
 void AGOSAllyCharacter::HoldPosition()
@@ -127,12 +129,15 @@ void AGOSAllyCharacter::HoldPosition()
 
 void AGOSAllyCharacter::FindCover()
 {
-	if (AllyAIController)
+	Super::FindCover();
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
+
+	/*if (AllyAIController)
 	{
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
 		AllyAIController->SetCovering(true);
-	}
+	}*/
 }
 
 void AGOSAllyCharacter::FindCoverOrHoldPosition()
@@ -143,18 +148,6 @@ void AGOSAllyCharacter::FindCoverOrHoldPosition()
 	} else {
 		HoldPosition();
 	}
-}
-
-void AGOSAllyCharacter::CrouchAndHoldFire()
-{
-	SetCrouch();
-	HoldFire();
-}
-
-void AGOSAllyCharacter::StandAndShoot()
-{
-	SetWalk();
-	FireAtWill();
 }
 
 void AGOSAllyCharacter::SetStealth()

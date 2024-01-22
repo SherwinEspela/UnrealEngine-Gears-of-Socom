@@ -10,10 +10,9 @@ void AAllyBotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitializeAI();
+	//InitializeAI();
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
-	HoldPosition();
+	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
 }
 
 void AAllyBotAIController::FollowPlayer()
@@ -59,12 +58,11 @@ void AAllyBotAIController::SetTargetSeen()
 
 void AAllyBotAIController::ClearValues()
 {
-	TargetActor = nullptr;
+	Super::ClearValues();
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, false);
@@ -78,15 +76,15 @@ void AAllyBotAIController::ClearTagetValues()
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_SEEN);
 }
 
-void AAllyBotAIController::FireAtWill()
-{
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
-}
+//void AAllyBotAIController::FireAtWill()
+//{
+//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
+//}
 
-void AAllyBotAIController::HoldFire()
-{
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
-}
+//void AAllyBotAIController::HoldFire()
+//{
+//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+//}
 
 void AAllyBotAIController::RegroupToPlayer()
 {
@@ -97,7 +95,7 @@ void AAllyBotAIController::RegroupToPlayer()
 void AAllyBotAIController::HoldPosition()
 {
 	ClearValues();
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
+	Super::HoldPosition();
 }
 
 void AAllyBotAIController::SetCovering(bool IsCovering)

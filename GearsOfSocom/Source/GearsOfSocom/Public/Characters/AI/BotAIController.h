@@ -31,6 +31,10 @@ public:
 	virtual void SetCovering(bool IsCovering);
 	virtual void SetEvading(bool IsEvading);
 	virtual void SetStealth();
+	virtual void HoldPosition();
+	virtual void ClearValues();
+	virtual void HoldFire();
+	virtual void FireAtWill();
 
 public:
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
