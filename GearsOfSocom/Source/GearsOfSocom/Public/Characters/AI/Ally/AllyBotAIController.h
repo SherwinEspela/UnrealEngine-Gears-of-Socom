@@ -22,12 +22,15 @@ public:
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AActor* Enemy);
 	virtual void SetTargetEnemy(AActor* Enemy);
-	virtual void ClearValues();
+	virtual void ClearValues() override;
 	virtual void ClearTagetValues();
-	virtual void FireAtWill();
-	virtual void HoldFire();
+	//virtual void FireAtWill();
+	
 	virtual void RegroupToPlayer();
-	virtual void HoldPosition();
+	virtual void HoldPosition() override;
+	virtual void SetCovering(bool IsCovering) override;
+	virtual void SetStealth() override;
+	virtual void SetHasReachedCoverPosition(bool HasReached);
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();

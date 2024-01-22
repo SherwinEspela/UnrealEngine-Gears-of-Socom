@@ -15,6 +15,7 @@ class UGOSPlayerAnimInstance;
 class UWeaponWidget;
 class UMemberStatusWidget;
 class UMemberStatusComponent;
+class ATargetLocationPinActor;
 
 /**
  * 
@@ -121,6 +122,16 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Interface")
 	UWeaponWidget* WeaponWidget;
+
+protected:
+	// Target Location Pin guide
+	void PlaceTargetLocationPin(FVector TargetPosition);
+
+	UPROPERTY(EditAnywhere, Category = "Target Location Guide")
+	TSubclassOf<ATargetLocationPinActor> TargetLocationPinClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Target Location Guide")
+	ATargetLocationPinActor* TargetLocationPin;
 
 private:
 	void PlayAllyFollowResponseSound();

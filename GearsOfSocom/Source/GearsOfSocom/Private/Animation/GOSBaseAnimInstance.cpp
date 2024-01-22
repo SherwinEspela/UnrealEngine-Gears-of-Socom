@@ -53,12 +53,6 @@ void UGOSBaseAnimInstance::PlayHitReact()
 	}
 }
 
-//void UGOSBaseAnimInstance::ToggleCrouch()
-//{
-//	UE_LOG(LogTemp, Warning, TEXT("ToggleCrouch"));
-//	bIsCrouching = !bIsCrouching;
-//}
-
 void UGOSBaseAnimInstance::TurnInPlace()
 {
 	if (GOSCharacter == nullptr) return;
@@ -80,9 +74,7 @@ void UGOSBaseAnimInstance::TurnInPlace()
 		if (Turning > 0)
 		{
 			RotationCurveLastFrame = RotationCurve;
-			RotationCurve = GetCurveValue(TEXT("Rotation"));
 			const float DeltaRotation = RotationCurve - RotationCurveLastFrame;
-
 			const bool IsTurningLeft = RootYawOffset > 0.f;
 			IsTurningLeft ? RootYawOffset -= DeltaRotation : RootYawOffset += DeltaRotation;
 			RootYawOffset = FMath::Clamp(RootYawOffset, -90.f, 90.f);

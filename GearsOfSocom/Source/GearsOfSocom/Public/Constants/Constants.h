@@ -18,6 +18,7 @@
 #define ACTOR_TAG_BOOMER TEXT("Boomer")
 #define ACTOR_TAG_JESTER TEXT("Jester")
 #define ACTOR_TAG_SPECTRE TEXT("Spectre")
+#define ACTOR_TAG_TARGET_LOCATION_PIN TEXT("TargetLocationPin")
 
 // Blackboard Keys
 #define BB_KEY_PLAYER TEXT("Player")
@@ -29,6 +30,7 @@
 #define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
 #define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
 #define BB_KEY_CAN_ENGAGE TEXT("CanEngage")
+#define BB_KEY_REACHED_COVER_POSITION TEXT("HasReachedCoverPosition")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
@@ -41,9 +43,11 @@
 #define BB_KEY_TARGET_SEEN TEXT("TargetSeen")
 #define BB_KEY_TARGET_HEARD TEXT("TargetHeard")
 #define BB_KEY_COVERING TEXT("IsCovering")
+#define BB_KEY_STEALTH TEXT("IsStealth")
 #define BB_KEY_EVADING TEXT("IsEvading")
 #define BB_KEY_HOLDING TEXT("IsHolding")
 #define BB_KEY_REGROUPING TEXT("IsRegrouping")
+#define BB_KEY_PATROLLING TEXT("IsPatrolling")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8

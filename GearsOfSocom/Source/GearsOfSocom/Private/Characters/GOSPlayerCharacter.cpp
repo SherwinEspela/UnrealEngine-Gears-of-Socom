@@ -15,6 +15,7 @@
 #include "Sound/SoundBase.h"
 #include "UI/Widgets/WeaponWidget.h"
 #include "ActorComponents/MemberStatusComponent.h"
+#include "Characters/AI/TargetLocationPinActor.h"
 #include "Constants/Constants.h"
 
 
@@ -325,6 +326,8 @@ void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 
 void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
 {
+	PlaceTargetLocationPin(TargetPosition);
+
 	switch (SelectedGroupCommandType)
 	{
 	case EGroupCommandType::EGCT_Team:
@@ -355,6 +358,26 @@ void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)
 	}*/
 
 	PlayAllyMoveToTargetResponseSound();
+}
+
+void AGOSPlayerCharacter::PlaceTargetLocationPin(FVector TargetPosition)
+{
+	if (TargetLocationPin == nullptr)
+	{
+		TArray<AActor*> PinActors;
+		UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_TARGET_LOCATION_PIN), PinActors);
+		
+		if (PinActors.Num() > 0)
+		{
+			TargetLocationPin = Cast<ATargetLocationPinActor>(PinActors[0]);
+		}
+	}
+
+	if (TargetLocationPin)
+	{
+		TargetLocationPin->SetActorLocation(TargetPosition);
+		TargetLocationPin->DisplayDebugSphere();
+	}
 }
 
 void AGOSPlayerCharacter::PerformAllyCommandWithPrimaryType(EPrimaryCommandType CommandType)

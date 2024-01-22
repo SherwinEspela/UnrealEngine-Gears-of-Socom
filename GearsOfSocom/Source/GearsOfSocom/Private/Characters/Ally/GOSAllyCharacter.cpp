@@ -43,17 +43,19 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
 	{
-		AGOSBaseEnemyCharacter* Enemy = Cast< AGOSBaseEnemyCharacter>(SeenPawn);
+		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
 		if (Enemy->IsDead()) return;
 
+		TargetEnemy = Enemy;
 		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
 		AllyAIController->SetTargetEnemy(SeenPawn);
-
-		if (Enemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		
+		if (TargetEnemy->GetIsNotSeen() && SoundResponseEnemySighted)
 		{
 			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
-			Enemy->SetSeen();
+			TargetEnemy->SetSeen();
 		}
 	}
 }
@@ -84,7 +86,8 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	if (AllyAIController)
 	{
 		TargetActor = Enemy;
-		Enemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
+		TargetEnemy = Enemy;
+		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Attacking);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(Enemy);
@@ -92,32 +95,66 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	}
 }
 
-void AGOSAllyCharacter::FireAtWill()
-{
-	if (AllyAIController)
-	{
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-		AllyAIController->FireAtWill();
-	}
-}
+//void AGOSAllyCharacter::FireAtWill()
+//{
+//	if (AllyAIController)
+//	{
+//		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+//		AllyAIController->FireAtWill();
+//	}
+//}
 
 void AGOSAllyCharacter::HoldFire()
 {
-	if (AllyAIController)
-	{
-		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Default);
-		AllyAIController->HoldFire();
-	}
+	Super::HoldFire();
+
+	//if (AllyAIController)
+	//{
+	//	
+	//	AllyAIController->HoldFire();
+	//}
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
 }
 
 void AGOSAllyCharacter::HoldPosition()
 {
 	if (AllyAIController)
 	{
+		SetCrouch();
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
 		AllyAIController->HoldPosition();
+	}
+}
+
+void AGOSAllyCharacter::FindCover()
+{
+	Super::FindCover();
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
+
+	/*if (AllyAIController)
+	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+		AllyAIController->SetCovering(true);
+	}*/
+}
+
+void AGOSAllyCharacter::FindCoverOrHoldPosition()
+{
+	if (bIsStealth)
+	{
+		FindCover();
+	} else {
+		HoldPosition();
+	}
+}
+
+void AGOSAllyCharacter::SetStealth()
+{
+	if (AllyAIController)
+	{
+		AllyAIController->SetStealth();
 	}
 }
 
@@ -134,6 +171,8 @@ void AGOSAllyCharacter::Regroup()
 
 void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
 {
+	bIsStealth = false;
+
 	switch (CommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
@@ -156,9 +195,11 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_AttackTo:
+		FireAtWill();
 		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
+		bIsStealth = true;
 		SetCrouch();
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
@@ -170,7 +211,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
-		DecideMovementType();
+		SetCrouch();
 		HoldPosition();
 		break;
 	default:
@@ -203,6 +244,12 @@ void AGOSAllyCharacter::HandleEnemyKilled()
 {
 	if (AllyAIController)
 	{
+		if (TargetEnemy)
+		{
+			TargetEnemy->OnEnemyKilled.RemoveAll(this);
+			TargetEnemy = nullptr;
+		}
+
 		TargetActor = nullptr;
 		AllyAIController->ClearTagetValues();
 	}
@@ -212,7 +259,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
 
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
+	/*if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (AllyAIController)
 	{
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
@@ -223,7 +270,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 			UGameplayStatics::PlaySound2D(this, SoundResponseHit);
 			DelayNextVoiceSound();
 		}
-	}
+	}*/
 }
 
 void AGOSAllyCharacter::PlayFollowResponseSound()

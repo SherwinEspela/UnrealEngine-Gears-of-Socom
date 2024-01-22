@@ -40,9 +40,14 @@ public:
 	virtual void FollowPlayer();
 	virtual void MoveToTargetPosition(FVector NewTargetPosition);
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
-	virtual void FireAtWill();
-	virtual void HoldFire();
+	//virtual void FireAtWill();
+	virtual void HoldFire() override;
 	virtual void HoldPosition();
+	virtual void FindCover() override;
+	virtual void FindCoverOrHoldPosition();
+	//virtual void CrouchAndHoldFire();
+	//virtual void StandAndShoot();
+	virtual void SetStealth();
 	virtual void Regroup();
 	virtual void PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType);
 
@@ -56,6 +61,7 @@ public:
 
 public:
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
+	FORCEINLINE void ShouldBeStealth(bool IsStealth) { bIsStealth = IsStealth; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -88,7 +94,9 @@ protected:
 
 private:
 	AAllyBotAIController* AllyAIController;
+	AGOSBaseEnemyCharacter* TargetEnemy;
 	bool bCanPlaySound = true;
+	bool bIsStealth = false;
 
 private:
 	void ResponseSoundCompleted();

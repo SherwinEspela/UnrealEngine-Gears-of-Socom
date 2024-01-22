@@ -29,20 +29,20 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	Super::HandlePawnSeen(SeenPawn);
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Chasing) return;
-	
-	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
-	{
-		if (BotAIController)
-		{
-			TargetActor = SeenPawn;
-			BotAIController->SetTarget(SeenPawn);
-			BotAIController->SetTargetSeen();
-		}
+	//Super::HandlePawnSeen(SeenPawn);
+	//if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Chasing) return;
+	//
+	//if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
+	//{
+	//	if (BotAIController)
+	//	{
+	//		TargetActor = SeenPawn;
+	//		BotAIController->SetTarget(SeenPawn);
+	//		//BotAIController->SetTargetSeen();
+	//	}
 
-		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
-	}
+	//	CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
+	//}
 }
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
@@ -61,24 +61,17 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	//float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
 		DamageReaction(DamageCauser);
 	}
 	else {
 		OnEnemyKilled.Broadcast();
-
 		TargetActor = nullptr;
-		AGOSAllyCharacter* NavyBot = Cast<AGOSAllyCharacter>(DamageCauser);
-		if (NavyBot)
-		{
-			NavyBot->PlayEnemyKilledResponseSound();
-			NavyBot->HandleEnemyKilled();
-		}
 	}
 
-	return DamageApplied;
+	return 0.f;//DamageApplied;
 }
 
 void AGOSBaseEnemyCharacter::FireWeapon()
