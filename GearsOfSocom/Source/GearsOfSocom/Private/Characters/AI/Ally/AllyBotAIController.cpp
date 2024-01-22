@@ -66,6 +66,8 @@ void AAllyBotAIController::ClearValues()
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, false);
 }
 
 void AAllyBotAIController::ClearTagetValues()
@@ -96,4 +98,21 @@ void AAllyBotAIController::HoldPosition()
 {
 	ClearValues();
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
+}
+
+void AAllyBotAIController::SetCovering(bool IsCovering)
+{
+	ClearValues();
+	SetHasReachedCoverPosition(false);
+	Super::SetCovering(IsCovering);
+}
+
+void AAllyBotAIController::SetStealth()
+{
+	Super::SetStealth();
+}
+
+void AAllyBotAIController::SetHasReachedCoverPosition(bool HasReached)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REACHED_COVER_POSITION, HasReached);
 }

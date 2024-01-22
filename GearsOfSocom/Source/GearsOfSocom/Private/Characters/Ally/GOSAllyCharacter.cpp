@@ -118,9 +118,50 @@ void AGOSAllyCharacter::HoldPosition()
 {
 	if (AllyAIController)
 	{
+		SetCrouch();
 		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingPosition);
 		SetBotBehavior(EBotBehaviorTypes::EBBT_HoldingPosition);
 		AllyAIController->HoldPosition();
+	}
+}
+
+void AGOSAllyCharacter::FindCover()
+{
+	if (AllyAIController)
+	{
+		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
+		AllyAIController->SetCovering(true);
+	}
+}
+
+void AGOSAllyCharacter::FindCoverOrHoldPosition()
+{
+	if (bIsStealth)
+	{
+		FindCover();
+	} else {
+		HoldPosition();
+	}
+}
+
+void AGOSAllyCharacter::CrouchAndHoldFire()
+{
+	SetCrouch();
+	HoldFire();
+}
+
+void AGOSAllyCharacter::StandAndShoot()
+{
+	SetWalk();
+	FireAtWill();
+}
+
+void AGOSAllyCharacter::SetStealth()
+{
+	if (AllyAIController)
+	{
+		AllyAIController->SetStealth();
 	}
 }
 
@@ -137,6 +178,8 @@ void AGOSAllyCharacter::Regroup()
 
 void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
 {
+	bIsStealth = false;
+
 	switch (CommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
@@ -163,6 +206,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		DecideMovementType();
 		break;
 	case EPrimaryCommandType::EPCT_StealthTo:
+		bIsStealth = true;
 		SetCrouch();
 		break;
 	case EPrimaryCommandType::EPCT_Regroup:
@@ -174,7 +218,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:
-		DecideMovementType();
+		SetCrouch();
 		HoldPosition();
 		break;
 	default:

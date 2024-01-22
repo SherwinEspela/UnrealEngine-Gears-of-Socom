@@ -28,6 +28,9 @@ public:
 	virtual void HoldFire();
 	virtual void RegroupToPlayer();
 	virtual void HoldPosition();
+	virtual void SetCovering(bool IsCovering) override;
+	virtual void SetStealth() override;
+	virtual void SetHasReachedCoverPosition(bool HasReached);
 
 	// TODO: Refactor
 	virtual void SetTargetSeen();

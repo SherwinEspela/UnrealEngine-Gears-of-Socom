@@ -30,6 +30,7 @@ public:
 	virtual void SetTargetHeard(bool Heard);
 	virtual void SetCovering(bool IsCovering);
 	virtual void SetEvading(bool IsEvading);
+	virtual void SetStealth();
 
 public:
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }

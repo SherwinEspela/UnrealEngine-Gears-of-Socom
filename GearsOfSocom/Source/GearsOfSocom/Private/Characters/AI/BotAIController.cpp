@@ -94,3 +94,8 @@ void ABotAIController::SetEvading(bool IsEvading)
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }
+
+void ABotAIController::SetStealth()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, true);
+}

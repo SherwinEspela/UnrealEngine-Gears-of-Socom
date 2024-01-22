@@ -30,6 +30,7 @@
 #define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
 #define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
 #define BB_KEY_CAN_ENGAGE TEXT("CanEngage")
+#define BB_KEY_REACHED_COVER_POSITION TEXT("HasReachedCoverPosition")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
@@ -42,6 +43,7 @@
 #define BB_KEY_TARGET_SEEN TEXT("TargetSeen")
 #define BB_KEY_TARGET_HEARD TEXT("TargetHeard")
 #define BB_KEY_COVERING TEXT("IsCovering")
+#define BB_KEY_STEALTH TEXT("IsStealth")
 #define BB_KEY_EVADING TEXT("IsEvading")
 #define BB_KEY_HOLDING TEXT("IsHolding")
 #define BB_KEY_REGROUPING TEXT("IsRegrouping")
