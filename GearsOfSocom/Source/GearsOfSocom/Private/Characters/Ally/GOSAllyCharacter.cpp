@@ -266,7 +266,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
 
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
+	/*if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (AllyAIController)
 	{
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
@@ -277,7 +277,7 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 			UGameplayStatics::PlaySound2D(this, SoundResponseHit);
 			DelayNextVoiceSound();
 		}
-	}
+	}*/
 }
 
 void AGOSAllyCharacter::PlayFollowResponseSound()

@@ -61,7 +61,7 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	//float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
 		DamageReaction(DamageCauser);
@@ -71,7 +71,7 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 		TargetActor = nullptr;
 	}
 
-	return DamageApplied;
+	return 0.f;//DamageApplied;
 }
 
 void AGOSBaseEnemyCharacter::FireWeapon()
