@@ -11,7 +11,6 @@
 void ABotAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	//bIsInitialized = false;
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
@@ -35,7 +34,6 @@ void ABotAIController::Tick(float DeltaSeconds)
 	}
 	else {
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
-		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
 	}
 }
 
@@ -59,7 +57,6 @@ void ABotAIController::InitializeAI()
 
 void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_PATROL_POINT, NewPatrolPoint);
 }
 
@@ -78,7 +75,8 @@ void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 
 void ABotAIController::SetTargetSeen()
 {
-	//if (!bIsInitialized) return;
+	UE_LOG(LogTemp, Warning, TEXT("SetTargetSeen"));
+	ClearValues();
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
