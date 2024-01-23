@@ -11,7 +11,6 @@
 void ABotAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	//bIsInitialized = false;
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	BotCharacter = Cast<AGOSBaseCharacter>(GetPawn());
@@ -35,7 +34,6 @@ void ABotAIController::Tick(float DeltaSeconds)
 	}
 	else {
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
-		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
 	}
 }
 
@@ -59,26 +57,23 @@ void ABotAIController::InitializeAI()
 
 void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_PATROL_POINT, NewPatrolPoint);
 }
 
 void ABotAIController::SetTarget(AActor* NewTarget)
 {
-	//if (!bIsInitialized) return;
 	TargetActor = NewTarget;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTarget);
 }
 
 void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
 }
 
 void ABotAIController::SetTargetSeen()
 {
-	//if (!bIsInitialized) return;
+	ClearValues();
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
@@ -88,19 +83,16 @@ void ABotAIController::SetTargetSeen()
 
 void ABotAIController::SetTargetHeard(bool Heard)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, Heard);
 }
 
 void ABotAIController::SetCovering(bool IsCovering)
 {
-	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }

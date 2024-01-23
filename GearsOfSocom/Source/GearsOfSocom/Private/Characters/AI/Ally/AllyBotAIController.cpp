@@ -10,9 +10,17 @@ void AAllyBotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//InitializeAI();
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
-	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
+}
+
+void AAllyBotAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (!(TargetActor && LineOfSightTo(TargetActor)))
+	{
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
+	}
 }
 
 void AAllyBotAIController::FollowPlayer()
@@ -30,7 +38,6 @@ void AAllyBotAIController::MoveToTargetPosition(FVector NewTargetPosition)
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, true);
-	//GetBlackboardComponent()->SetValueAsVector(BB_KEY_TARGET_POSITION, NewTargetPosition);
 }
 
 void AAllyBotAIController::AttackTargetEnemy(AActor* Enemy)
@@ -75,16 +82,6 @@ void AAllyBotAIController::ClearTagetValues()
 	GetBlackboardComponent()->ClearValue(BB_KEY_HAS_TARGET_SIGHT);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_SEEN);
 }
-
-//void AAllyBotAIController::FireAtWill()
-//{
-//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
-//}
-
-//void AAllyBotAIController::HoldFire()
-//{
-//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, false);
-//}
 
 void AAllyBotAIController::RegroupToPlayer()
 {

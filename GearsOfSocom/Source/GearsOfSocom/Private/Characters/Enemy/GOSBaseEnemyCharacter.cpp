@@ -29,20 +29,20 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	//Super::HandlePawnSeen(SeenPawn);
-	//if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Chasing) return;
-	//
-	//if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
-	//{
-	//	if (BotAIController)
-	//	{
-	//		TargetActor = SeenPawn;
-	//		BotAIController->SetTarget(SeenPawn);
-	//		//BotAIController->SetTargetSeen();
-	//	}
+	Super::HandlePawnSeen(SeenPawn);
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
+	
+	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
+	{
+		if (BotAIController)
+		{
+			TargetActor = SeenPawn;
+			BotAIController->SetTarget(SeenPawn);
+			BotAIController->SetTargetSeen();
+		}
 
-	//	CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
-	//}
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+	}
 }
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
