@@ -88,7 +88,7 @@ void AGOSBaseCharacter::FireWeapon()
 {
 	if (FXMuzzleFlash)
 	{
-		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle"));
+		UGameplayStatics::SpawnEmitterAttached(FXMuzzleFlash, GetMesh(), TEXT("Muzzle_01"));
 	}
 
 	if (BaseAnimInstance && MontageFireWeapon)
