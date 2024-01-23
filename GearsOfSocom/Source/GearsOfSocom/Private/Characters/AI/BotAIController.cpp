@@ -62,20 +62,17 @@ void ABotAIController::SetPatrolPoint(FVector NewPatrolPoint)
 
 void ABotAIController::SetTarget(AActor* NewTarget)
 {
-	//if (!bIsInitialized) return;
 	TargetActor = NewTarget;
 	GetBlackboardComponent()->SetValueAsObject(BB_KEY_TARGET, NewTarget);
 }
 
 void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
 }
 
 void ABotAIController::SetTargetSeen()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetTargetSeen"));
 	ClearValues();
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
@@ -86,19 +83,16 @@ void ABotAIController::SetTargetSeen()
 
 void ABotAIController::SetTargetHeard(bool Heard)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, Heard);
 }
 
 void ABotAIController::SetCovering(bool IsCovering)
 {
-	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
-	//if (!bIsInitialized) return;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }

@@ -30,7 +30,7 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	Super::HandlePawnSeen(SeenPawn);
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Chasing) return;
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
 	{
@@ -41,7 +41,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 			BotAIController->SetTargetSeen();
 		}
 
-		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Chasing;
+		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 	}
 }
 
