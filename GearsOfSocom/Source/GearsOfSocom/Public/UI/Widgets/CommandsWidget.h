@@ -12,6 +12,7 @@ class UPrimaryCommandColumnWidget;
 class UCommandColumnWidget;
 class UTextBlock;
 class UOverlay;
+class UImage;
 class USoundBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCommandRequestedSignature, EGroupCommandType, SelectedGroupCommandType, EPrimaryCommandType, SelectedPrimaryCommandType);
@@ -52,6 +53,9 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UOverlay* TopBar;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageTopBarBorder;
 
 	UPROPERTY(BlueprintReadOnly)
 	ECommandType CurrentCommandType;

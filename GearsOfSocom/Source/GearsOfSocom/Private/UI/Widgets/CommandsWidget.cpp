@@ -6,8 +6,10 @@
 #include "UI/Widgets/PrimaryCommandColumnWidget.h"
 #include "UI/Widgets/CommandColumnWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Components/Overlay.h"
 #include "Kismet/GameplayStatics.h"
+#include "Constants/UITheme.h"
 
 void UCommandsWidget::NativeConstruct()
 {
@@ -34,6 +36,8 @@ void UCommandsWidget::NativeConstruct()
 	}
 
 	TopBar->SetVisibility(ESlateVisibility::Hidden);
+	SetLabelTheme(TextDescription);
+	ImageTopBarBorder->SetBrushTintColor(FSlateColor(COLOR_TINT_BORDER1));
 }
 
 void UCommandsWidget::HandleCommandDescriptionUpdated(FString NewDescription)

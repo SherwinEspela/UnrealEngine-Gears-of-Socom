@@ -86,6 +86,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UImage* ImageArrow;
 
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageBorder;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Command)
 	FText CommandName;
 

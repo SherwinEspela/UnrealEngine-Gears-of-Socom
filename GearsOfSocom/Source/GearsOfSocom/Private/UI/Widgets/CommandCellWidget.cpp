@@ -5,6 +5,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Animation/WidgetAnimation.h"
+#include "Constants/UITheme.h"
 
 void UCommandCellWidget::NativeConstruct()
 {
@@ -15,6 +16,13 @@ void UCommandCellWidget::NativeConstruct()
 		ESlateVisibility ImageArrowVisibility = bHasSubMenu ? ESlateVisibility::Visible : ESlateVisibility::Hidden;
 		ImageArrow->SetVisibility(ImageArrowVisibility);
 	}
+
+	if (TextCommand)
+	{
+		SetLabelTheme(TextCommand);
+	}
+
+	ImageBorder->SetBrushTintColor(FSlateColor(COLOR_TINT_BORDER1));
 }
 
 void UCommandCellWidget::HandleBlinkAnimationFinished()
@@ -42,8 +50,8 @@ void UCommandCellWidget::Highlight()
 {
 	if (ImageTitleBG)
 	{
-		ImageTitleBG->SetColorAndOpacity(FLinearColor(FColor::Black));
-		ImageTitleBG->SetOpacity(BackgroundOpacity);
+		ImageTitleBG->SetBrushTintColor(FLinearColor(COLOR_COMMAND_CELL_HIGHLIGHT));
+		ImageTitleBG->SetOpacity(0.45f);
 	}
 }
 
@@ -51,8 +59,8 @@ void UCommandCellWidget::Unhighlight()
 {
 	if (ImageTitleBG)
 	{
-		ImageTitleBG->SetColorAndOpacity(FLinearColor(FColor::White));
-		ImageTitleBG->SetOpacity(BackgroundOpacity);
+		ImageTitleBG->SetBrushTintColor(FLinearColor(COLOR_COMMAND_CELL_UNHIGHLIGHT));
+		ImageTitleBG->SetOpacity(0.6f);
 	}
 }
 
