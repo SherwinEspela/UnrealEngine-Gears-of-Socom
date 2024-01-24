@@ -7,6 +7,7 @@
 #include "TeamStatusWidget.generated.h"
 
 class UMemberStatusWidget;
+class UImage;
 
 /**
  * 
@@ -37,4 +38,16 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UMemberStatusWidget* MemberStatus4;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageBorderTop;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageBorderBottom;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageBGTop;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* ImageBGBottom;
 };

@@ -44,7 +44,8 @@ void AGOSPlayerCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 	GetCharacterMovement()->MaxWalkSpeedCrouched = CROUCH_SPEED;
 
-	if (WeaponWidgetClass)
+	// TODO: Re-enable on future versions
+	/*if (WeaponWidgetClass)
 	{
 		WeaponWidget = CreateWidget<UWeaponWidget>(GetWorld(), WeaponWidgetClass);
 		if (WeaponWidget)
@@ -52,7 +53,7 @@ void AGOSPlayerCharacter::BeginPlay()
 			WeaponWidget->AddToViewport();
 			WeaponWidget->SetWeaponName(TEXT("WeaponTest"));
 		}
-	}
+	}*/
 
 	SetupTeam();
 	MovementType = EMovementType::EMT_Idle;
