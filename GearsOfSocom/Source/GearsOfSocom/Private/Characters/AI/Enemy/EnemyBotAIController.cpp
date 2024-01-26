@@ -17,7 +17,6 @@ void AEnemyBotAIController::BeginPlay()
 
 void AEnemyBotAIController::SetPatrolling()
 {
-	TargetActor = nullptr;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
 }

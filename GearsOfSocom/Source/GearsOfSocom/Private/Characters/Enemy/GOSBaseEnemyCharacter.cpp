@@ -29,9 +29,9 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	Super::HandlePawnSeen(SeenPawn);
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
-	
+	Super::HandlePawnSeen(SeenPawn);
+
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
 	{
 		if (BotAIController)

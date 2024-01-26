@@ -216,3 +216,8 @@ void AGOSBotCharacter::TacticalCover()
 		BotAIController->SetCovering(true);
 	}
 }
+
+void AGOSBotCharacter::RemoveTarget()
+{
+	TargetActor = nullptr;
+}

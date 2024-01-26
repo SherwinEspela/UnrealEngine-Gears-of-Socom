@@ -13,14 +13,15 @@ void AAllyBotAIController::BeginPlay()
 	if (PlayerPawn) GetBlackboardComponent()->SetValueAsObject(BB_KEY_PLAYER, PlayerPawn);
 }
 
+// TOREMOVE
 void AAllyBotAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!(TargetActor && LineOfSightTo(TargetActor)))
+	/*if (!(TargetActor && LineOfSightTo(TargetActor)))
 	{
 		GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
-	}
+	}*/
 }
 
 void AAllyBotAIController::FollowPlayer()

@@ -31,6 +31,7 @@ public:
 	virtual void HoldFire();
 	virtual void FireAtWill();
 	virtual void FindCover();
+	void RemoveTarget();
 
 	virtual float TakeDamage
 	(
