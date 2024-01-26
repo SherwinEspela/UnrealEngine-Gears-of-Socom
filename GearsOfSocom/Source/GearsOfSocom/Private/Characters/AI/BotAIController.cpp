@@ -104,7 +104,7 @@ void ABotAIController::SetStealth()
 
 void ABotAIController::HoldPosition()
 {
-	ClearValues();
+	//ClearValues();
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
 }
 

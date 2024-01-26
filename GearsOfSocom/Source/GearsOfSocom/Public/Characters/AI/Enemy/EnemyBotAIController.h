@@ -13,7 +13,9 @@ UCLASS()
 class GEARSOFSOCOM_API AEnemyBotAIController : public ABotAIController
 {
 	GENERATED_BODY()
-	
+public:
+	void SetPatrolling();
+
 protected:
 	virtual void BeginPlay() override;
 };

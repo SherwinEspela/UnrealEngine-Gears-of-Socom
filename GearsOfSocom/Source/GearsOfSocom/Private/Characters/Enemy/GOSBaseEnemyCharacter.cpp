@@ -4,7 +4,7 @@
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Characters/AI/BotAIController.h"
+#include "Characters/AI/Enemy/EnemyBotAIController.h"
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "Perception/PawnSensingComponent.h"
 
@@ -56,6 +56,25 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 		{
 			CurrentPatrolPointIndex = 0;
 		}
+	}
+}
+
+void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
+{
+	if (PatrolPoints.Num() == 0) return;
+	if (BotAIController == nullptr) return;
+
+	bool ShouldPatrol = FMath::RandBool();
+	if (ShouldPatrol)
+	{
+		auto EnemyBotAIController = Cast<AEnemyBotAIController>(GetController());
+		if (EnemyBotAIController)
+		{
+			EnemyBotAIController->SetPatrolling();
+		}
+	}
+	else {
+		BotAIController->HoldPosition();
 	}
 }
 

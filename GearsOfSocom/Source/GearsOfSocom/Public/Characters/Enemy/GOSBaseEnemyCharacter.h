@@ -19,6 +19,7 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 	
 public:
 	void SelectNextPatrolPoint();
+	void PatrolOrHoldPosition();
 
 	virtual float TakeDamage
 	(
