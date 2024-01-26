@@ -93,7 +93,7 @@ void ABotAIController::SetCovering(bool IsCovering)
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
+	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
 }
 

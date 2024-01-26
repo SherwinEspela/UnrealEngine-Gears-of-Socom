@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void FireWeapon() override;
-	virtual void MakeDecision();
+	virtual void TacticalDecision();
 	virtual void CrouchAndHoldFire();
 	virtual void StandAndShoot();
 	virtual void HoldFire();
@@ -67,6 +67,12 @@ protected:
 
 protected:
 	AActor* TargetActor;
+
+protected:
+	// Tactical Decisions
+	void TacticalAttack();
+	void TacticalEvade();
+	void TacticalCover();
 
 private:
 	UGOSBotAnimInstance* BotAnimInstance;
