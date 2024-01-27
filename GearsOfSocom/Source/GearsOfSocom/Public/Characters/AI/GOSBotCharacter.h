@@ -45,6 +45,10 @@ public:
 	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
 	void DecideMovementType();
 
+public:
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AActor*> SeenActors;
+
 protected:
 	virtual void BeginPlay() override;
 

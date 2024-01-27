@@ -7,6 +7,7 @@
 #include "Characters/AI/Enemy/EnemyBotAIController.h"
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGOSBaseEnemyCharacter::BeginPlay()
 {
@@ -25,6 +26,8 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 	}
 
 	Tags.Add(FName(ACTOR_TAG_ENEMY));
+
+	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), NavySeals);
 }
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -39,6 +42,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 			TargetActor = SeenPawn;
 			BotAIController->SetTarget(SeenPawn);
 			BotAIController->SetTargetSeen();
+			CollectSeenActors();
 		}
 
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
@@ -119,5 +123,21 @@ void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		BotAIController->SetTargetSeen();
 		break;
+	}
+}
+
+void AGOSBaseEnemyCharacter::CollectSeenActors()
+{
+	if (BotAIController == nullptr) return;
+
+	if (!SeenActors.IsEmpty())
+	{
+		SeenActors.Empty();
+	}
+
+	for (AActor* Seal : NavySeals) {
+		if (BotAIController->LineOfSightTo(Seal)) {
+			SeenActors.Add(Seal);
+		}
 	}
 }
