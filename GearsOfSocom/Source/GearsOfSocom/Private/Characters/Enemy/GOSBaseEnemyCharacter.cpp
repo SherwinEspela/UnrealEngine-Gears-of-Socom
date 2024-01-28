@@ -51,7 +51,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 {
-	if (BotAIController)
+	if (BotAIController && !PatrolPoints.IsEmpty())
 	{
 		FVector PatrolPoint = PatrolPoints[CurrentPatrolPointIndex]->GetActorLocation();
 		BotAIController->SetPatrolPoint(PatrolPoint);
@@ -65,7 +65,7 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 
 void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 {
-	if (PatrolPoints.Num() == 0) return;
+	if (PatrolPoints.IsEmpty()) return;
 	if (BotAIController == nullptr) return;
 
 	bool ShouldPatrol = FMath::RandBool();
@@ -105,25 +105,8 @@ void AGOSBaseEnemyCharacter::FireWeapon()
 void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
-
-	if (BotAIController == nullptr) return;
-
-	int Decision = FMath::RandRange(1, 3);
-	switch (Decision)
-	{
-	case 1:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-		BotAIController->SetCovering(true);
-		break;
-	case 2:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-		BotAIController->SetEvading(true);
-		break;
-	default:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-		BotAIController->SetTargetSeen();
-		break;
-	}
+	BotAIController->FireAtWill();
+	TacticalEvade();
 }
 
 void AGOSBaseEnemyCharacter::CollectSeenActors()

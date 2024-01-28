@@ -168,6 +168,7 @@ void AGOSBotCharacter::DecideMovementType()
 
 void AGOSBotCharacter::TacticalDecision()
 {
+	BotAIController->FireAtWill();
 	int Decision = FMath::RandRange(0, 2);
 	switch (Decision)
 	{
