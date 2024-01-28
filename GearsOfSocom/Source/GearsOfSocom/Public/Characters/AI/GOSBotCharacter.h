@@ -46,6 +46,15 @@ public:
 	void DecideMovementType();
 
 public:
+	// Tactical Decisions
+	void TacticalAttack();
+	void TacticalEvade();
+	void TacticalCover();
+
+public:
+	FORCEINLINE AActor* GetTarget() const { return TargetActor; }
+
+public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<AActor*> SeenActors;
 
@@ -72,12 +81,6 @@ protected:
 
 protected:
 	AActor* TargetActor;
-
-protected:
-	// Tactical Decisions
-	void TacticalAttack();
-	void TacticalEvade();
-	void TacticalCover();
 
 private:
 	UGOSBotAnimInstance* BotAnimInstance;

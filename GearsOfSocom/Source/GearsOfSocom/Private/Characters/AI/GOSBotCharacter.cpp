@@ -172,11 +172,9 @@ void AGOSBotCharacter::TacticalDecision()
 	switch (Decision)
 	{
 	case 0:
-		SetWalk();
 		TacticalAttack();
 		break;
 	case 1:
-		SetWalk();
 		TacticalEvade();
 		break;
 	case 2:
@@ -190,6 +188,7 @@ void AGOSBotCharacter::TacticalDecision()
 void AGOSBotCharacter::TacticalAttack()
 {
 	UE_LOG(LogTemp, Warning, TEXT("TacticalAttack"));
+	SetWalk();
 	if (BotAIController)
 	{
 		BotAIController->SetEvading(false);
@@ -200,6 +199,7 @@ void AGOSBotCharacter::TacticalAttack()
 void AGOSBotCharacter::TacticalEvade()
 {
 	UE_LOG(LogTemp, Warning, TEXT("TacticalEvade"));
+	SetWalk();
 	if (BotAIController)
 	{
 		BotAIController->SetCovering(false);
