@@ -1,15 +1,17 @@
 // Copyright 2023 Sherwin Espela. All rights reserved.
 
-#include "Characters/AI/Tasks/BTTaskSetCover.h"
+
+#include "Characters/AI/Tasks/BTTaskTacticalDecision.h"
+#include "Constants/Constants.h"
 #include "Characters/AI/GOSBotCharacter.h"
 #include "AIController.h"
 
-UBTTaskSetCover::UBTTaskSetCover()
+UBTTaskTacticalDecision::UBTTaskTacticalDecision()
 {
-	NodeName = TEXT("Set Cover");
+	NodeName = TEXT("Tactical Decision");
 }
 
-EBTNodeResult::Type UBTTaskSetCover::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTaskTacticalDecision::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
@@ -17,7 +19,7 @@ EBTNodeResult::Type UBTTaskSetCover::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
-		Bot->FindCover();
+		Bot->TacticalDecision();
 	}
 	else {
 		return EBTNodeResult::Failed;

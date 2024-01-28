@@ -44,8 +44,8 @@ void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, false);
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, true);
 
-				AGOSBaseEnemyCharacter* BotCharacter = Cast<AGOSBaseEnemyCharacter>(BotAIController->GetPawn());
-				if (BotCharacter) BotCharacter->SetBotBehavior(EBotBehaviorTypes::EBBT_Patrolling);
+				//AGOSBaseEnemyCharacter* BotCharacter = Cast<AGOSBaseEnemyCharacter>(BotAIController->GetPawn());
+				//if (BotCharacter) BotCharacter->SetBotBehavior(EBotBehaviorTypes::EBBT_Patrolling);
 			}
 		}
 	}

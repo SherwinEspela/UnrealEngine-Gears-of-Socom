@@ -4,9 +4,10 @@
 #include "Characters/Enemy/GOSBaseEnemyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Characters/AI/BotAIController.h"
+#include "Characters/AI/Enemy/EnemyBotAIController.h"
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGOSBaseEnemyCharacter::BeginPlay()
 {
@@ -25,13 +26,15 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 	}
 
 	Tags.Add(FName(ACTOR_TAG_ENEMY));
+
+	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), NavySeals);
 }
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	Super::HandlePawnSeen(SeenPawn);
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
-	
+	Super::HandlePawnSeen(SeenPawn);
+
 	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
 	{
 		if (BotAIController)
@@ -39,6 +42,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 			TargetActor = SeenPawn;
 			BotAIController->SetTarget(SeenPawn);
 			BotAIController->SetTargetSeen();
+			CollectSeenActors();
 		}
 
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
@@ -47,7 +51,7 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 {
-	if (BotAIController)
+	if (BotAIController && !PatrolPoints.IsEmpty())
 	{
 		FVector PatrolPoint = PatrolPoints[CurrentPatrolPointIndex]->GetActorLocation();
 		BotAIController->SetPatrolPoint(PatrolPoint);
@@ -56,6 +60,25 @@ void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()
 		{
 			CurrentPatrolPointIndex = 0;
 		}
+	}
+}
+
+void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
+{
+	if (PatrolPoints.IsEmpty()) return;
+	if (BotAIController == nullptr) return;
+
+	bool ShouldPatrol = FMath::RandBool();
+	if (ShouldPatrol)
+	{
+		auto EnemyBotAIController = Cast<AEnemyBotAIController>(GetController());
+		if (EnemyBotAIController)
+		{
+			EnemyBotAIController->SetPatrolling();
+		}
+	}
+	else {
+		BotAIController->HoldPosition();
 	}
 }
 
@@ -82,23 +105,22 @@ void AGOSBaseEnemyCharacter::FireWeapon()
 void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
+	BotAIController->FireAtWill();
+	TacticalEvade();
+}
 
+void AGOSBaseEnemyCharacter::CollectSeenActors()
+{
 	if (BotAIController == nullptr) return;
 
-	int Decision = FMath::RandRange(1, 3);
-	switch (Decision)
+	if (!SeenActors.IsEmpty())
 	{
-	case 1:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-		BotAIController->SetCovering(true);
-		break;
-	case 2:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Evading);
-		BotAIController->SetEvading(true);
-		break;
-	default:
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-		BotAIController->SetTargetSeen();
-		break;
+		SeenActors.Empty();
+	}
+
+	for (AActor* Seal : NavySeals) {
+		if (BotAIController->LineOfSightTo(Seal)) {
+			SeenActors.Add(Seal);
+		}
 	}
 }

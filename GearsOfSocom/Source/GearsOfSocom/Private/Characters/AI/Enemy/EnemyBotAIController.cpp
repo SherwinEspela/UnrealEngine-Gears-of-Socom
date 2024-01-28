@@ -9,7 +9,14 @@ void AEnemyBotAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_START_LOCATION, GetPawn()->GetActorLocation());
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
+}
+
+void AEnemyBotAIController::SetPatrolling()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
 }

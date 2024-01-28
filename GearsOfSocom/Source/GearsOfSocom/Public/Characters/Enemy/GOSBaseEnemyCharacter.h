@@ -19,6 +19,8 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 	
 public:
 	void SelectNextPatrolPoint();
+	void PatrolOrHoldPosition();
+	void CollectSeenActors();
 
 	virtual float TakeDamage
 	(
@@ -51,4 +53,5 @@ protected:
 private:
 	int CurrentPatrolPointIndex = 0;
 	bool bIsNotSeen = true;
+	TArray<AActor*> NavySeals;
 };

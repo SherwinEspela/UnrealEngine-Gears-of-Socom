@@ -1,15 +1,16 @@
 // Copyright 2023 Sherwin Espela. All rights reserved.
 
-#include "Characters/AI/Tasks/BTTaskSetCover.h"
+
+#include "Characters/AI/Tasks/BTTaskSetWalk.h"
 #include "Characters/AI/GOSBotCharacter.h"
 #include "AIController.h"
 
-UBTTaskSetCover::UBTTaskSetCover()
+UBTTaskSetWalk::UBTTaskSetWalk()
 {
-	NodeName = TEXT("Set Cover");
+	NodeName = TEXT("Set Walk");
 }
 
-EBTNodeResult::Type UBTTaskSetCover::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTaskSetWalk::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
@@ -17,7 +18,7 @@ EBTNodeResult::Type UBTTaskSetCover::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot)
 	{
-		Bot->FindCover();
+		Bot->SetWalk();
 	}
 	else {
 		return EBTNodeResult::Failed;

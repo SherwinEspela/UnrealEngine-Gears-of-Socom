@@ -25,12 +25,13 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void FireWeapon() override;
-	virtual void MakeDecision();
+	virtual void TacticalDecision();
 	virtual void CrouchAndHoldFire();
 	virtual void StandAndShoot();
 	virtual void HoldFire();
 	virtual void FireAtWill();
 	virtual void FindCover();
+	void RemoveTarget();
 
 	virtual float TakeDamage
 	(
@@ -43,6 +44,19 @@ public:
 public:
 	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
 	void DecideMovementType();
+
+public:
+	// Tactical Decisions
+	void TacticalAttack();
+	void TacticalEvade();
+	void TacticalCover();
+
+public:
+	FORCEINLINE AActor* GetTarget() const { return TargetActor; }
+
+public:
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AActor*> SeenActors;
 
 protected:
 	virtual void BeginPlay() override;

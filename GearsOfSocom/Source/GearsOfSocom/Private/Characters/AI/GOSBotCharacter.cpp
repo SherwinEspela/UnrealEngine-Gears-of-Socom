@@ -91,10 +91,6 @@ void AGOSBotCharacter::FireWeapon()
 	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }
 
-void AGOSBotCharacter::MakeDecision()
-{
-}
-
 void AGOSBotCharacter::CrouchAndHoldFire()
 {
 	SetCrouch();
@@ -168,4 +164,61 @@ void AGOSBotCharacter::DecideMovementType()
 			SetRun();
 		}
 	}
+}
+
+void AGOSBotCharacter::TacticalDecision()
+{
+	BotAIController->FireAtWill();
+	int Decision = FMath::RandRange(0, 2);
+	switch (Decision)
+	{
+	case 0:
+		TacticalAttack();
+		break;
+	case 1:
+		TacticalEvade();
+		break;
+	case 2:
+		TacticalCover();
+		break;
+	default:
+		break;
+	}
+}
+
+void AGOSBotCharacter::TacticalAttack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TacticalAttack"));
+	SetWalk();
+	if (BotAIController)
+	{
+		BotAIController->SetEvading(false);
+		BotAIController->SetCovering(false);
+	}
+}
+
+void AGOSBotCharacter::TacticalEvade()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TacticalEvade"));
+	SetWalk();
+	if (BotAIController)
+	{
+		BotAIController->SetCovering(false);
+		BotAIController->SetEvading(true);
+	}
+}
+
+void AGOSBotCharacter::TacticalCover()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TacticalCover"));
+	if (BotAIController)
+	{
+		BotAIController->SetEvading(false);
+		BotAIController->SetCovering(true);
+	}
+}
+
+void AGOSBotCharacter::RemoveTarget()
+{
+	TargetActor = nullptr;
 }

@@ -4,27 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
-#include "BTService_PlayerLocation.generated.h"
+#include "BTServiceEvadeWhenCloseToTarget.generated.h"
 
 class AGOSBotCharacter;
-class AGOSBaseEnemyCharacter;
-class ABotAIController;
 
-// TOREMOVE
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API UBTService_PlayerLocation : public UBTService_BlackboardBase
+class GEARSOFSOCOM_API UBTServiceEvadeWhenCloseToTarget : public UBTService_BlackboardBase
 {
 	GENERATED_BODY()
 public:
-	UBTService_PlayerLocation();
+	UBTServiceEvadeWhenCloseToTarget();
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-	
-//private:
-//	AGOSBaseEnemyCharacter* BotCharacter;
-//	ABotAIController* BotAIController;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	float DistanceThreshold = 400.f;
+
+private:
+	AGOSBotCharacter* Bot;
 };
