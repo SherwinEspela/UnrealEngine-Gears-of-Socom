@@ -74,6 +74,7 @@ void AAllyBotAIController::ClearValues()
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 }
 
 void AAllyBotAIController::ClearTagetValues()
