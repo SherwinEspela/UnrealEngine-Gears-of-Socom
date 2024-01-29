@@ -28,6 +28,7 @@ public:
 	virtual void TacticalDecision();
 	virtual void CrouchAndHoldFire();
 	virtual void StandAndShoot();
+	virtual void PatrolOrHoldPosition();
 	virtual void HoldFire();
 	virtual void FireAtWill();
 	virtual void FindCover();

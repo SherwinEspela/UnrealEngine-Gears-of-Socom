@@ -108,13 +108,12 @@ void ABotAIController::SetStealth()
 
 void ABotAIController::HoldPosition()
 {
-
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
 }
 
 void ABotAIController::ClearValues()
 {
-	//TargetActor = nullptr;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
 }
 
@@ -126,4 +125,10 @@ void ABotAIController::HoldFire()
 void ABotAIController::FireAtWill()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
+}
+
+void ABotAIController::SetPatrolling()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
 }

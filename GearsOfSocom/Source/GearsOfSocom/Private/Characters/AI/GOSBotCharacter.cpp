@@ -103,6 +103,18 @@ void AGOSBotCharacter::StandAndShoot()
 	FireAtWill();
 }
 
+void AGOSBotCharacter::PatrolOrHoldPosition()
+{
+	bool ShouldPatrol = FMath::RandBool();
+	if (ShouldPatrol)
+	{
+		BotAIController->SetPatrolling();
+	}
+	else {
+		BotAIController->HoldPosition();
+	}
+}
+
 void AGOSBotCharacter::HoldFire()
 {
 	if (BotAIController)

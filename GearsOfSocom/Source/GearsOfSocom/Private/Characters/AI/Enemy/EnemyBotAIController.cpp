@@ -15,8 +15,8 @@ void AEnemyBotAIController::BeginPlay()
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_LOST_TARGET_SIGHT, false);
 }
 
-void AEnemyBotAIController::SetPatrolling()
-{
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
-	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
-}
+//void AEnemyBotAIController::SetPatrolling()
+//{
+//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+//	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
+//}

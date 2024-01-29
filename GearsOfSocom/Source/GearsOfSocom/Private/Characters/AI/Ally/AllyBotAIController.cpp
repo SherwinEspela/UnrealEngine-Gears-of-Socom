@@ -30,6 +30,9 @@ void AAllyBotAIController::FollowPlayer()
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REACHED_PLAYER, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, true);
 }
 

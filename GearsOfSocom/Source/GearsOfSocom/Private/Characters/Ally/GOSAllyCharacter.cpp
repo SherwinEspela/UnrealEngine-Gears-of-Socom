@@ -207,7 +207,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		Regroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
-		DecideMovementType();
+		//DecideMovementType();
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:

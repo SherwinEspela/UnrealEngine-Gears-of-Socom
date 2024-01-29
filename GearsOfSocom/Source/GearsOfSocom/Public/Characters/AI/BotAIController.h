@@ -35,6 +35,7 @@ public:
 	virtual void ClearValues();
 	virtual void HoldFire();
 	virtual void FireAtWill();
+	virtual void SetPatrolling();
 
 public:
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }

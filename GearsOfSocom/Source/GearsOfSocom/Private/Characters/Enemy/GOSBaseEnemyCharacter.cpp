@@ -68,7 +68,9 @@ void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 	if (PatrolPoints.IsEmpty()) return;
 	if (BotAIController == nullptr) return;
 
-	bool ShouldPatrol = FMath::RandBool();
+	Super::PatrolOrHoldPosition();
+
+	/*bool ShouldPatrol = FMath::RandBool();
 	if (ShouldPatrol)
 	{
 		auto EnemyBotAIController = Cast<AEnemyBotAIController>(GetController());
@@ -79,7 +81,7 @@ void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 	}
 	else {
 		BotAIController->HoldPosition();
-	}
+	}*/
 }
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
