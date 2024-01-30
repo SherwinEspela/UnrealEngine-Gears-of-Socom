@@ -68,23 +68,13 @@ void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 	if (PatrolPoints.IsEmpty()) return;
 	if (BotAIController == nullptr) return;
 
-	bool ShouldPatrol = FMath::RandBool();
-	if (ShouldPatrol)
-	{
-		auto EnemyBotAIController = Cast<AEnemyBotAIController>(GetController());
-		if (EnemyBotAIController)
-		{
-			EnemyBotAIController->SetPatrolling();
-		}
-	}
-	else {
-		BotAIController->HoldPosition();
-	}
+	Super::PatrolOrHoldPosition();
 }
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	//float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (DamageCauser->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return 0.f;
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
 		DamageReaction(DamageCauser);
@@ -94,19 +84,12 @@ float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 		TargetActor = nullptr;
 	}
 
-	return 0.f;//DamageApplied;
+	return DamageApplied;
 }
 
 void AGOSBaseEnemyCharacter::FireWeapon()
 {
 	Super::FireWeapon();
-}
-
-void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
-{
-	Super::DamageReaction(DamageCauser);
-	BotAIController->FireAtWill();
-	TacticalEvade();
 }
 
 void AGOSBaseEnemyCharacter::CollectSeenActors()

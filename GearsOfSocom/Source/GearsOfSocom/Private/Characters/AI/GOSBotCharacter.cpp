@@ -7,6 +7,8 @@
 #include "Characters/AI/BotAIController.h"
 #include "Animation/GOSBotAnimInstance.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Environment/CoverActor.h"
 #include "Constants/Constants.h"
 
 AGOSBotCharacter::AGOSBotCharacter()
@@ -33,10 +35,11 @@ void AGOSBotCharacter::BeginPlay()
 	BotAIController = Cast<ABotAIController>(GetController());
 	BotAnimInstance = Cast<UGOSBotAnimInstance>(GetMesh()->GetAnimInstance());
 
-	if (PawnSensingComponent)
+	// TODO: bring back noise sensing on future version
+	/*if (PawnSensingComponent)
 	{
 		PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSBotCharacter::HandleHeardNoise);
-	}
+	}*/
 }
 
 void AGOSBotCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -77,16 +80,26 @@ void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
 			BotAIController->SetTarget(TargetActor);
 		}
 	}
+
+	int ChanceDecision = FMath::RandRange(0, 100);
+	if (ChanceDecision > 70)
+	{
+		TacticalDecision();
+	}
 }
 
 void AGOSBotCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	FVector LineTraceStart = GetActorLocation();
+	FVector LineTraceStart = GetMesh()->GetSocketLocation(FName("Muzzle_01"));
 	FRotator RotationStart = GetActorRotation();
 	FVector LineTraceEnd = LineTraceStart + RotationStart.Vector() * MaxShootingRange;
 	FVector ShotDirection = -RotationStart.Vector();
+
+	// For Debugging
+	DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
+	DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
 
 	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }
@@ -101,6 +114,18 @@ void AGOSBotCharacter::StandAndShoot()
 {
 	SetWalk();
 	FireAtWill();
+}
+
+void AGOSBotCharacter::PatrolOrHoldPosition()
+{
+	bool ShouldPatrol = FMath::RandBool();
+	if (ShouldPatrol)
+	{
+		BotAIController->SetPatrolling();
+	}
+	else {
+		BotAIController->HoldPosition();
+	}
 }
 
 void AGOSBotCharacter::HoldFire()
@@ -131,11 +156,15 @@ void AGOSBotCharacter::FindCover()
 
 float AGOSBotCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (bShouldNotDieForDebugging) return 0.f;
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
 	if (bIsDead)
 	{
 		TargetActor = nullptr;
+
+		// TODO: Ragdoll death
+	/*	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		GetMesh()->SetSimulatePhysics(true);*/
 	}
 
 	return DamageApplied;
@@ -155,14 +184,7 @@ void AGOSBotCharacter::DecideMovementType()
 		SetCrouch();
 	}
 	else {
-		bool ShouldWalk = FMath::RandBool();
-		if (ShouldWalk)
-		{
-			SetWalk();
-		}
-		else {
-			SetRun();
-		}
+		SetWalk();
 	}
 }
 
@@ -188,7 +210,6 @@ void AGOSBotCharacter::TacticalDecision()
 
 void AGOSBotCharacter::TacticalAttack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalAttack"));
 	SetWalk();
 	if (BotAIController)
 	{
@@ -199,7 +220,6 @@ void AGOSBotCharacter::TacticalAttack()
 
 void AGOSBotCharacter::TacticalEvade()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalEvade"));
 	SetWalk();
 	if (BotAIController)
 	{
@@ -210,7 +230,6 @@ void AGOSBotCharacter::TacticalEvade()
 
 void AGOSBotCharacter::TacticalCover()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalCover"));
 	if (BotAIController)
 	{
 		BotAIController->SetEvading(false);
@@ -221,4 +240,32 @@ void AGOSBotCharacter::TacticalCover()
 void AGOSBotCharacter::RemoveTarget()
 {
 	TargetActor = nullptr;
+}
+
+void AGOSBotCharacter::TraceNearbyCover()
+{
+	if (BotAIController == nullptr) return;
+
+	BotAIController->FoundNearCover(false);
+
+	const FVector Start = GetActorLocation();
+	const FVector End = Start;
+	FCollisionShape CollisionShape = FCollisionShape::MakeSphere(500.0f);
+	TArray<FHitResult> OutResults;
+	const bool Hit = GetWorld()->SweepMultiByChannel(OutResults, Start, End, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, CollisionShape);
+
+	if (Hit)
+	{
+		for (const FHitResult HitResult : OutResults)
+		{
+			ACoverActor* Cover = Cast<ACoverActor>(HitResult.GetActor());
+			if (Cover)
+			{
+				BotAIController->FoundNearCover(true);
+				return;
+			}
+		}
+
+		BotAIController->FoundNearCover(false);
+	}
 }

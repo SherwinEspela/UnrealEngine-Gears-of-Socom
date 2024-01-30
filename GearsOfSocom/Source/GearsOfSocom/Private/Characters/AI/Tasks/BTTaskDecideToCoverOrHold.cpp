@@ -1,7 +1,6 @@
 // Copyright 2023 Sherwin Espela. All rights reserved.
 
 #include "Characters/AI/Tasks/BTTaskDecideToCoverOrHold.h"
-#include "Constants/Constants.h"
 #include "Characters/Ally/GOSAllyCharacter.h"
 #include "AIController.h"
 

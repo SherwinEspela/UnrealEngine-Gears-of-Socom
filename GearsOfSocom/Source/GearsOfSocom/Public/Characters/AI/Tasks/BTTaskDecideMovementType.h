@@ -4,22 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTaskDecideToHoldOrPatrol.generated.h"
+#include "BTTaskDecideMovementType.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GEARSOFSOCOM_API UBTTaskDecideToHoldOrPatrol : public UBTTask_BlackboardBase
+class GEARSOFSOCOM_API UBTTaskDecideMovementType : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 public:
-	UBTTaskDecideToHoldOrPatrol();
+	UBTTaskDecideMovementType();
 
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
-protected:
-	UPROPERTY(EditAnywhere)
-	bool bIsNavySeals = true;
 };

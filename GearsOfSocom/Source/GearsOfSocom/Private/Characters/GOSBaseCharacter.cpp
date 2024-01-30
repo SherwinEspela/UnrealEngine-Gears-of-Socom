@@ -96,10 +96,11 @@ void AGOSBaseCharacter::FireWeapon()
 		BaseAnimInstance->Montage_Play(MontageFireWeapon);
 	}
 
-	if (NoiseEmitter)
+	// TODO: add making noise on future versions
+	/*if (NoiseEmitter)
 	{
 		MakeNoise();
-	}
+	}*/
 }
 
 void AGOSBaseCharacter::ToggleCrouch()

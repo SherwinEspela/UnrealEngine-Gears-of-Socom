@@ -31,6 +31,7 @@
 #define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
 #define BB_KEY_CAN_ENGAGE TEXT("CanEngage")
 #define BB_KEY_REACHED_COVER_POSITION TEXT("HasReachedCoverPosition")
+#define BB_KEY_REACHED_PLAYER TEXT("HasReachedPlayer")
 
 #define BB_KEY_TARGET TEXT("Target")
 #define BB_KEY_PATROL_POINT TEXT("NewPatrolPoint")
@@ -48,6 +49,7 @@
 #define BB_KEY_HOLDING TEXT("IsHolding")
 #define BB_KEY_REGROUPING TEXT("IsRegrouping")
 #define BB_KEY_PATROLLING TEXT("IsPatrolling")
+#define BB_KEY_FOUND_NEAR_COVER TEXT("FoundNearCover")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8

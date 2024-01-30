@@ -6,6 +6,7 @@
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
 #include "BTService_PlayerDistance.generated.h"
 
+// TOREMOVE
 class AGOSBotCharacter;
 
 /**
@@ -21,6 +22,10 @@ public:
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	float DistanceTreshold = 400.f;
 
 private:
 	AGOSBotCharacter* Bot;

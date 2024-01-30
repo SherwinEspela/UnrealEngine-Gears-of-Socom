@@ -19,7 +19,7 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 	
 public:
 	void SelectNextPatrolPoint();
-	void PatrolOrHoldPosition();
+	void PatrolOrHoldPosition() override;
 	void CollectSeenActors();
 
 	virtual float TakeDamage
@@ -41,7 +41,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
-	virtual void DamageReaction(AActor* DamageCauser);
+	//virtual void DamageReaction(AActor* DamageCauser);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))

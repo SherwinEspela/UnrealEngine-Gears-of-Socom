@@ -3,7 +3,6 @@
 
 #include "Characters/AI/Services/BTService_MoveToAndShoot.h"
 #include "Characters/AI/GOSBotCharacter.h"
-#include "Characters/Ally/GOSAllyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "Constants/Constants.h"
@@ -30,13 +29,6 @@ void UBTService_MoveToAndShoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
 	if (!IsTargetSeen && !HasTargetSight) return;
 
-	if (bIsNavySeals)
-	{
-		if (Bot == nullptr) Bot = Cast<AGOSAllyCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	}
-	else {
-		if (Bot == nullptr) Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	}
-
+	auto Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Bot) Bot->FireWeapon();
 }

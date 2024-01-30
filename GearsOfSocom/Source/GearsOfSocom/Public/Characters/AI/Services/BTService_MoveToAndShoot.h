@@ -6,7 +6,7 @@
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
 #include "BTService_MoveToAndShoot.generated.h"
 
-class AGOSBotCharacter;
+//class AGOSBotCharacter;
 
 /**
  * 
@@ -23,9 +23,5 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere)
-	bool bIsNavySeals = true;
-
-private:
-	AGOSBotCharacter* Bot;
-	
+	bool bIsNavySeals = true;	
 };

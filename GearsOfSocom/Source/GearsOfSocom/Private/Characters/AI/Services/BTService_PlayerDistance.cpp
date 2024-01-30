@@ -26,7 +26,10 @@ void UBTService_PlayerDistance::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 		if (PlayerActor)
 		{
 			float DistanceToPlayer = Bot->GetDistanceTo(PlayerActor);
-			OwnerComp.GetBlackboardComponent()->SetValueAsFloat(BB_KEY_DISTANCE_TO_PLAYER, DistanceToPlayer);
+			if (DistanceToPlayer > DistanceTreshold)
+			{
+				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_REACHED_PLAYER, false);
+			}
 		}
 	}
 }

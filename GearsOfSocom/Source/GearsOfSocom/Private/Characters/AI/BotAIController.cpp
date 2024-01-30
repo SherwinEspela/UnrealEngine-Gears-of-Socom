@@ -25,22 +25,22 @@ void ABotAIController::BeginPlay()
 }
 
 // TOREMOVE
-void ABotAIController::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	/*if (TargetActor && LineOfSightTo(TargetActor))
-	{
-		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
-	}
-	else {
-		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
-		GetBlackboardComponent()->SetValueAsVector(
-			BB_KEY_LAST_TARGET_LOCATION,
-			TargetActor->GetActorLocation()
-		);
-	}*/
-}
+//void ABotAIController::Tick(float DeltaSeconds)
+//{
+//	Super::Tick(DeltaSeconds);
+//
+//	/*if (TargetActor && LineOfSightTo(TargetActor))
+//	{
+//		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
+//	}
+//	else {
+//		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
+//		GetBlackboardComponent()->SetValueAsVector(
+//			BB_KEY_LAST_TARGET_LOCATION,
+//			TargetActor->GetActorLocation()
+//		);
+//	}*/
+//}
 
 void ABotAIController::InitializeAI()
 {
@@ -92,13 +92,18 @@ void ABotAIController::SetTargetHeard(bool Heard)
 
 void ABotAIController::SetCovering(bool IsCovering)
 {
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOUND_NEAR_COVER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
 void ABotAIController::SetEvading(bool IsEvading)
 {
-	//GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
+}
+
+void ABotAIController::FoundNearCover(bool HasNearCover)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOUND_NEAR_COVER, HasNearCover);
 }
 
 void ABotAIController::SetStealth()
@@ -108,13 +113,12 @@ void ABotAIController::SetStealth()
 
 void ABotAIController::HoldPosition()
 {
-
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, true);
 }
 
 void ABotAIController::ClearValues()
 {
-	//TargetActor = nullptr;
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
 }
 
@@ -126,4 +130,10 @@ void ABotAIController::HoldFire()
 void ABotAIController::FireAtWill()
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
+}
+
+void ABotAIController::SetPatrolling()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, true);
 }
