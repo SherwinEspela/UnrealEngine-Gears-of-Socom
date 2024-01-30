@@ -69,19 +69,6 @@ void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 	if (BotAIController == nullptr) return;
 
 	Super::PatrolOrHoldPosition();
-
-	/*bool ShouldPatrol = FMath::RandBool();
-	if (ShouldPatrol)
-	{
-		auto EnemyBotAIController = Cast<AEnemyBotAIController>(GetController());
-		if (EnemyBotAIController)
-		{
-			EnemyBotAIController->SetPatrolling();
-		}
-	}
-	else {
-		BotAIController->HoldPosition();
-	}*/
 }
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -103,12 +90,6 @@ void AGOSBaseEnemyCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 }
-
-//void AGOSBaseEnemyCharacter::DamageReaction(AActor* DamageCauser)
-//{
-//	Super::DamageReaction(DamageCauser);
-//	//TacticalDecision();
-//}
 
 void AGOSBaseEnemyCharacter::CollectSeenActors()
 {

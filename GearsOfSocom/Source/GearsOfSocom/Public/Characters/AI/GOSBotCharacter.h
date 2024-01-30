@@ -84,6 +84,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Bot)
 	float CoverTraceRadius = 500.f;
 
+	UPROPERTY(EditAnywhere, Category = "AI Debugging")
+	bool bShouldNotDieForDebugging = false;
+
 protected:
 	AActor* TargetActor;
 

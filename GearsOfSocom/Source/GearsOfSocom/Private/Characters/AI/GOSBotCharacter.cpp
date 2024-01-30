@@ -35,10 +35,11 @@ void AGOSBotCharacter::BeginPlay()
 	BotAIController = Cast<ABotAIController>(GetController());
 	BotAnimInstance = Cast<UGOSBotAnimInstance>(GetMesh()->GetAnimInstance());
 
-	if (PawnSensingComponent)
+	// TODO: bring back noise sensing on future version
+	/*if (PawnSensingComponent)
 	{
 		PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSBotCharacter::HandleHeardNoise);
-	}
+	}*/
 }
 
 void AGOSBotCharacter::HandlePawnSeen(APawn* SeenPawn)
@@ -155,8 +156,8 @@ void AGOSBotCharacter::FindCover()
 
 float AGOSBotCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (bShouldNotDieForDebugging) return 0.f;
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
 	if (bIsDead)
 	{
 		TargetActor = nullptr;

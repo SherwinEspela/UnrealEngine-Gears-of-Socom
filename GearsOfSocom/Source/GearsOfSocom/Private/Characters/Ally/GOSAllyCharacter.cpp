@@ -219,31 +219,19 @@ float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 
 void AGOSAllyCharacter::HandleEnemyKilled()
 {
-	if (AllyAIController)
+	if (TargetEnemy && AllyAIController)
 	{
-		if (TargetEnemy)
-		{
-			TargetEnemy->OnEnemyKilled.RemoveAll(this);
-			TargetEnemy = nullptr;
-		}
-
+		TargetEnemy->OnEnemyKilled.RemoveAll(this);
+		TargetEnemy = nullptr;
 		TargetActor = nullptr;
 		AllyAIController->ClearTagetValues();
+		HoldPosition();
 	}
 }
 
 void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
-
-	/*if (AllyAIController)
-	{
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-		AllyAIController->AttackTargetEnemy(TargetActor);
-		AllyAIController->FireAtWill();		
-	}*/
-
-	//TacticalDecision();
 
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	if (SoundResponseHit && bCanPlaySound) {
