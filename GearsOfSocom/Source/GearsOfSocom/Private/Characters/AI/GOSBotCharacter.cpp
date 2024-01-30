@@ -79,16 +79,26 @@ void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
 			BotAIController->SetTarget(TargetActor);
 		}
 	}
+
+	int ChanceDecision = FMath::RandRange(0, 100);
+	if (ChanceDecision > 70)
+	{
+		TacticalDecision();
+	}
 }
 
 void AGOSBotCharacter::FireWeapon()
 {
 	Super::FireWeapon();
 
-	FVector LineTraceStart = GetActorLocation();
+	FVector LineTraceStart = GetMesh()->GetSocketLocation(FName("Muzzle_01"));
 	FRotator RotationStart = GetActorRotation();
 	FVector LineTraceEnd = LineTraceStart + RotationStart.Vector() * MaxShootingRange;
 	FVector ShotDirection = -RotationStart.Vector();
+
+	// For Debugging
+	//DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
+	//DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
 
 	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }
@@ -150,6 +160,10 @@ float AGOSBotCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	if (bIsDead)
 	{
 		TargetActor = nullptr;
+
+		// TODO: Ragdoll death
+	/*	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		GetMesh()->SetSimulatePhysics(true);*/
 	}
 
 	return DamageApplied;
@@ -202,7 +216,6 @@ void AGOSBotCharacter::TacticalDecision()
 
 void AGOSBotCharacter::TacticalAttack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalAttack"));
 	SetWalk();
 	if (BotAIController)
 	{
@@ -213,7 +226,6 @@ void AGOSBotCharacter::TacticalAttack()
 
 void AGOSBotCharacter::TacticalEvade()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalEvade"));
 	SetWalk();
 	if (BotAIController)
 	{
@@ -224,7 +236,6 @@ void AGOSBotCharacter::TacticalEvade()
 
 void AGOSBotCharacter::TacticalCover()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TacticalCover"));
 	if (BotAIController)
 	{
 		BotAIController->SetEvading(false);

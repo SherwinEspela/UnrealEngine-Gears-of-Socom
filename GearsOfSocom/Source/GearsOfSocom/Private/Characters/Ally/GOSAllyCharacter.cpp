@@ -236,18 +236,20 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
 	Super::DamageReaction(DamageCauser);
 
-	/*if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
-	if (AllyAIController)
+	/*if (AllyAIController)
 	{
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 		AllyAIController->AttackTargetEnemy(TargetActor);
-		AllyAIController->FireAtWill();
-
-		if (SoundResponseHit && bCanPlaySound) {
-			UGameplayStatics::PlaySound2D(this, SoundResponseHit);
-			DelayNextVoiceSound();
-		}
+		AllyAIController->FireAtWill();		
 	}*/
+
+	//TacticalDecision();
+
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
+	if (SoundResponseHit && bCanPlaySound) {
+		UGameplayStatics::PlaySound2D(this, SoundResponseHit);
+		DelayNextVoiceSound();
+	}
 }
 
 void AGOSAllyCharacter::PlayFollowResponseSound()

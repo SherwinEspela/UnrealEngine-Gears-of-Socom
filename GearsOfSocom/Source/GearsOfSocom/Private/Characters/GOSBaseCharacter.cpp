@@ -98,7 +98,7 @@ void AGOSBaseCharacter::FireWeapon()
 
 	if (NoiseEmitter)
 	{
-		MakeNoise();
+		//MakeNoise();
 	}
 }
 
