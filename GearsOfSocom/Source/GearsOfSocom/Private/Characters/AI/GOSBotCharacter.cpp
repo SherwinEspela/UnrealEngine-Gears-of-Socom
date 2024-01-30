@@ -98,8 +98,8 @@ void AGOSBotCharacter::FireWeapon()
 	FVector ShotDirection = -RotationStart.Vector();
 
 	// For Debugging
-	//DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
-	//DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
+	DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
+	DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
 
 	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }

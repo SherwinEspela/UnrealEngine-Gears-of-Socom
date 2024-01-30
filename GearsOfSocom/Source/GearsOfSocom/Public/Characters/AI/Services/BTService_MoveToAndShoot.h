@@ -6,7 +6,7 @@
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
 #include "BTService_MoveToAndShoot.generated.h"
 
-class AGOSBotCharacter;
+//class AGOSBotCharacter;
 
 /**
  * 
@@ -21,11 +21,11 @@ public:
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
-protected:
-	UPROPERTY(EditAnywhere)
-	bool bIsNavySeals = true;
+//protected:
+//	UPROPERTY(EditAnywhere)
+//	bool bIsNavySeals = true;
 
-private:
-	AGOSBotCharacter* Bot;
-	
+//private:
+//	AGOSBotCharacter* Bot;
+//	
 };
