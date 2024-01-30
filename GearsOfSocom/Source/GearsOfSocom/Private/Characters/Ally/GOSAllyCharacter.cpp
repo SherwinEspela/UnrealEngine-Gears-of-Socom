@@ -208,6 +208,7 @@ void AGOSAllyCharacter::FireWeapon()
 
 float AGOSAllyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (DamageCauser->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return 0.f;
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{
@@ -231,13 +232,14 @@ void AGOSAllyCharacter::HandleEnemyKilled()
 
 void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 {
-	Super::DamageReaction(DamageCauser);
-
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
-	if (SoundResponseHit && bCanPlaySound) {
+	if (DamageCauser->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return;
+	
+	if (!TargetActor && SoundResponseHit && bCanPlaySound) {
 		UGameplayStatics::PlaySound2D(this, SoundResponseHit);
 		DelayNextVoiceSound();
 	}
+
+	Super::DamageReaction(DamageCauser);
 }
 
 void AGOSAllyCharacter::PlayFollowResponseSound()

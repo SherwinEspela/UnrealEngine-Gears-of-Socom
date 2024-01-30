@@ -73,6 +73,7 @@ void AGOSBaseEnemyCharacter::PatrolOrHoldPosition()
 
 float AGOSBaseEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (DamageCauser->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return 0.f;
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	if (Health > 0.f && BotAIController)
 	{

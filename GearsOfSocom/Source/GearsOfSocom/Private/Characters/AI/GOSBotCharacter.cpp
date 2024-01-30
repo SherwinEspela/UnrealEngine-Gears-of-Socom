@@ -184,14 +184,7 @@ void AGOSBotCharacter::DecideMovementType()
 		SetCrouch();
 	}
 	else {
-		bool ShouldWalk = FMath::RandBool();
-		if (ShouldWalk)
-		{
-			SetWalk();
-		}
-		else {
-			SetRun();
-		}
+		SetWalk();
 	}
 }
 
