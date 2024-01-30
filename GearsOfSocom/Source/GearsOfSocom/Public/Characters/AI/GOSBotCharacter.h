@@ -32,7 +32,6 @@ public:
 	virtual void HoldFire();
 	virtual void FireAtWill();
 	virtual void FindCover();
-	void RemoveTarget();
 
 	virtual float TakeDamage
 	(
@@ -45,6 +44,8 @@ public:
 public:
 	void SetBotBehavior(EBotBehaviorTypes NewBehavior);
 	void DecideMovementType();
+	void RemoveTarget();
+	void TraceNearbyCover();
 
 public:
 	// Tactical Decisions
@@ -79,6 +80,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Bot)
 	EBotBehaviorTypes CurrentBotBehavior = EBotBehaviorTypes::EBBT_Patrolling;
+
+	UPROPERTY(EditAnywhere, Category = Bot)
+	float CoverTraceRadius = 500.f;
 
 protected:
 	AActor* TargetActor;

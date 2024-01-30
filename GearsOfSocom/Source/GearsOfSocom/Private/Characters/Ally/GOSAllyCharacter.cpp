@@ -95,24 +95,9 @@ void AGOSAllyCharacter::AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy)
 	}
 }
 
-//void AGOSAllyCharacter::FireAtWill()
-//{
-//	if (AllyAIController)
-//	{
-//		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
-//		AllyAIController->FireAtWill();
-//	}
-//}
-
 void AGOSAllyCharacter::HoldFire()
 {
 	Super::HoldFire();
-
-	//if (AllyAIController)
-	//{
-	//	
-	//	AllyAIController->HoldFire();
-	//}
 	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_HoldingFire);
 }
 
@@ -131,13 +116,6 @@ void AGOSAllyCharacter::FindCover()
 {
 	Super::FindCover();
 	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
-
-	/*if (AllyAIController)
-	{
-		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_Covering);
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
-		AllyAIController->SetCovering(true);
-	}*/
 }
 
 void AGOSAllyCharacter::FindCoverOrHoldPosition()
@@ -207,7 +185,6 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 		Regroup();
 		break;
 	case EPrimaryCommandType::EPCT_Follow:
-		//DecideMovementType();
 		FollowPlayer();
 		break;
 	case EPrimaryCommandType::EPCT_HoldPosition:

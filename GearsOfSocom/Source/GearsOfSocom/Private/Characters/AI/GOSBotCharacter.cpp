@@ -7,6 +7,8 @@
 #include "Characters/AI/BotAIController.h"
 #include "Animation/GOSBotAnimInstance.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Environment/CoverActor.h"
 #include "Constants/Constants.h"
 
 AGOSBotCharacter::AGOSBotCharacter()
@@ -233,4 +235,32 @@ void AGOSBotCharacter::TacticalCover()
 void AGOSBotCharacter::RemoveTarget()
 {
 	TargetActor = nullptr;
+}
+
+void AGOSBotCharacter::TraceNearbyCover()
+{
+	if (BotAIController == nullptr) return;
+
+	BotAIController->FoundNearCover(false);
+
+	const FVector Start = GetActorLocation();
+	const FVector End = Start;
+	FCollisionShape CollisionShape = FCollisionShape::MakeSphere(500.0f);
+	TArray<FHitResult> OutResults;
+	const bool Hit = GetWorld()->SweepMultiByChannel(OutResults, Start, End, FQuat::Identity, ECollisionChannel::ECC_WorldStatic, CollisionShape);
+
+	if (Hit)
+	{
+		for (const FHitResult HitResult : OutResults)
+		{
+			ACoverActor* Cover = Cast<ACoverActor>(HitResult.GetActor());
+			if (Cover)
+			{
+				BotAIController->FoundNearCover(true);
+				return;
+			}
+		}
+
+		BotAIController->FoundNearCover(false);
+	}
 }

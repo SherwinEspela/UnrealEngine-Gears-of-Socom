@@ -49,6 +49,7 @@
 #define BB_KEY_HOLDING TEXT("IsHolding")
 #define BB_KEY_REGROUPING TEXT("IsRegrouping")
 #define BB_KEY_PATROLLING TEXT("IsPatrolling")
+#define BB_KEY_FOUND_NEAR_COVER TEXT("FoundNearCover")
 
 UENUM(BlueprintType)
 enum class EMovementType : uint8

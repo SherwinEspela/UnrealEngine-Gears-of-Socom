@@ -18,8 +18,8 @@ class GEARSOFSOCOM_API ABotAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-public:
-	virtual void Tick(float DeltaSeconds) override;
+//public:
+//	virtual void Tick(float DeltaSeconds) override;
 
 public:
 	virtual void InitializeAI();
@@ -30,6 +30,7 @@ public:
 	virtual void SetTargetHeard(bool Heard);
 	virtual void SetCovering(bool IsCovering);
 	virtual void SetEvading(bool IsEvading);
+	virtual void FoundNearCover(bool HasNearCover);
 	virtual void SetStealth();
 	virtual void HoldPosition();
 	virtual void ClearValues();
