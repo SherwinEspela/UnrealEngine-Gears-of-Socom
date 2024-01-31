@@ -18,6 +18,9 @@ class GEARSOFSOCOM_API AGOSBaseEnemyCharacter : public AGOSBotCharacter
 	GENERATED_BODY()
 	
 public:
+	AGOSBaseEnemyCharacter();
+
+public:
 	void SelectNextPatrolPoint();
 	void PatrolOrHoldPosition() override;
 	void CollectSeenActors();
