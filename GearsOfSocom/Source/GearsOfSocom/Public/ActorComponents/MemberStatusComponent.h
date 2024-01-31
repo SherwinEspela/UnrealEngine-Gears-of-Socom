@@ -16,7 +16,7 @@ class GEARSOFSOCOM_API UMemberStatusComponent : public UActorComponent
 
 public:	
 	UMemberStatusComponent();
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	//virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
 	void SetStatus(EBotBehaviorTypes BehaviorType) const;

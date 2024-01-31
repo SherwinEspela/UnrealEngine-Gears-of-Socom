@@ -9,6 +9,15 @@
 #include "Perception/PawnSensingComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+AGOSBaseEnemyCharacter::AGOSBaseEnemyCharacter()
+{
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->SightRadius = 1800.f;
+		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+	}
+}
+
 void AGOSBaseEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -20,6 +29,8 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 		if (PawnSensingComponent)
 		{
 			PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
+			PawnSensingComponent->SightRadius = 1800.f;
+			PawnSensingComponent->SetPeripheralVisionAngle(60.f);
 		}
 
 		if (BotAIController) BotAIController->InitializeAI();

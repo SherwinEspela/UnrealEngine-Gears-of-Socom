@@ -37,6 +37,11 @@ public:
 	void SetRun();
 
 public:
+	// For Rapid Shooting
+	virtual void RapidShootingPressed();
+	virtual void RapidShootingReleased();
+
+public:
 	UFUNCTION(BlueprintCallable)
 	EMovementType GetMovementType() const;
 
@@ -95,4 +100,27 @@ protected:
 	bool bIsDead = false;
 
 	bool bIsCrouching = false;
+
+protected:
+	// For Rapid Shooting
+
+	virtual void HandleRapidShootPressed();
+
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	USoundBase* SoundSniperShot;
+
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	USoundBase* SoundRifleLoudShot;
+
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	float RapidShootRate = 0.15f;
+
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	float RapidShootRandomDeviation = 0.07f;
+
+	USoundBase* CurrentWeaponSound;
+	float NextRapidShoot = 0.f;
+	bool bIsRapidShootPressed = false;
+	bool bCanRapidShoot = true;
+	FTimerHandle RapidShootTimerHandle;
 };

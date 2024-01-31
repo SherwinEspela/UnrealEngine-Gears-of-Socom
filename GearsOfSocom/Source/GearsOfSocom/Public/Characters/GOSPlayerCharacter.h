@@ -16,6 +16,7 @@ class UWeaponWidget;
 class UMemberStatusWidget;
 class UMemberStatusComponent;
 class ATargetLocationPinActor;
+class UWeaponRapidFireComponent;
 
 /**
  * 
@@ -55,6 +56,8 @@ public:
 	void CommandRunTo();
 	void CommandStealthTo();
 	void CommandHoldPosition();
+	void WeaponFirePress();
+	void WeaponFireRelease();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -71,11 +74,13 @@ protected:
 
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+	void InterpCameraBoomPositions(float DeltaSeconds);
 	void SetupTeam();
+	void HandleRapidShootPressed() override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraZoomWeaponValue = 40.f;
+	float CameraZoomFOV = 30.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float CameraDefaultFOV;
@@ -88,6 +93,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UMemberStatusComponent* MemberStatusComponent;
+
+	UPROPERTY(EditAnywhere)
+	UWeaponRapidFireComponent* WeaponRapidFireComponent;
 
 protected:
 	// Ally Bots / AI
@@ -133,6 +141,30 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Target Location Guide")
 	ATargetLocationPinActor* TargetLocationPin;
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Control Sensitivity")
+	float UserAimLookSensitivity = 0.3f;
+
+	UPROPERTY(EditAnywhere, Category = "Control Sensitivity")
+	float UserAimMoveSensibility = 0.3f;
+
+	float AimLookSensibility = 1.f;
+	float AimMoveSensibility = 1.f;
+
+protected:
+	// Camera Positions
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionStanding;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionStandingAiming;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionCrouching;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionCrouchingAiming;
+
 private:
 	void PlayAllyFollowResponseSound();
 	void PlayAllyAttackEnemyResponseSound();
@@ -149,4 +181,6 @@ private:
 	UGOSPlayerAnimInstance* PlayerAnimInstance;
 	EGroupCommandType SelectedGroupCommandType;
 	bool bCrouchingMovementInProgress = false;
+
+	FVector CurrentCameraBoomPosition;
 };

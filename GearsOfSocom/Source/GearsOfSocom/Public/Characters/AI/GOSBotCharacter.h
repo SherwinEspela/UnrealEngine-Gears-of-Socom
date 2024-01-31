@@ -32,6 +32,8 @@ public:
 	virtual void HoldFire();
 	virtual void FireAtWill();
 	virtual void FindCover();
+	virtual void ShootSingleOrRapid();
+	virtual void StopShooting();
 
 	virtual float TakeDamage
 	(
@@ -70,6 +72,7 @@ protected:
 	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume);
 
 	virtual void DamageReaction(AActor* DamageCauser);
+	void HandleRapidShootPressed() override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI Awareness")
@@ -89,6 +92,9 @@ protected:
 
 protected:
 	AActor* TargetActor;
+
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	bool bCanRapidFire = false;
 
 private:
 	UGOSBotAnimInstance* BotAnimInstance;

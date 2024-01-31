@@ -27,6 +27,11 @@ void AGOSBotCharacter::Tick(float DeltaSeconds)
 		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetActor->GetActorLocation());
 		SetActorRotation(FRotator(0.f, LookAtRotation.Yaw, 0.f));
 	}
+
+	if (bCanRapidFire)
+	{
+		HandleRapidShootPressed();
+	}
 }
 
 void AGOSBotCharacter::BeginPlay()
@@ -88,6 +93,16 @@ void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
 	}
 }
 
+void AGOSBotCharacter::HandleRapidShootPressed()
+{
+	if (bIsRapidShootPressed && bCanRapidShoot)
+	{
+		FireWeapon();
+	}
+
+	Super::HandleRapidShootPressed();
+}
+
 void AGOSBotCharacter::FireWeapon()
 {
 	Super::FireWeapon();
@@ -98,8 +113,8 @@ void AGOSBotCharacter::FireWeapon()
 	FVector ShotDirection = -RotationStart.Vector();
 
 	// For Debugging
-	DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
-	DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
+	//DrawDebugSphere(GetWorld(), LineTraceStart, 15.f, 15.f, FColor::Red, false, 2.f);
+	//DrawDebugLine(GetWorld(), LineTraceStart, LineTraceEnd, FColor::Green, false, 2.f);
 
 	WeaponHitByLineTrace(LineTraceStart, LineTraceEnd, ShotDirection);
 }
@@ -133,6 +148,7 @@ void AGOSBotCharacter::HoldFire()
 	if (BotAIController)
 	{
 		BotAIController->HoldFire();
+		CurrentWeaponSound = SoundSniperShot;
 	}
 }
 
@@ -151,6 +167,25 @@ void AGOSBotCharacter::FindCover()
 	{
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Covering);
 		BotAIController->SetCovering(true);
+	}
+}
+
+void AGOSBotCharacter::ShootSingleOrRapid()
+{
+	if (bCanRapidFire)
+	{
+		bIsRapidShootPressed = true;
+	}
+	else {
+		FireWeapon();
+	}
+}
+
+void AGOSBotCharacter::StopShooting()
+{
+	if (bCanRapidFire)
+	{
+		bIsRapidShootPressed = false;
 	}
 }
 
