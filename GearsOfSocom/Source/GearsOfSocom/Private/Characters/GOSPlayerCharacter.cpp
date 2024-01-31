@@ -59,6 +59,9 @@ void AGOSPlayerCharacter::BeginPlay()
 
 	SetupTeam();
 	MovementType = EMovementType::EMT_Idle;
+
+	CurrentCameraBoomPosition = CameraBoomPositionStanding;
+	CameraBoom->SetRelativeLocation(CurrentCameraBoomPosition);
 }
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
@@ -66,7 +69,7 @@ void AGOSPlayerCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	ToggleCameraFOVInterp(DeltaSeconds);
-
+	InterpCameraBoomPositions(DeltaSeconds);
 	HandleRapidShootPressed();
 }
 
@@ -74,11 +77,32 @@ void AGOSPlayerCharacter::ToggleCameraFOVInterp(float DeltaSeconds)
 {
 	CurrentCameraFOV = FMath::FInterpTo(
 		CurrentCameraFOV,
-		bIsAiming ? CameraZoomWeaponValue : CameraDefaultFOV,
+		bIsAiming ? CameraZoomFOV : CameraDefaultFOV,
 		DeltaSeconds,
 		CameraZoomWeaponSpeed
 	);
+	
 	FollowCamera->SetFieldOfView(CurrentCameraFOV);
+}
+
+void AGOSPlayerCharacter::InterpCameraBoomPositions(float DeltaSeconds)
+{
+	FVector NewPosition;
+	if (bIsCrouching)
+	{
+		NewPosition = bIsAiming ? CameraBoomPositionCrouchingAiming : CameraBoomPositionCrouching;
+	} else {
+		NewPosition = bIsAiming ? CameraBoomPositionStandingAiming : CameraBoomPositionStanding;
+	}
+
+	CurrentCameraBoomPosition = FMath::VInterpTo(
+		CurrentCameraBoomPosition,
+		NewPosition,
+		DeltaSeconds,
+		CameraZoomWeaponSpeed
+	);
+
+	CameraBoom->SetRelativeLocation(CurrentCameraBoomPosition);
 }
 
 void AGOSPlayerCharacter::SetupTeam()

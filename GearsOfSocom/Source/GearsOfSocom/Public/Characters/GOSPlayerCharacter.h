@@ -74,12 +74,13 @@ protected:
 
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
+	void InterpCameraBoomPositions(float DeltaSeconds);
 	void SetupTeam();
 	void HandleRapidShootPressed() override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float CameraZoomWeaponValue = 40.f;
+	float CameraZoomFOV = 30.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float CameraDefaultFOV;
@@ -150,6 +151,20 @@ protected:
 	float AimLookSensibility = 1.f;
 	float AimMoveSensibility = 1.f;
 
+protected:
+	// Camera Positions
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionStanding;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionStandingAiming;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionCrouching;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Positions")
+	FVector CameraBoomPositionCrouchingAiming;
+
 private:
 	void PlayAllyFollowResponseSound();
 	void PlayAllyAttackEnemyResponseSound();
@@ -166,4 +181,6 @@ private:
 	UGOSPlayerAnimInstance* PlayerAnimInstance;
 	EGroupCommandType SelectedGroupCommandType;
 	bool bCrouchingMovementInProgress = false;
+
+	FVector CurrentCameraBoomPosition;
 };
