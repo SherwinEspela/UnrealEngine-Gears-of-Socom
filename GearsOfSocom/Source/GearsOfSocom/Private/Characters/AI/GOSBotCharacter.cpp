@@ -148,6 +148,7 @@ void AGOSBotCharacter::HoldFire()
 	if (BotAIController)
 	{
 		BotAIController->HoldFire();
+		CurrentWeaponSound = SoundSniperShot;
 	}
 }
 

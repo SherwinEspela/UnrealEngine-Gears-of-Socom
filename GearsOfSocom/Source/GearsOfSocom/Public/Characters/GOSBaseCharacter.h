@@ -115,6 +115,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
 	float RapidShootRate = 0.15f;
 
+	UPROPERTY(EditAnywhere, Category = "Rapid Shooting")
+	float RapidShootRandomDeviation = 0.07f;
+
 	USoundBase* CurrentWeaponSound;
 	float NextRapidShoot = 0.f;
 	bool bIsRapidShootPressed = false;

@@ -154,6 +154,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 	switch (CommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
+		CurrentWeaponSound = SoundRifleLoudShot;
 		FireAtWill();
 		break;
 	case EPrimaryCommandType::EPCT_HoldFire:

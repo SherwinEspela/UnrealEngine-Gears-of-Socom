@@ -206,7 +206,8 @@ void AGOSBaseCharacter::HandleRapidShootPressed()
 		if (bCanRapidShoot)
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, CurrentWeaponSound, GetActorLocation());
-			NextRapidShoot = TimeInSeconds + RapidShootRate;
+			float RandomRate = FMath::RandRange(-RapidShootRandomDeviation, RapidShootRandomDeviation);
+			NextRapidShoot = TimeInSeconds + RapidShootRate + RandomRate;
 		}
 	}
 }

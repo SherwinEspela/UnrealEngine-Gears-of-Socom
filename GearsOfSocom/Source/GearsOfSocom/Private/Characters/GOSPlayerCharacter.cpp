@@ -299,6 +299,8 @@ void AGOSPlayerCharacter::CommandFireAtWill()
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound, 1.f, false);
 	}
+
+	CurrentWeaponSound = SoundRifleLoudShot;
 }
 
 void AGOSPlayerCharacter::CommandHoldFire()
@@ -311,6 +313,8 @@ void AGOSPlayerCharacter::CommandHoldFire()
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AGOSPlayerCharacter::PlayAllyConfirmResponseSound, 1.f, false);
 	}
+
+	CurrentWeaponSound = SoundSniperShot;
 }
 
 void AGOSPlayerCharacter::CommandAttackTo()
