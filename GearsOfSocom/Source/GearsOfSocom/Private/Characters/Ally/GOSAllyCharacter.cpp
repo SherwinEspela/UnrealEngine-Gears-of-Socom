@@ -52,9 +52,9 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 		AllyAIController->SetTargetEnemy(SeenPawn);
 		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		
-		if (TargetEnemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		if (TargetEnemy->GetIsNotSeen())
 		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
+			OnTeamMateReported.Broadcast(ETeamMateReportType::ETMRT_EnemySpotted);
 			TargetEnemy->SetSeen();
 		}
 	}
@@ -228,6 +228,7 @@ void AGOSAllyCharacter::HandleEnemyKilled()
 		TargetActor = nullptr;
 		AllyAIController->ClearTagetValues();
 		HoldPosition();
+		OnTeamMateReported.Broadcast(ETeamMateReportType::ETMRT_EnemyKilled);
 	}
 }
 
@@ -241,72 +242,6 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 	}
 
 	Super::DamageReaction(DamageCauser);
-}
-
-void AGOSAllyCharacter::PlayFollowResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseFollow && SoundResponseConfirm)
-	{
-		int RandomValue = FMath::RandRange(0, 10);
-		if (RandomValue > 4)
-		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseFollow);
-		}
-		else {
-			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		}
-
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseAttackEnemy && SoundResponseConfirm)
-	{
-		int RandomValue = FMath::RandRange(0, 10);
-		if (RandomValue > 4)
-		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseAttackEnemy);
-		}
-		else {
-			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		}
-
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseConfirm)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseEnemyKilled)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayConfirmResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseConfirm)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		DelayNextVoiceSound();
-	}
 }
 
 void AGOSAllyCharacter::DelayNextVoiceSound()

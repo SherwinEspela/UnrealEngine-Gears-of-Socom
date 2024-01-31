@@ -17,6 +17,7 @@
 #include "ActorComponents/MemberStatusComponent.h"
 #include "ActorComponents/WeaponRapidFireComponent.h"
 #include "Characters/AI/TargetLocationPinActor.h"
+#include "ActorComponents/TeamMateReportComponent.h"
 #include "Constants/Constants.h"
 
 
@@ -33,6 +34,7 @@ AGOSPlayerCharacter::AGOSPlayerCharacter()
 
 	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatus"));
 	WeaponRapidFireComponent = CreateDefaultSubobject<UWeaponRapidFireComponent>(TEXT("WeaponRapidFire"));
+	TeamMateReportComponent = CreateDefaultSubobject<UTeamMateReportComponent>(TEXT("TeamMateReport"));
 }
 
 void AGOSPlayerCharacter::BeginPlay()
@@ -118,18 +120,21 @@ void AGOSPlayerCharacter::SetupTeam()
 			{
 				Boomer = Cast<AGOSAllyCharacter>(SealActor);
 				Team.Add(Boomer);
+				TeamMateReportComponent->AddReporter(Boomer);
 			}
 			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_JESTER)))
 			{
 				Jester = Cast<AGOSAllyCharacter>(SealActor);
 				Team.Add(Jester);
 				BravoTeam.Add(Jester);
+				TeamMateReportComponent->AddReporter(Jester);
 			}
 			else if (SealActor->ActorHasTag(FName(ACTOR_TAG_SPECTRE)))
 			{
 				Spectre = Cast<AGOSAllyCharacter>(SealActor);
 				Team.Add(Spectre);
 				BravoTeam.Add(Spectre);
+				TeamMateReportComponent->AddReporter(Spectre);
 			}
 		}
 	}
@@ -371,22 +376,22 @@ void AGOSPlayerCharacter::WeaponFireRelease()
 
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()
 {
-	if (Boomer) Boomer->PlayFollowResponseSound();
+	TeamMateReportComponent->PlayFollowResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyAttackEnemyResponseSound()
 {
-	if (Boomer) Boomer->PlayAttackEnemyResponseSound();
+	TeamMateReportComponent->PlayAttackEnemyResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyMoveToTargetResponseSound()
 {
-	if (Boomer) Boomer->PlayMoveToPositionResponseSound();
+	TeamMateReportComponent->PlayMoveToPositionResponseSound();
 }
 
 void AGOSPlayerCharacter::PlayAllyConfirmResponseSound()
 {
-	if (Boomer) Boomer->PlayConfirmResponseSound();
+	TeamMateReportComponent->PlayConfirmResponseSound();
 }
 
 void AGOSPlayerCharacter::MoveToTargetPosition(FVector TargetPosition)

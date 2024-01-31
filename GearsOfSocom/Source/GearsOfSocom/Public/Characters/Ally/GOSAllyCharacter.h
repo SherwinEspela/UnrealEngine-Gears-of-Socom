@@ -5,11 +5,14 @@
 #include "CoreMinimal.h"
 #include "Characters/AI/GOSBotCharacter.h"
 #include "Constants/UICustomEnums.h"
+#include "Constants/TeamMateReportEnum.h"
 #include "GOSAllyCharacter.generated.h"
 
 class AAllyBotAIController;
 class AGOSBaseEnemyCharacter;
 class UMemberStatusComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTeamMateReportedSignature, ETeamMateReportType, TeamMateReportType);
 
 /**
  * 
@@ -49,16 +52,11 @@ public:
 	virtual void PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType);
 
 public:
-	// Play Sound functions
-	virtual void PlayFollowResponseSound();
-	virtual void PlayAttackEnemyResponseSound();
-	virtual void PlayMoveToPositionResponseSound();
-	virtual void PlayEnemyKilledResponseSound();
-	virtual void PlayConfirmResponseSound();
-
-public:
 	FORCEINLINE UMemberStatusComponent* GetMemberStatusComponent() { return MemberStatusComponent; }
 	FORCEINLINE void ShouldBeStealth(bool IsStealth) { bIsStealth = IsStealth; }
+
+public:
+	FTeamMateReportedSignature OnTeamMateReported;
 
 protected:
 	virtual void BeginPlay() override;
@@ -68,21 +66,6 @@ protected:
 	virtual void DamageReaction(AActor* DamageCauser);
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Voice Response")
-	USoundBase* SoundResponseConfirm;
-
-	UPROPERTY(EditAnywhere, Category = "Voice Response")
-	USoundBase* SoundResponseFollow;
-
-	UPROPERTY(EditAnywhere, Category = "Voice Response")
-	USoundBase* SoundResponseAttackEnemy;
-
-	UPROPERTY(EditAnywhere, Category = "Voice Response")
-	USoundBase* SoundResponseEnemySighted;
-
-	UPROPERTY(EditAnywhere, Category = "Voice Response")
-	USoundBase* SoundResponseEnemyKilled;
-
 	UPROPERTY(EditAnywhere, Category = "Voice Response")
 	USoundBase* SoundResponseHit;
 
