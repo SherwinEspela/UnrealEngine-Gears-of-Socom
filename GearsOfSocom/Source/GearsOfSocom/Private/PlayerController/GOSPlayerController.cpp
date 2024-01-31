@@ -36,7 +36,8 @@ void AGOSPlayerController::SetupInputComponent()
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::Look);
-	EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::FireWeapon);
+	EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::RapidShootingPressed);
+	EnhancedInputComponent->BindAction(FireWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RapidShootingReleased);
 	EnhancedInputComponent->BindAction(ToggleWalkOrJogAction, ETriggerEvent::Triggered, this, &AGOSPlayerController::ToggleWalkOrJog);
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Started, this, &AGOSPlayerController::SetZoomWeaponView);
 	EnhancedInputComponent->BindAction(ZoomWeaponAction, ETriggerEvent::Completed, this, &AGOSPlayerController::RevertToDefaultCameraView);
@@ -75,9 +76,14 @@ void AGOSPlayerController::Look(const FInputActionValue& Value)
 	PlayerCharacter->Look(Value);
 }
 
-void AGOSPlayerController::FireWeapon()
+void AGOSPlayerController::RapidShootingPressed()
 {
-	PlayerCharacter->FireWeapon();
+	PlayerCharacter->RapidShootingPressed();
+}
+
+void AGOSPlayerController::RapidShootingReleased()
+{
+	PlayerCharacter->RapidShootingReleased();
 }
 
 void AGOSPlayerController::ToggleWalkOrJog()

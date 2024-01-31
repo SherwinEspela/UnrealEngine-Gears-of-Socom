@@ -15,6 +15,7 @@
 #include "Sound/SoundBase.h"
 #include "UI/Widgets/WeaponWidget.h"
 #include "ActorComponents/MemberStatusComponent.h"
+#include "ActorComponents/WeaponRapidFireComponent.h"
 #include "Characters/AI/TargetLocationPinActor.h"
 #include "Constants/Constants.h"
 
@@ -31,6 +32,7 @@ AGOSPlayerCharacter::AGOSPlayerCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 
 	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatus"));
+	WeaponRapidFireComponent = CreateDefaultSubobject<UWeaponRapidFireComponent>(TEXT("WeaponRapidFire"));
 }
 
 void AGOSPlayerCharacter::BeginPlay()
@@ -61,7 +63,11 @@ void AGOSPlayerCharacter::BeginPlay()
 
 void AGOSPlayerCharacter::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 	ToggleCameraFOVInterp(DeltaSeconds);
+
+	HandleRapidShootPressed();
 }
 
 void AGOSPlayerCharacter::ToggleCameraFOVInterp(float DeltaSeconds)
@@ -103,6 +109,16 @@ void AGOSPlayerCharacter::SetupTeam()
 			}
 		}
 	}
+}
+
+void AGOSPlayerCharacter::HandleRapidShootPressed()
+{
+	if (bIsRapidShootPressed && bCanRapidShoot)
+	{
+		FireWeapon();
+	}
+
+	Super::HandleRapidShootPressed();
 }
 
 void AGOSPlayerCharacter::SetZoomWeaponView()
@@ -303,6 +319,22 @@ void AGOSPlayerCharacter::CommandHoldPosition()
 {
 	PerformAllyCommandWithPrimaryType(EPrimaryCommandType::EPCT_HoldPosition);
 	PlayAllyConfirmResponseSound();
+}
+
+void AGOSPlayerCharacter::WeaponFirePress()
+{
+	if (WeaponRapidFireComponent)
+	{
+		WeaponRapidFireComponent->FirePressed();
+	}
+}
+
+void AGOSPlayerCharacter::WeaponFireRelease()
+{
+	if (WeaponRapidFireComponent)
+	{
+		WeaponRapidFireComponent->FireReleased();
+	}
 }
 
 void AGOSPlayerCharacter::PlayAllyFollowResponseSound()

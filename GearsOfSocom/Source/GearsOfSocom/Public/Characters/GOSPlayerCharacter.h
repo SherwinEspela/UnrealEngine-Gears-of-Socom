@@ -16,6 +16,7 @@ class UWeaponWidget;
 class UMemberStatusWidget;
 class UMemberStatusComponent;
 class ATargetLocationPinActor;
+class UWeaponRapidFireComponent;
 
 /**
  * 
@@ -55,6 +56,8 @@ public:
 	void CommandRunTo();
 	void CommandStealthTo();
 	void CommandHoldPosition();
+	void WeaponFirePress();
+	void WeaponFireRelease();
 
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -72,6 +75,7 @@ protected:
 protected:
 	void ToggleCameraFOVInterp(float DeltaSeconds);
 	void SetupTeam();
+	void HandleRapidShootPressed() override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
@@ -88,6 +92,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UMemberStatusComponent* MemberStatusComponent;
+
+	UPROPERTY(EditAnywhere)
+	UWeaponRapidFireComponent* WeaponRapidFireComponent;
 
 protected:
 	// Ally Bots / AI

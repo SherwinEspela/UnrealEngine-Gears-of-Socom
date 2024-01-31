@@ -14,10 +14,10 @@ void UMemberStatusComponent::BeginPlay()
 	Super::BeginPlay();	
 }
 
-void UMemberStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
+//void UMemberStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+//{
+//	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+//}
 
 void UMemberStatusComponent::SetStatus(EBotBehaviorTypes BehaviorType) const
 {

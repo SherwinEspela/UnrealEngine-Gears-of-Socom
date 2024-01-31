@@ -93,7 +93,8 @@ protected:
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void FireWeapon();
+	void RapidShootingPressed();
+	void RapidShootingReleased();
 	void ToggleWalkOrJog();
 	void SetZoomWeaponView();
 	void RevertToDefaultCameraView();

@@ -19,16 +19,27 @@ void UBTService_MoveToAndShoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	const bool CanEngage = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_CAN_ENGAGE);
-	if (!CanEngage) return;
-
-	const AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BB_KEY_TARGET));
-	if (!TargetActor) return;
-
-	const bool IsTargetSeen = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_TARGET_SEEN);
-	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
-	if (!IsTargetSeen && !HasTargetSight) return;
-
 	auto Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	if (Bot) Bot->FireWeapon();
+	if (!Bot) return;
+
+	const bool CanEngage = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_CAN_ENGAGE);
+	if (!CanEngage) {
+		Bot->StopShooting();
+		return;
+	}
+		
+	const AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BB_KEY_TARGET));
+	if (!TargetActor) {
+		Bot->StopShooting();
+		return;
+	}
+
+	//const bool IsTargetSeen = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_TARGET_SEEN);
+	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
+	if (!HasTargetSight) {
+		Bot->StopShooting();
+		return;
+	}
+
+	Bot->ShootSingleOrRapid();
 }

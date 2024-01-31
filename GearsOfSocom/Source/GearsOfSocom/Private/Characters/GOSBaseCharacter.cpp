@@ -54,6 +54,11 @@ void AGOSBaseCharacter::BeginPlay()
 	{
 		BaseAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 	}
+
+	if (SoundSniperShot)
+	{
+		CurrentWeaponSound = SoundSniperShot;
+	}
 }
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -177,7 +182,31 @@ void AGOSBaseCharacter::WeaponHitByLineTrace(FVector LineTraceStart, FVector Lin
 	}
 }
 
+void AGOSBaseCharacter::RapidShootingPressed()
+{
+	bIsRapidShootPressed = true;
+}
+
+void AGOSBaseCharacter::RapidShootingReleased()
+{
+	bIsRapidShootPressed = false;
+}
+
 EMovementType AGOSBaseCharacter::GetMovementType() const
 {
 	return MovementType;
+}
+
+void AGOSBaseCharacter::HandleRapidShootPressed()
+{
+	if (bIsRapidShootPressed)
+	{
+		float TimeInSeconds = UGameplayStatics::GetTimeSeconds(this);
+		bCanRapidShoot = TimeInSeconds >= NextRapidShoot;
+		if (bCanRapidShoot)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, CurrentWeaponSound, GetActorLocation());
+			NextRapidShoot = TimeInSeconds + RapidShootRate;
+		}
+	}
 }
