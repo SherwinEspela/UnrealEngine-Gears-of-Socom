@@ -140,6 +140,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Target Location Guide")
 	ATargetLocationPinActor* TargetLocationPin;
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Control Sensitivity")
+	float UserAimLookSensitivity = 0.3f;
+
+	UPROPERTY(EditAnywhere, Category = "Control Sensitivity")
+	float UserAimMoveSensibility = 0.3f;
+
+	float AimLookSensibility = 1.f;
+	float AimMoveSensibility = 1.f;
+
 private:
 	void PlayAllyFollowResponseSound();
 	void PlayAllyAttackEnemyResponseSound();

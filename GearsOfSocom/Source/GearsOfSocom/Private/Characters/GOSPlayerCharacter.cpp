@@ -124,12 +124,16 @@ void AGOSPlayerCharacter::HandleRapidShootPressed()
 void AGOSPlayerCharacter::SetZoomWeaponView()
 {
 	bIsAiming = true;
+	AimLookSensibility = UserAimLookSensitivity;
+	AimMoveSensibility = AimMoveSensibility;
 	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
 void AGOSPlayerCharacter::RevertToDefaultCameraView()
 {
 	bIsAiming = false;
+	AimLookSensibility = 1.f;
+	AimMoveSensibility = 1.f;
 	if (BaseAnimInstance) BaseAnimInstance->SetAiming(bIsAiming);
 }
 
@@ -145,8 +149,8 @@ void AGOSPlayerCharacter::Move(const FInputActionValue& Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+		AddMovementInput(ForwardDirection, MovementVector.Y * AimMoveSensibility);
+		AddMovementInput(RightDirection, MovementVector.X * AimMoveSensibility);
 	}
 }
 
@@ -156,8 +160,8 @@ void AGOSPlayerCharacter::Look(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		AddControllerYawInput(LookAxisVector.X * AimLookSensibility);
+		AddControllerPitchInput(LookAxisVector.Y * AimLookSensibility);
 	}
 }
 
