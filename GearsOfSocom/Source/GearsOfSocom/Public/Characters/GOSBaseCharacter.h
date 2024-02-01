@@ -48,7 +48,6 @@ public:
 public:
 	FORCEINLINE bool IsDead() { return bIsDead; }
 	FORCEINLINE bool IsCrouching() { return bIsCrouching; }
-	
 
 protected:
 	virtual void BeginPlay() override;
@@ -68,7 +67,19 @@ protected:
 	float MaxShootingRange = 2000.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float PrimaryWeaponDamage = 30.f;
+	float PrimaryWeaponDamage = 20.f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoiseRifleSilent = 0.3f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoiseRifleLoud = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoisePistol = 1.f;
+
+	UPROPERTY(VisibleInstanceOnly, Category = Weapon)
+	float CurrentWeaponNoise;
 
 	void WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection);
 
@@ -84,7 +95,7 @@ protected:
 	UGOSBaseAnimInstance* BaseAnimInstance;
 
 	UPROPERTY(VisibleAnywhere)
-	EMovementType MovementType = EMovementType::EMT_Walk;
+	EMovementType MovementType = EMovementType::EMT_Crouch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
 	UPawnNoiseEmitterComponent* NoiseEmitter;

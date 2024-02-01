@@ -67,17 +67,24 @@ void AAllyBotAIController::SetTargetSeen()
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 }
 
+void AAllyBotAIController::SetCanEngage()
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_ENGAGE, true);
+}
+
 void AAllyBotAIController::ClearValues()
 {
 	Super::ClearValues();
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_ENEMY);
 	GetBlackboardComponent()->ClearValue(BB_KEY_TARGET_POSITION);
+	GetBlackboardComponent()->ClearValue(BB_KEY_NOISE_LOCATION);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_FOLLOWING_PLAYER, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_SHOULD_MOVE_TO_TARGET_POSITION, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_REGROUPING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_STEALTH, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 }
 
 void AAllyBotAIController::ClearTagetValues()

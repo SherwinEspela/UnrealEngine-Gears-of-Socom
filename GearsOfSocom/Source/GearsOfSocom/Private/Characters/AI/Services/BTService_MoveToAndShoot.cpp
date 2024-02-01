@@ -22,24 +22,24 @@ void UBTService_MoveToAndShoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 	auto Bot = Cast<AGOSBotCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (!Bot) return;
 
-	const bool CanEngage = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_CAN_ENGAGE);
-	if (!CanEngage) {
-		Bot->StopShooting();
-		return;
-	}
-		
 	const AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BB_KEY_TARGET));
 	if (!TargetActor) {
 		Bot->StopShooting();
 		return;
 	}
 
-	//const bool IsTargetSeen = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_TARGET_SEEN);
-	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
-	if (!HasTargetSight) {
+	const bool CanEngage = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_CAN_ENGAGE);
+	if (!CanEngage) {
 		Bot->StopShooting();
 		return;
 	}
 
+	const bool HasTargetSight = OwnerComp.GetBlackboardComponent()->GetValueAsBool(BB_KEY_HAS_TARGET_SIGHT);
+	if (!HasTargetSight) {
+
+		Bot->StopShooting();
+		return;
+	}
+	
 	Bot->ShootSingleOrRapid();
 }

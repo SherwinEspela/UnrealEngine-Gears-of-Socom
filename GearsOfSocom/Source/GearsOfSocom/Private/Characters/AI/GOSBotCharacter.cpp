@@ -18,6 +18,13 @@ AGOSBotCharacter::AGOSBotCharacter()
 	PawnSensingComponent->SetPeripheralVisionAngle(80.f);
 }
 
+void AGOSBotCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	BotAIController = Cast<ABotAIController>(GetController());
+	BotAnimInstance = Cast<UGOSBotAnimInstance>(GetMesh()->GetAnimInstance());
+}
+
 void AGOSBotCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -34,34 +41,36 @@ void AGOSBotCharacter::Tick(float DeltaSeconds)
 	}
 }
 
-void AGOSBotCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	BotAIController = Cast<ABotAIController>(GetController());
-	BotAnimInstance = Cast<UGOSBotAnimInstance>(GetMesh()->GetAnimInstance());
-
-	// TODO: bring back noise sensing on future version
-	/*if (PawnSensingComponent)
-	{
-		PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSBotCharacter::HandleHeardNoise);
-	}*/
-}
-
 void AGOSBotCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
+	BotAIController->SetTargetSeen();
+
+	if (TargetActor)
+	{
+		float DistanceToSeenPawn = GetDistanceTo(SeenPawn);
+		float DistanceToCurrentTarget = GetDistanceTo(TargetActor);
+		if (DistanceToSeenPawn < DistanceToCurrentTarget)
+		{
+			TargetActor = SeenPawn;
+		}
+	}
+	else {
+		TargetActor = SeenPawn;
+	}
 }
 
 void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
 {
-	if (TargetPawn->ActorHasTag(ACTOR_TAG_PLAYER))
+	if (TargetActor) return;
+	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Investigating) return;
+
+	if (BotAIController)
 	{
-		if (BotAIController)
-		{
-			BotAIController->SetNoiseSourceLocation(Location);
-			BotAIController->SetTargetHeard(true);
-		}
-		CurrentBotBehavior = EBotBehaviorTypes::EBBT_Investigating;
+		BotAIController->SetNoiseSourceLocation(Location);
+		BotAIController->SetTargetHeard(true);
 	}
+
+	CurrentBotBehavior = EBotBehaviorTypes::EBBT_Investigating;
 }
 
 void AGOSBotCharacter::DamageReaction(AActor* DamageCauser)
@@ -149,6 +158,7 @@ void AGOSBotCharacter::HoldFire()
 	{
 		BotAIController->HoldFire();
 		CurrentWeaponSound = SoundSniperShot;
+		CurrentWeaponNoise = WeaponNoiseRifleSilent;
 	}
 }
 
@@ -302,5 +312,17 @@ void AGOSBotCharacter::TraceNearbyCover()
 		}
 
 		BotAIController->FoundNearCover(false);
+	}
+}
+
+void AGOSBotCharacter::CheckIfTargetIsDead()
+{
+	if (TargetActor)
+	{
+		auto Target = Cast<AGOSBaseCharacter>(TargetActor);
+		if (Target->IsDead())
+		{
+			TargetActor = nullptr;
+		}
 	}
 }

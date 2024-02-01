@@ -55,10 +55,8 @@ void AGOSBaseCharacter::BeginPlay()
 		BaseAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 	}
 
-	if (SoundSniperShot)
-	{
-		CurrentWeaponSound = SoundSniperShot;
-	}
+	if (SoundSniperShot) CurrentWeaponSound = SoundSniperShot;
+	CurrentWeaponNoise = WeaponNoiseRifleSilent;
 }
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -101,11 +99,10 @@ void AGOSBaseCharacter::FireWeapon()
 		BaseAnimInstance->Montage_Play(MontageFireWeapon);
 	}
 
-	// TODO: add making noise on future versions
-	/*if (NoiseEmitter)
+	if (NoiseEmitter)
 	{
-		MakeNoise();
-	}*/
+		MakeNoise(CurrentWeaponNoise);
+	}
 }
 
 void AGOSBaseCharacter::ToggleCrouch()
@@ -128,30 +125,44 @@ void AGOSBaseCharacter::SetCrouch()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Crouch) return;
-	bIsCrouching = true;
+
 	MovementType = EMovementType::EMT_Crouch;
 	GetCharacterMovement()->MaxWalkSpeed = CROUCH_SPEED;
-	if (BaseAnimInstance) BaseAnimInstance->SetCrouch();
+
+	if (BaseAnimInstance) {
+		BaseAnimInstance->SetCrouch();
+		BaseAnimInstance->SetMovementType(MovementType);
+	} 
 }
 
 void AGOSBaseCharacter::SetWalk()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Walk) return;
-	bIsCrouching = false;
-	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
+
 	MovementType = EMovementType::EMT_Walk;
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+
+	if (BaseAnimInstance)
+	{
+		BaseAnimInstance->SetUnCrouch();
+		BaseAnimInstance->SetMovementType(MovementType);
+	}
 }
 
 void AGOSBaseCharacter::SetRun()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
 	if (MovementType == EMovementType::EMT_Run) return;
-	bIsCrouching = false;
-	if (BaseAnimInstance) BaseAnimInstance->SetUnCrouch();
+
 	MovementType = EMovementType::EMT_Run;
+	PrintMovementType(MovementType);
 	GetCharacterMovement()->MaxWalkSpeed = RUN_SPEED;
+
+	if (BaseAnimInstance) {
+		BaseAnimInstance->SetUnCrouch();
+		BaseAnimInstance->SetMovementType(MovementType);
+	}
 }
 
 void AGOSBaseCharacter::WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection)

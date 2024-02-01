@@ -6,7 +6,6 @@
 #include "Characters/AI/BotAIController.h"
 #include "Characters/AI/GOSBotCharacter.h"
 #include "Constants/Constants.h"
-//#include "Kismet/GameplayStatics.h"
 
 UBTServiceLastTargetLocation::UBTServiceLastTargetLocation()
 {
@@ -36,13 +35,12 @@ void UBTServiceLastTargetLocation::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				TargetActor->GetActorLocation()
 			);
 
-			if (BotAIController->LineOfSightTo(TargetActor))
+			if (TargetActor && BotAIController->LineOfSightTo(TargetActor))
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
 			}
 			else {
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
-
 				if (BotCharacter)
 				{
 					BotCharacter->SetBotBehavior(EBotBehaviorTypes::EBBT_Chasing);

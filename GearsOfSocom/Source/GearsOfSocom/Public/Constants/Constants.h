@@ -30,6 +30,7 @@
 #define BB_KEY_TARGET_ENEMY TEXT("TargetEnemy")
 #define BB_KEY_HAS_TARGET_SIGHT TEXT("HasTargetSight")
 #define BB_KEY_CAN_ENGAGE TEXT("CanEngage")
+#define BB_KEY_CAN_COVER_ENGAGE TEXT("CanEngageWhileCovering")
 #define BB_KEY_REACHED_COVER_POSITION TEXT("HasReachedCoverPosition")
 #define BB_KEY_REACHED_PLAYER TEXT("HasReachedPlayer")
 
@@ -62,6 +63,10 @@ enum class EMovementType : uint8
 
 	EMT_Idle	UMETA(DisplayName = "Idle")
 };
+
+FORCEINLINE void PrintMovementType(EMovementType MovementType) {
+	UE_LOG(LogTemp, Log, TEXT("Team Mate Report Type: %s"), *UEnum::GetValueAsName(MovementType).ToString());
+}
 
 UENUM(BlueprintType)
 enum class EBotMovementStates : uint8

@@ -31,33 +31,39 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 			PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
 			PawnSensingComponent->SightRadius = 1800.f;
 			PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+
+			PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSBaseEnemyCharacter::HandleHeardNoise);
 		}
 
 		if (BotAIController) BotAIController->InitializeAI();
 	}
 
 	Tags.Add(FName(ACTOR_TAG_ENEMY));
-
 	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), NavySeals);
+
+	CurrentWeaponNoise = WeaponNoisePistol;
 }
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
+	if (!SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return;
+	if (TargetActor && TargetActor == SeenPawn) return;
+	//if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	Super::HandlePawnSeen(SeenPawn);
 
-	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
+	if (BotAIController)
 	{
-		if (BotAIController)
-		{
-			TargetActor = SeenPawn;
-			BotAIController->SetTarget(SeenPawn);
-			BotAIController->SetTargetSeen();
-			CollectSeenActors();
-		}
-
-		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
+		BotAIController->SetTarget(TargetActor);
+		BotAIController->SetTargetSeen();
+		CollectSeenActors();
+		//SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 	}
+}
+
+void AGOSBaseEnemyCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
+{
+	if (!TargetPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return;
+	Super::HandleHeardNoise(TargetPawn, Location, Volume);
 }
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()

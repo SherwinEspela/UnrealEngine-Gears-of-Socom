@@ -18,6 +18,12 @@
 AGOSAllyCharacter::AGOSAllyCharacter()
 {
 	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatusComponent"));
+
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->SightRadius = 2000.f;
+		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+	}
 }
 
 void AGOSAllyCharacter::BeginPlay()
@@ -30,6 +36,11 @@ void AGOSAllyCharacter::BeginPlay()
 	if (PawnSensingComponent)
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSAllyCharacter::HandlePawnSeen);
+		PawnSensingComponent->SightRadius = 2000.f;
+		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+
+		PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSAllyCharacter::HandleHeardNoise);
+		PawnSensingComponent->HearingThreshold = 2300.f;
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
@@ -39,25 +50,42 @@ void AGOSAllyCharacter::BeginPlay()
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
+	if (!SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return;
+	if (TargetActor && TargetActor == SeenPawn) return;
+
 	Super::HandlePawnSeen(SeenPawn);
+	
+	AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(TargetActor);
+	if (Enemy->IsDead()) {
+		TargetActor = nullptr;
+		return;
+	}
 
-	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
+	TargetEnemy = Enemy;
+
+	if (AllyAIController)
 	{
-		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
-		if (Enemy->IsDead()) return;
-
-		TargetEnemy = Enemy;
-		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
-		AllyAIController->SetTargetEnemy(SeenPawn);
+		AllyAIController->SetTargetEnemy(TargetActor);
 		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		
-		if (TargetEnemy->GetIsNotSeen() && SoundResponseEnemySighted)
+		if (TargetEnemy->IsAttacking())
 		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseEnemySighted);
+			AllyAIController->SetCanEngage();
+		}
+
+		if (TargetEnemy->GetIsNotSeen())
+		{
+			OnTeamMateReported.Broadcast(ETeamMateReportType::ETMRT_EnemySpotted);
 			TargetEnemy->SetSeen();
 		}
 	}
+}
+
+void AGOSAllyCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
+{
+	if (!TargetPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return;
+	Super::HandleHeardNoise(TargetPawn, Location, Volume);
 }
 
 void AGOSAllyCharacter::FollowPlayer()
@@ -71,13 +99,44 @@ void AGOSAllyCharacter::FollowPlayer()
 	}
 }
 
-void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
+void AGOSAllyCharacter::HandleUncrouchingAnimationFinished()
 {
-	if (AllyAIController)
+	if (AllyAIController && CurrentBotBehavior == EBotBehaviorTypes::EBBT_MovingToPosition)
 	{
-		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_MovingToPosition);
-		SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
+		bIsCrouching = false;
+	}
+}
+
+void AGOSAllyCharacter::HandleCrouchingAnimationFinished()
+{
+	bIsCrouching = true;
+}
+
+void AGOSAllyCharacter::MoveToTargetPosition(FVector TargetPosition)
+{
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_MovingToPosition);
+	SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
+
+	if (bIsCrouching)
+	{		
+		PrintPrimaryCommandType(CurrentPrimaryCommandType);
+
+		switch (CurrentPrimaryCommandType)
+		{
+		case EPrimaryCommandType::EPCT_RunTo:
+			NewTargetPosition = TargetPosition;
+			break;
+		case EPrimaryCommandType::EPCT_AttackTo:
+		case EPrimaryCommandType::EPCT_StealthTo:
+			AllyAIController->MoveToTargetPosition(TargetPosition);
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		AllyAIController->MoveToTargetPosition(TargetPosition);
 	}
 }
 
@@ -149,15 +208,19 @@ void AGOSAllyCharacter::Regroup()
 
 void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
 {
+	CurrentPrimaryCommandType = CommandType;
 	bIsStealth = false;
 
 	switch (CommandType)
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
 		CurrentWeaponSound = SoundRifleLoudShot;
+		CurrentWeaponNoise = WeaponNoiseRifleLoud;
+		BotAIController->SetEngageWhileCovering(true);
 		FireAtWill();
 		break;
 	case EPrimaryCommandType::EPCT_HoldFire:
+		BotAIController->SetEngageWhileCovering(false);
 		HoldFire();
 		break;
 	case EPrimaryCommandType::EPCT_CoverArea:
@@ -228,6 +291,7 @@ void AGOSAllyCharacter::HandleEnemyKilled()
 		TargetActor = nullptr;
 		AllyAIController->ClearTagetValues();
 		HoldPosition();
+		OnTeamMateReported.Broadcast(ETeamMateReportType::ETMRT_EnemyKilled);
 	}
 }
 
@@ -241,72 +305,6 @@ void AGOSAllyCharacter::DamageReaction(AActor* DamageCauser)
 	}
 
 	Super::DamageReaction(DamageCauser);
-}
-
-void AGOSAllyCharacter::PlayFollowResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseFollow && SoundResponseConfirm)
-	{
-		int RandomValue = FMath::RandRange(0, 10);
-		if (RandomValue > 4)
-		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseFollow);
-		}
-		else {
-			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		}
-
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayAttackEnemyResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseAttackEnemy && SoundResponseConfirm)
-	{
-		int RandomValue = FMath::RandRange(0, 10);
-		if (RandomValue > 4)
-		{
-			UGameplayStatics::PlaySound2D(this, SoundResponseAttackEnemy);
-		}
-		else {
-			UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		}
-
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayMoveToPositionResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseConfirm)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayEnemyKilledResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseEnemyKilled)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseEnemyKilled);
-		DelayNextVoiceSound();
-	}
-}
-
-void AGOSAllyCharacter::PlayConfirmResponseSound()
-{
-	if (!bCanPlaySound) return;
-	if (SoundResponseConfirm)
-	{
-		UGameplayStatics::PlaySound2D(this, SoundResponseConfirm);
-		DelayNextVoiceSound();
-	}
 }
 
 void AGOSAllyCharacter::DelayNextVoiceSound()

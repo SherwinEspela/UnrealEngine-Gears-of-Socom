@@ -4,6 +4,7 @@
 #include "Constants/Constants.h"
 #include "Characters/AI/GOSBotCharacter.h"
 #include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTTaskCoveringDecision::UBTTaskCoveringDecision()
 {
@@ -21,9 +22,11 @@ EBTNodeResult::Type UBTTaskCoveringDecision::ExecuteTask(UBehaviorTreeComponent&
 		int Decision = FMath::RandBool();
 		if (Decision)
 		{
+			OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
 			Bot->CrouchAndHoldFire();
 		}
 		else {
+			OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
 			Bot->StandAndShoot();
 		}
 	}

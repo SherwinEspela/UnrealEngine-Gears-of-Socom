@@ -30,8 +30,8 @@ public:
 	virtual void SetStealth() override;
 	virtual void SetHasReachedCoverPosition(bool HasReached);
 
-	// TODO: Refactor
 	virtual void SetTargetSeen();
+	void SetCanEngage();
 
 protected:
 	virtual void BeginPlay() override;

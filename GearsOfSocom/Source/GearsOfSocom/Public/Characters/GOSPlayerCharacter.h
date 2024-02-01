@@ -17,6 +17,7 @@ class UMemberStatusWidget;
 class UMemberStatusComponent;
 class ATargetLocationPinActor;
 class UWeaponRapidFireComponent;
+class UTeamMateReportComponent;
 
 /**
  * 
@@ -122,6 +123,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Voice Command")
 	USoundBase* SFXCommandHoldFire;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Team Mate Report")
+	UTeamMateReportComponent* TeamMateReportComponent;
 
 protected:
 	// UI

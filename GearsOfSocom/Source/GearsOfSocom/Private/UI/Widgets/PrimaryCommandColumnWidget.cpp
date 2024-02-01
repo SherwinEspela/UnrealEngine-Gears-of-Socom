@@ -24,7 +24,13 @@ void UPrimaryCommandColumnWidget::NativeConstruct()
 void UPrimaryCommandColumnWidget::SetupCells()
 {
 	CommandCellFireAtWill->SetPrimaryCommandType(EPrimaryCommandType::EPCT_FireAtWill);
-	CommandCellCoverArea->SetPrimaryCommandType(EPrimaryCommandType::EPCT_CoverArea);
+	
+	// TODO: update on future version
+	CommandCellCoverArea->SetPrimaryCommandType(EPrimaryCommandType::EPCT_HoldFire);
+	// "provide cover fire at a determined location"
+	//CommandCellCoverArea->SetPrimaryCommandType(EPrimaryCommandType::EPCT_CoverArea);
+	CommandCellCoverArea->SetTextCommand(TEXT("Hold Fire"));
+
 	CommandCellDeploy->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Deploy);
 	CommandCellAmbush->SetPrimaryCommandType(EPrimaryCommandType::EPCT_Ambush);
 	CommandCellRunTo->SetPrimaryCommandType(EPrimaryCommandType::EPCT_RunTo);
@@ -119,7 +125,7 @@ void UPrimaryCommandColumnWidget::Reset()
 	CurrentCell = CommandCellFireAtWill;
 	CurrentCell->bIsSelected = true;
 	CurrentCell->Highlight();
-	ToggleBetweenFireAtWillAndHoldFire();
+	//ToggleBetweenFireAtWillAndHoldFire();
 }
 
 EPrimaryCommandType UPrimaryCommandColumnWidget::GetPrimaryCommandType() const
