@@ -306,7 +306,7 @@ void AGOSPlayerCharacter::CommandFireAtWill()
 	}
 
 	CurrentWeaponSound = SoundRifleLoudShot;
-	CurrentWeaponNoise = WeaponNoiseLoud;
+	CurrentWeaponNoise = WeaponNoiseRifleLoud;
 }
 
 void AGOSPlayerCharacter::CommandHoldFire()
@@ -321,7 +321,7 @@ void AGOSPlayerCharacter::CommandHoldFire()
 	}
 
 	CurrentWeaponSound = SoundSniperShot;
-	CurrentWeaponNoise = WeaponNoiseSilent;
+	CurrentWeaponNoise = WeaponNoiseRifleSilent;
 }
 
 void AGOSPlayerCharacter::CommandAttackTo()

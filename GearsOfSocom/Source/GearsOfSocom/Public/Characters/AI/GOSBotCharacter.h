@@ -58,6 +58,7 @@ public:
 
 public:
 	FORCEINLINE AActor* GetTarget() const { return TargetActor; }
+	FORCEINLINE bool IsAttacking() const { return CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking; }
 
 public:
 	UPROPERTY(BlueprintReadOnly)

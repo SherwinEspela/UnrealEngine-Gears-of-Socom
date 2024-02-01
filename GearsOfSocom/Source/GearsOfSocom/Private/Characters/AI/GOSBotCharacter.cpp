@@ -43,14 +43,13 @@ void AGOSBotCharacter::Tick(float DeltaSeconds)
 
 void AGOSBotCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
+	BotAIController->SetTargetSeen();
 }
 
 void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
 {
 	if (TargetActor) return;
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Investigating) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("HandleHeardNoise...%f"), Volume);
 
 	if (BotAIController)
 	{
@@ -146,7 +145,7 @@ void AGOSBotCharacter::HoldFire()
 	{
 		BotAIController->HoldFire();
 		CurrentWeaponSound = SoundSniperShot;
-		CurrentWeaponNoise = WeaponNoiseSilent;
+		CurrentWeaponNoise = WeaponNoiseRifleSilent;
 	}
 }
 

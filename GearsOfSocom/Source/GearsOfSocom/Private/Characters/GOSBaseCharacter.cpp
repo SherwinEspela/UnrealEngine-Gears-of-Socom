@@ -56,7 +56,7 @@ void AGOSBaseCharacter::BeginPlay()
 	}
 
 	if (SoundSniperShot) CurrentWeaponSound = SoundSniperShot;
-	CurrentWeaponNoise = WeaponNoiseSilent;
+	CurrentWeaponNoise = WeaponNoiseRifleSilent;
 }
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

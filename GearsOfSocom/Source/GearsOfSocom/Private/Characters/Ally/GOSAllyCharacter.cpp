@@ -38,6 +38,9 @@ void AGOSAllyCharacter::BeginPlay()
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSAllyCharacter::HandlePawnSeen);
 		PawnSensingComponent->SightRadius = 2000.f;
 		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+
+		PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSAllyCharacter::HandleHeardNoise);
+		PawnSensingComponent->HearingThreshold = 2300.f;
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
@@ -47,11 +50,11 @@ void AGOSAllyCharacter::BeginPlay()
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
-	if (TargetActor) return;
+	if (!SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return;
 
 	Super::HandlePawnSeen(SeenPawn);
 
-	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))
+	if (AllyAIController)
 	{
 		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
 		if (Enemy->IsDead()) return;
@@ -62,12 +65,23 @@ void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 		AllyAIController->SetTargetEnemy(SeenPawn);
 		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		
+		if (TargetEnemy->IsAttacking())
+		{
+			AllyAIController->SetCanEngage();
+		}
+
 		if (TargetEnemy->GetIsNotSeen())
 		{
 			OnTeamMateReported.Broadcast(ETeamMateReportType::ETMRT_EnemySpotted);
 			TargetEnemy->SetSeen();
 		}
 	}
+}
+
+void AGOSAllyCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
+{
+	if (!TargetPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return;
+	Super::HandleHeardNoise(TargetPawn, Location, Volume);
 }
 
 void AGOSAllyCharacter::FollowPlayer()
@@ -165,7 +179,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
 		CurrentWeaponSound = SoundRifleLoudShot;
-		CurrentWeaponNoise = WeaponNoiseLoud;
+		CurrentWeaponNoise = WeaponNoiseRifleLoud;
 		BotAIController->SetEngageWhileCovering(true);
 		FireAtWill();
 		break;

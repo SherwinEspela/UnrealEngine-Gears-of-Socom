@@ -44,7 +44,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
-	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume);
+	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume) override;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Patrol Behavior", meta = (MakeEditWidget = "true"))

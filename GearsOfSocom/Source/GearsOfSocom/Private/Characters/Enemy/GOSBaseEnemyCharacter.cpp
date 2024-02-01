@@ -40,23 +40,22 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 
 	Tags.Add(FName(ACTOR_TAG_ENEMY));
 	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), NavySeals);
+
+	CurrentWeaponNoise = WeaponNoisePistol;
 }
 
 void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
+	if (!SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return;
 	if (CurrentBotBehavior == EBotBehaviorTypes::EBBT_Attacking) return;
 	Super::HandlePawnSeen(SeenPawn);
 
-	if (SeenPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS)))
+	if (BotAIController)
 	{
-		if (BotAIController)
-		{
-			TargetActor = SeenPawn;
-			BotAIController->SetTarget(SeenPawn);
-			BotAIController->SetTargetSeen();
-			CollectSeenActors();
-		}
-
+		TargetActor = SeenPawn;
+		BotAIController->SetTarget(SeenPawn);
+		BotAIController->SetTargetSeen();
+		CollectSeenActors();
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 	}
 }

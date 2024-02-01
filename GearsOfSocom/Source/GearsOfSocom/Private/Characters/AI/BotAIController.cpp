@@ -92,6 +92,8 @@ void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 
 void ABotAIController::SetTargetSeen()
 {
+	GetBlackboardComponent()->ClearValue(BB_KEY_NOISE_LOCATION);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_HEARD, false);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_TARGET_SEEN, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);

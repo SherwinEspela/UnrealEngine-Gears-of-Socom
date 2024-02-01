@@ -48,7 +48,6 @@ public:
 public:
 	FORCEINLINE bool IsDead() { return bIsDead; }
 	FORCEINLINE bool IsCrouching() { return bIsCrouching; }
-	
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,10 +70,13 @@ protected:
 	float PrimaryWeaponDamage = 20.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float WeaponNoiseSilent = 0.3f;
+	float WeaponNoiseRifleSilent = 0.3f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float WeaponNoiseLoud = 1.f;
+	float WeaponNoiseRifleLoud = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoisePistol = 1.f;
 
 	UPROPERTY(VisibleInstanceOnly, Category = Weapon)
 	float CurrentWeaponNoise;
