@@ -165,6 +165,7 @@ void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandTyp
 	{
 	case EPrimaryCommandType::EPCT_FireAtWill:
 		CurrentWeaponSound = SoundRifleLoudShot;
+		CurrentWeaponNoise = WeaponNoiseLoud;
 		BotAIController->SetEngageWhileCovering(true);
 		FireAtWill();
 		break;

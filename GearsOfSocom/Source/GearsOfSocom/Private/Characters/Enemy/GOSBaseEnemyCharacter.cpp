@@ -31,13 +31,14 @@ void AGOSBaseEnemyCharacter::BeginPlay()
 			PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSBaseEnemyCharacter::HandlePawnSeen);
 			PawnSensingComponent->SightRadius = 1800.f;
 			PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+
+			PawnSensingComponent->OnHearNoise.AddDynamic(this, &AGOSBaseEnemyCharacter::HandleHeardNoise);
 		}
 
 		if (BotAIController) BotAIController->InitializeAI();
 	}
 
 	Tags.Add(FName(ACTOR_TAG_ENEMY));
-
 	UGameplayStatics::GetAllActorsWithTag(this, FName(ACTOR_TAG_NAVYSEALS), NavySeals);
 }
 
@@ -58,6 +59,12 @@ void AGOSBaseEnemyCharacter::HandlePawnSeen(APawn* SeenPawn)
 
 		SetBotBehavior(EBotBehaviorTypes::EBBT_Attacking);
 	}
+}
+
+void AGOSBaseEnemyCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)
+{
+	if (!TargetPawn->ActorHasTag(FName(ACTOR_TAG_NAVYSEALS))) return;
+	Super::HandleHeardNoise(TargetPawn, Location, Volume);
 }
 
 void AGOSBaseEnemyCharacter::SelectNextPatrolPoint()

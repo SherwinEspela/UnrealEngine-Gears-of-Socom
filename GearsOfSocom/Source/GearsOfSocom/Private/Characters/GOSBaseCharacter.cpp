@@ -55,10 +55,8 @@ void AGOSBaseCharacter::BeginPlay()
 		BaseAnimInstance = Cast<UGOSBaseAnimInstance>(GetMesh()->GetAnimInstance());
 	}
 
-	if (SoundSniperShot)
-	{
-		CurrentWeaponSound = SoundSniperShot;
-	}
+	if (SoundSniperShot) CurrentWeaponSound = SoundSniperShot;
+	CurrentWeaponNoise = WeaponNoiseSilent;
 }
 
 float AGOSBaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -101,11 +99,10 @@ void AGOSBaseCharacter::FireWeapon()
 		BaseAnimInstance->Montage_Play(MontageFireWeapon);
 	}
 
-	// TODO: add making noise on future versions
-	/*if (NoiseEmitter)
+	if (NoiseEmitter)
 	{
-		MakeNoise();
-	}*/
+		MakeNoise(CurrentWeaponNoise);
+	}
 }
 
 void AGOSBaseCharacter::ToggleCrouch()

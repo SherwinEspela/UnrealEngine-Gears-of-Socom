@@ -70,6 +70,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	float PrimaryWeaponDamage = 20.f;
 
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoiseSilent = 0.3f;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	float WeaponNoiseLoud = 1.f;
+
+	UPROPERTY(VisibleInstanceOnly, Category = Weapon)
+	float CurrentWeaponNoise;
+
 	void WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection);
 
 protected:

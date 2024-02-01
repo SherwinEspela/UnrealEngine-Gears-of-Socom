@@ -85,6 +85,8 @@ void ABotAIController::SetTarget(AActor* NewTarget)
 
 void ABotAIController::SetNoiseSourceLocation(FVector NewNoiseLocation)
 {
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_HOLDING, false);
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_PATROLLING, false);
 	GetBlackboardComponent()->SetValueAsVector(BB_KEY_NOISE_LOCATION, NewNoiseLocation);
 }
 
