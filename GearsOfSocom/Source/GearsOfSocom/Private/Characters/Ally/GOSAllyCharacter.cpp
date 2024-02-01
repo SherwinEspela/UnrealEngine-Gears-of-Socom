@@ -99,13 +99,44 @@ void AGOSAllyCharacter::FollowPlayer()
 	}
 }
 
-void AGOSAllyCharacter::MoveToTargetPosition(FVector NewTargetPosition)
+void AGOSAllyCharacter::HandleUncrouchingAnimationFinished()
 {
-	if (AllyAIController)
+	if (AllyAIController && CurrentBotBehavior == EBotBehaviorTypes::EBBT_MovingToPosition)
 	{
-		MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_MovingToPosition);
-		SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
 		AllyAIController->MoveToTargetPosition(NewTargetPosition);
+		bIsCrouching = false;
+	}
+}
+
+void AGOSAllyCharacter::HandleCrouchingAnimationFinished()
+{
+	bIsCrouching = true;
+}
+
+void AGOSAllyCharacter::MoveToTargetPosition(FVector TargetPosition)
+{
+	MemberStatusComponent->SetStatus(EBotBehaviorTypes::EBBT_MovingToPosition);
+	SetBotBehavior(EBotBehaviorTypes::EBBT_MovingToPosition);
+
+	if (bIsCrouching)
+	{		
+		PrintPrimaryCommandType(CurrentPrimaryCommandType);
+
+		switch (CurrentPrimaryCommandType)
+		{
+		case EPrimaryCommandType::EPCT_RunTo:
+			NewTargetPosition = TargetPosition;
+			break;
+		case EPrimaryCommandType::EPCT_AttackTo:
+		case EPrimaryCommandType::EPCT_StealthTo:
+			AllyAIController->MoveToTargetPosition(TargetPosition);
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		AllyAIController->MoveToTargetPosition(TargetPosition);
 	}
 }
 
@@ -177,6 +208,7 @@ void AGOSAllyCharacter::Regroup()
 
 void AGOSAllyCharacter::PerformCommandWithPrimaryCommmandType(EPrimaryCommandType CommandType)
 {
+	CurrentPrimaryCommandType = CommandType;
 	bIsStealth = false;
 
 	switch (CommandType)

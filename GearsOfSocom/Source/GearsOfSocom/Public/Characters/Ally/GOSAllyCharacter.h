@@ -41,7 +41,7 @@ public:
 public:
 	// Commands
 	virtual void FollowPlayer();
-	virtual void MoveToTargetPosition(FVector NewTargetPosition);
+	virtual void MoveToTargetPosition(FVector TargetPosition);
 	virtual void AttackTargetEnemy(AGOSBaseEnemyCharacter* Enemy);
 	virtual void HoldFire() override;
 	virtual void HoldPosition();
@@ -63,6 +63,12 @@ protected:
 	virtual void HandlePawnSeen(APawn* SeenPawn) override;
 	virtual void HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume) override;
 
+	UFUNCTION(BlueprintCallable)
+	void HandleUncrouchingAnimationFinished();
+
+	UFUNCTION(BlueprintCallable)
+	void HandleCrouchingAnimationFinished();
+
 protected:
 	virtual void DamageReaction(AActor* DamageCauser);
 
@@ -76,8 +82,10 @@ protected:
 private:
 	AAllyBotAIController* AllyAIController;
 	AGOSBaseEnemyCharacter* TargetEnemy;
+	FVector NewTargetPosition;
 	bool bCanPlaySound = true;
 	bool bIsStealth = false;
+	EPrimaryCommandType CurrentPrimaryCommandType;
 
 private:
 	void ResponseSoundCompleted();

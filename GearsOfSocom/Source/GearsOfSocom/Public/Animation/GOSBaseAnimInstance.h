@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Constants/Constants.h"
 #include "GOSBaseAnimInstance.generated.h"
 
 class AGOSBaseCharacter;
@@ -30,6 +31,7 @@ public:
 	FORCEINLINE void ToggleCrouch() { bIsCrouching = !bIsCrouching; }
 	FORCEINLINE void SetCrouch() { bIsCrouching = true; }
 	FORCEINLINE void SetUnCrouch() { bIsCrouching = false; }
+	FORCEINLINE void SetMovementType(EMovementType MovementType) { CurrentMovementType = MovementType; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
@@ -58,6 +60,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = State)
 	bool bIsDead = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	EMovementType CurrentMovementType = EMovementType::EMT_Crouch;
 
 protected:
 	// Montages
