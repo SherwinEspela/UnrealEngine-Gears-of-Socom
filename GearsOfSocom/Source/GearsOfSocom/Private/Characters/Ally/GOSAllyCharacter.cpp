@@ -18,6 +18,12 @@
 AGOSAllyCharacter::AGOSAllyCharacter()
 {
 	MemberStatusComponent = CreateDefaultSubobject<UMemberStatusComponent>(TEXT("MemberStatusComponent"));
+
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->SightRadius = 2000.f;
+		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
+	}
 }
 
 void AGOSAllyCharacter::BeginPlay()
@@ -30,6 +36,8 @@ void AGOSAllyCharacter::BeginPlay()
 	if (PawnSensingComponent)
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AGOSAllyCharacter::HandlePawnSeen);
+		PawnSensingComponent->SightRadius = 2000.f;
+		PawnSensingComponent->SetPeripheralVisionAngle(60.f);
 	}
 
 	Tags.Add(FName(ACTOR_TAG_NAVYSEALS));
@@ -39,6 +47,8 @@ void AGOSAllyCharacter::BeginPlay()
 
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
+	if (TargetActor) return;
+
 	Super::HandlePawnSeen(SeenPawn);
 
 	if (AllyAIController && SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY)))

@@ -48,6 +48,7 @@ public:
 	void DecideMovementType();
 	void RemoveTarget();
 	void TraceNearbyCover();
+	void CheckIfTargetIsDead();
 
 public:
 	// Tactical Decisions

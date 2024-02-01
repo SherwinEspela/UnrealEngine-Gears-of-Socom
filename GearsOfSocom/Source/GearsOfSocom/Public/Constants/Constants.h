@@ -64,6 +64,10 @@ enum class EMovementType : uint8
 	EMT_Idle	UMETA(DisplayName = "Idle")
 };
 
+FORCEINLINE void PrintMovementType(EMovementType MovementType) {
+	UE_LOG(LogTemp, Log, TEXT("Team Mate Report Type: %s"), *UEnum::GetValueAsName(MovementType).ToString());
+}
+
 UENUM(BlueprintType)
 enum class EBotMovementStates : uint8
 {

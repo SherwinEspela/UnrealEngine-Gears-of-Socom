@@ -304,3 +304,15 @@ void AGOSBotCharacter::TraceNearbyCover()
 		BotAIController->FoundNearCover(false);
 	}
 }
+
+void AGOSBotCharacter::CheckIfTargetIsDead()
+{
+	if (TargetActor)
+	{
+		auto Target = Cast<AGOSBaseCharacter>(TargetActor);
+		if (Target->IsDead())
+		{
+			TargetActor = nullptr;
+		}
+	}
+}

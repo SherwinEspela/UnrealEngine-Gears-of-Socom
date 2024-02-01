@@ -35,7 +35,7 @@ void UBTServiceLastTargetLocation::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				TargetActor->GetActorLocation()
 			);
 
-			if (BotAIController->LineOfSightTo(TargetActor))
+			if (TargetActor && BotAIController->LineOfSightTo(TargetActor))
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
 			}

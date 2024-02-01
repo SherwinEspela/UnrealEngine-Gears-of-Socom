@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Characters/GOSBaseCharacter.h"
+#include "Characters/AI/GOSBotCharacter.h"
 #include "Animation/GOSBotAnimInstance.h"
 #include "Constants/Constants.h"
 
@@ -24,23 +25,33 @@ void ABotAIController::BeginPlay()
 	}
 }
 
-// TOREMOVE
-//void ABotAIController::Tick(float DeltaSeconds)
-//{
-//	Super::Tick(DeltaSeconds);
-//
-//	/*if (TargetActor && LineOfSightTo(TargetActor))
-//	{
-//		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
-//	}
-//	else {
-//		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
-//		GetBlackboardComponent()->SetValueAsVector(
-//			BB_KEY_LAST_TARGET_LOCATION,
-//			TargetActor->GetActorLocation()
-//		);
-//	}*/
-//}
+void ABotAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (TargetActor && LineOfSightTo(TargetActor))
+	{
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, true);
+	}
+	else {
+		GetBlackboardComponent()->SetValueAsBool(BB_KEY_HAS_TARGET_SIGHT, false);
+
+		if (TargetActor)
+		{
+			GetBlackboardComponent()->SetValueAsVector(
+				BB_KEY_LAST_TARGET_LOCATION,
+				TargetActor->GetActorLocation()
+			);
+
+			AGOSBotCharacter* Bot = Cast<AGOSBotCharacter>(GetOwner());
+			if (Bot)
+			{
+				Bot->SetBotBehavior(EBotBehaviorTypes::EBBT_Chasing);
+				Bot->RemoveTarget();
+			}
+		}
+	}
+}
 
 void ABotAIController::InitializeAI()
 {

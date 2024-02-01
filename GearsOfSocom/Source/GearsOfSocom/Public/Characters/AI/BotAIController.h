@@ -18,8 +18,8 @@ class GEARSOFSOCOM_API ABotAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-//public:
-//	virtual void Tick(float DeltaSeconds) override;
+public:
+	virtual void Tick(float DeltaSeconds) override;
 
 public:
 	virtual void InitializeAI();

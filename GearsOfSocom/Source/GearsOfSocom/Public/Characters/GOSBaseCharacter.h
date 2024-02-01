@@ -68,7 +68,7 @@ protected:
 	float MaxShootingRange = 2000.f;
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
-	float PrimaryWeaponDamage = 30.f;
+	float PrimaryWeaponDamage = 20.f;
 
 	void WeaponHitByLineTrace(FVector LineTraceStart, FVector LineTraceEnd, FVector ShotDirection);
 
@@ -84,7 +84,7 @@ protected:
 	UGOSBaseAnimInstance* BaseAnimInstance;
 
 	UPROPERTY(VisibleAnywhere)
-	EMovementType MovementType = EMovementType::EMT_Walk;
+	EMovementType MovementType = EMovementType::EMT_Crouch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Noise Emitter")
 	UPawnNoiseEmitterComponent* NoiseEmitter;

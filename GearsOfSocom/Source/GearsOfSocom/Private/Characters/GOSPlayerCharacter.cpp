@@ -446,7 +446,7 @@ void AGOSPlayerCharacter::PlaceTargetLocationPin(FVector TargetPosition)
 	if (TargetLocationPin)
 	{
 		TargetLocationPin->SetActorLocation(TargetPosition);
-		TargetLocationPin->DisplayDebugSphere();
+		//TargetLocationPin->DisplayDebugSphere();
 	}
 }
 
