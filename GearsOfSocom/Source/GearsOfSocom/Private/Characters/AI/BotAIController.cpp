@@ -96,6 +96,11 @@ void ABotAIController::SetCovering(bool IsCovering)
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_COVERING, IsCovering);
 }
 
+void ABotAIController::SetEngageWhileCovering(bool CanEngage)
+{
+	GetBlackboardComponent()->SetValueAsBool(BB_KEY_CAN_COVER_ENGAGE, CanEngage);
+}
+
 void ABotAIController::SetEvading(bool IsEvading)
 {
 	GetBlackboardComponent()->SetValueAsBool(BB_KEY_EVADING, IsEvading);
