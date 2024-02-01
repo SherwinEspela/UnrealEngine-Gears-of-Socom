@@ -44,6 +44,19 @@ void AGOSBotCharacter::Tick(float DeltaSeconds)
 void AGOSBotCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	BotAIController->SetTargetSeen();
+
+	if (TargetActor)
+	{
+		float DistanceToSeenPawn = GetDistanceTo(SeenPawn);
+		float DistanceToCurrentTarget = GetDistanceTo(TargetActor);
+		if (DistanceToSeenPawn < DistanceToCurrentTarget)
+		{
+			TargetActor = SeenPawn;
+		}
+	}
+	else {
+		TargetActor = SeenPawn;
+	}
 }
 
 void AGOSBotCharacter::HandleHeardNoise(APawn* TargetPawn, const FVector& Location, float Volume)

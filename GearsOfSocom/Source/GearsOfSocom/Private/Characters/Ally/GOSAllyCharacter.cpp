@@ -51,18 +51,22 @@ void AGOSAllyCharacter::BeginPlay()
 void AGOSAllyCharacter::HandlePawnSeen(APawn* SeenPawn)
 {
 	if (!SeenPawn->ActorHasTag(FName(ACTOR_TAG_ENEMY))) return;
+	if (TargetActor && TargetActor == SeenPawn) return;
 
 	Super::HandlePawnSeen(SeenPawn);
+	
+	AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(TargetActor);
+	if (Enemy->IsDead()) {
+		TargetActor = nullptr;
+		return;
+	}
+
+	TargetEnemy = Enemy;
 
 	if (AllyAIController)
 	{
-		AGOSBaseEnemyCharacter* Enemy = Cast<AGOSBaseEnemyCharacter>(SeenPawn);
-		if (Enemy->IsDead()) return;
-
-		TargetEnemy = Enemy;
-		TargetActor = SeenPawn;
 		AllyAIController->SetTargetSeen();
-		AllyAIController->SetTargetEnemy(SeenPawn);
+		AllyAIController->SetTargetEnemy(TargetActor);
 		TargetEnemy->OnEnemyKilled.AddDynamic(this, &AGOSAllyCharacter::HandleEnemyKilled);
 		
 		if (TargetEnemy->IsAttacking())
